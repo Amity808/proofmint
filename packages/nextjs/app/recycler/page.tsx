@@ -144,23 +144,23 @@ const RecyclerDashboard: React.FC = () => {
                         </div>
 
                         {/* Environmental Impact */}
-                        <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6 border border-green-200">
+                        <div className="bg-gradient-to-r from-brand-primary/5 to-brand-secondary/5 rounded-xl p-6 border border-brand-primary/20">
                             <h3 className="text-lg font-semibold text-gray-900 mb-4">Environmental Impact</h3>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div className="text-center">
-                                    <div className="text-3xl font-bold text-green-600 mb-2">
+                                    <div className="text-3xl font-bold text-brand-primary mb-2">
                                         {dummyRecyclerStats.environmentalImpact} kg
                                     </div>
                                     <div className="text-sm text-gray-600">CO2 Emissions Prevented</div>
                                 </div>
                                 <div className="text-center">
-                                    <div className="text-3xl font-bold text-blue-600 mb-2">
+                                    <div className="text-3xl font-bold text-brand-secondary mb-2">
                                         {Math.round(dummyRecyclerStats.environmentalImpact * 0.5)} kg
                                     </div>
                                     <div className="text-sm text-gray-600">Raw Materials Recovered</div>
                                 </div>
                                 <div className="text-center">
-                                    <div className="text-3xl font-bold text-purple-600 mb-2">
+                                    <div className="text-3xl font-bold text-brand-accent mb-2">
                                         {dummyRecyclerStats.totalRecycled * 2}
                                     </div>
                                     <div className="text-sm text-gray-600">Trees Equivalent Saved</div>
@@ -169,14 +169,14 @@ const RecyclerDashboard: React.FC = () => {
                         </div>
 
                         {/* Recent Activity */}
-                        <div className="bg-white rounded-xl shadow-sm border p-6">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-brand-primary border border-brand-primary/20 p-6">
                             <h3 className="text-lg font-semibold mb-4">Recent Recycling Activity</h3>
                             <div className="space-y-4">
                                 {recycledItems.slice(0, 5).map((receipt) => (
-                                    <div key={receipt.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                    <div key={receipt.id} className="flex items-center justify-between p-3 bg-brand-primary/5 rounded-lg">
                                         <div className="flex items-center space-x-3">
-                                            <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                                                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <div className="w-10 h-10 bg-brand-primary/10 rounded-full flex items-center justify-center">
+                                                <svg className="w-5 h-5 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                 </svg>
                                             </div>
@@ -186,7 +186,7 @@ const RecyclerDashboard: React.FC = () => {
                                             </div>
                                         </div>
                                         <div className="text-right">
-                                            <p className="font-semibold text-green-600">Recycled</p>
+                                            <p className="font-semibold text-brand-primary">Recycled</p>
                                             <p className="text-sm text-gray-600">+15 kg CO2 saved</p>
                                         </div>
                                     </div>
@@ -209,9 +209,9 @@ const RecyclerDashboard: React.FC = () => {
                         {availableForRecycling.length > 0 ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {availableForRecycling.map((receipt) => (
-                                    <div key={receipt.id} className="bg-white rounded-xl shadow-sm border overflow-hidden">
-                                        <div className="h-48 bg-gray-200 flex items-center justify-center">
-                                            <div className="text-gray-400 text-sm">Product Image</div>
+                                    <div key={receipt.id} className="bg-white/80 backdrop-blur-sm rounded-xl shadow-brand-primary border border-brand-primary/20 overflow-hidden">
+                                        <div className="h-48 bg-gradient-to-br from-brand-primary/10 to-brand-secondary/10 flex items-center justify-center">
+                                            <div className="text-brand-primary text-sm font-medium">Product Image</div>
                                         </div>
                                         <div className="p-6">
                                             <h4 className="text-lg font-semibold text-gray-900 mb-2">{receipt.productName}</h4>
@@ -219,9 +219,9 @@ const RecyclerDashboard: React.FC = () => {
                                                 <p><span className="font-medium">Product ID:</span> {receipt.productId}</p>
                                                 <p><span className="font-medium">Merchant:</span> {receipt.merchant}</p>
                                                 <p><span className="font-medium">Status:</span>
-                                                    <span className={`ml-1 px-2 py-1 rounded-full text-xs ${receipt.status === GadgetStatus.Active ? 'bg-green-100 text-green-800' :
-                                                        receipt.status === GadgetStatus.Stolen ? 'bg-red-100 text-red-800' :
-                                                            'bg-yellow-100 text-yellow-800'
+                                                    <span className={`ml-1 px-2 py-1 rounded-full text-xs ${receipt.status === GadgetStatus.Active ? 'status-success' :
+                                                        receipt.status === GadgetStatus.Stolen ? 'status-error' :
+                                                            'status-warning'
                                                         }`}>
                                                         {receipt.status === GadgetStatus.Active ? 'Active' :
                                                             receipt.status === GadgetStatus.Stolen ? 'Stolen' : 'Misplaced'}
@@ -231,13 +231,13 @@ const RecyclerDashboard: React.FC = () => {
                                             <div className="flex space-x-2">
                                                 <button
                                                     onClick={() => handleRecycleItem(receipt.id)}
-                                                    className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium"
+                                                    className="flex-1 px-4 py-2 brand-gradient-primary text-white rounded-lg hover:shadow-brand-primary transition-all text-sm font-medium"
                                                 >
                                                     Process Recycling
                                                 </button>
                                                 <button
                                                     onClick={() => handleViewDetails(receipt.id)}
-                                                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium"
+                                                    className="px-4 py-2 border border-brand-primary text-brand-primary rounded-lg hover:bg-brand-primary/10 transition-colors text-sm font-medium"
                                                 >
                                                     Details
                                                 </button>
@@ -265,7 +265,7 @@ const RecyclerDashboard: React.FC = () => {
                     <div className="space-y-6">
                         <div className="flex items-center justify-between">
                             <h3 className="text-lg font-semibold">Recycling History</h3>
-                            <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                            <button className="px-4 py-2 brand-gradient-primary text-white rounded-lg hover:shadow-brand-primary transition-all">
                                 Export Report
                             </button>
                         </div>

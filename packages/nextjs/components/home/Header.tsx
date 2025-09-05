@@ -71,16 +71,16 @@ export default function Header() {
                 />
               </>
             ) : (
-            <Link href="/dashboard">
-              <motion.button
+              <Link href="/dashboard">
+                <motion.button
                   className="px-6 py-2 brand-gradient-primary text-white rounded-full text-base font-semibold hover-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 transition-colors shadow-brand-primary"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                aria-label="Get started with ProofMint"
-              >
-                Get Started
-              </motion.button>
-            </Link>
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  aria-label="Get started with ProofMint"
+                >
+                  Get Started
+                </motion.button>
+              </Link>
             )}
 
             <button

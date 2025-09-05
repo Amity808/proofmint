@@ -103,27 +103,27 @@ const AdminDashboard: React.FC = () => {
                 {activeTab === "overview" && (
                     <div className="space-y-8">
                         {/* System Health */}
-                        <div className="bg-white rounded-xl shadow-sm border p-6">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-brand-primary border border-brand-primary/20 p-6">
                             <div className="flex items-center justify-between mb-4">
                                 <h3 className="text-lg font-semibold">System Health</h3>
-                                <span className={`px-3 py-1 rounded-full text-sm font-medium ${dummyAdminStats.systemHealth === 'good' ? 'bg-green-100 text-green-800' :
-                                    dummyAdminStats.systemHealth === 'warning' ? 'bg-yellow-100 text-yellow-800' :
-                                        'bg-red-100 text-red-800'
+                                <span className={`px-3 py-1 rounded-full text-sm font-medium ${dummyAdminStats.systemHealth === 'good' ? 'status-success' :
+                                    dummyAdminStats.systemHealth === 'warning' ? 'status-warning' :
+                                        'status-error'
                                     }`}>
                                     {dummyAdminStats.systemHealth.toUpperCase()}
                                 </span>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                                    <div className="text-2xl font-bold text-gray-900">{dummyAdminStats.totalUsers}</div>
+                                <div className="text-center p-4 bg-brand-primary/5 rounded-lg">
+                                    <div className="text-2xl font-bold text-brand-primary">{dummyAdminStats.totalUsers}</div>
                                     <div className="text-sm text-gray-600">Total Users</div>
                                 </div>
-                                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                                    <div className="text-2xl font-bold text-gray-900">{dummyAdminStats.totalMerchants}</div>
+                                <div className="text-center p-4 bg-brand-secondary/5 rounded-lg">
+                                    <div className="text-2xl font-bold text-brand-secondary">{dummyAdminStats.totalMerchants}</div>
                                     <div className="text-sm text-gray-600">Merchants</div>
                                 </div>
-                                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                                    <div className="text-2xl font-bold text-gray-900">{dummyAdminStats.totalRecyclers}</div>
+                                <div className="text-center p-4 bg-brand-accent/5 rounded-lg">
+                                    <div className="text-2xl font-bold text-brand-accent">{dummyAdminStats.totalRecyclers}</div>
                                     <div className="text-sm text-gray-600">Recyclers</div>
                                 </div>
                                 <div className="text-center p-4 bg-gray-50 rounded-lg">
@@ -178,13 +178,13 @@ const AdminDashboard: React.FC = () => {
                         </div>
 
                         {/* Recent Activity */}
-                        <div className="bg-white rounded-xl shadow-sm border p-6">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-brand-primary border border-brand-primary/20 p-6">
                             <h3 className="text-lg font-semibold mb-4">Recent System Activity</h3>
                             <div className="space-y-4">
-                                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div className="flex items-center justify-between p-3 bg-brand-primary/5 rounded-lg">
                                     <div className="flex items-center space-x-3">
-                                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                                            <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div className="w-8 h-8 bg-brand-primary/10 rounded-full flex items-center justify-center">
+                                            <svg className="w-4 h-4 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                             </svg>
                                         </div>
@@ -195,10 +195,10 @@ const AdminDashboard: React.FC = () => {
                                     </div>
                                     <span className="text-sm text-gray-500">2 hours ago</span>
                                 </div>
-                                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div className="flex items-center justify-between p-3 bg-brand-secondary/5 rounded-lg">
                                     <div className="flex items-center space-x-3">
-                                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                                            <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div className="w-8 h-8 bg-brand-secondary/10 rounded-full flex items-center justify-center">
+                                            <svg className="w-4 h-4 text-brand-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                             </svg>
                                         </div>
@@ -209,10 +209,10 @@ const AdminDashboard: React.FC = () => {
                                     </div>
                                     <span className="text-sm text-gray-500">4 hours ago</span>
                                 </div>
-                                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div className="flex items-center justify-between p-3 bg-brand-accent/5 rounded-lg">
                                     <div className="flex items-center space-x-3">
-                                        <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                                            <svg className="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div className="w-8 h-8 bg-brand-accent/10 rounded-full flex items-center justify-center">
+                                            <svg className="w-4 h-4 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                             </svg>
                                         </div>
@@ -233,13 +233,13 @@ const AdminDashboard: React.FC = () => {
                     <div className="space-y-6">
                         <div className="flex items-center justify-between">
                             <h3 className="text-lg font-semibold">Merchant Management</h3>
-                            <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                            <button className="px-4 py-2 brand-gradient-primary text-white rounded-lg hover:shadow-brand-primary transition-all">
                                 Add Merchant
                             </button>
                         </div>
 
                         {/* Add Merchant Form */}
-                        <div className="bg-white rounded-xl shadow-sm border p-6">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-brand-primary border border-brand-primary/20 p-6">
                             <h4 className="text-lg font-medium mb-4">Add New Merchant</h4>
                             <form onSubmit={handleAddMerchant} className="flex gap-4">
                                 <input
@@ -247,12 +247,12 @@ const AdminDashboard: React.FC = () => {
                                     value={newMerchant}
                                     onChange={(e) => setNewMerchant(e.target.value)}
                                     placeholder="Enter merchant wallet address (0x...)"
-                                    className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                    className="flex-1 p-3 border border-brand-primary/30 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                                     required
                                 />
                                 <button
                                     type="submit"
-                                    className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+                                    className="px-6 py-3 brand-gradient-primary text-white rounded-lg hover:shadow-brand-primary transition-all font-medium"
                                 >
                                     Add Merchant
                                 </button>
@@ -260,14 +260,14 @@ const AdminDashboard: React.FC = () => {
                         </div>
 
                         {/* Merchants List */}
-                        <div className="bg-white rounded-xl shadow-sm border p-6">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-brand-primary border border-brand-primary/20 p-6">
                             <h4 className="text-lg font-medium mb-4">Registered Merchants</h4>
                             <div className="space-y-3">
                                 {dummyMerchants.map((merchant, index) => (
-                                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                    <div key={index} className="flex items-center justify-between p-3 bg-brand-primary/5 rounded-lg">
                                         <div className="flex items-center space-x-3">
-                                            <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                                                <span className="text-green-600 font-semibold text-sm">M</span>
+                                            <div className="w-8 h-8 bg-brand-primary/10 rounded-full flex items-center justify-center">
+                                                <span className="text-brand-primary font-semibold text-sm">M</span>
                                             </div>
                                             <div>
                                                 <p className="font-medium text-gray-900">{merchant}</p>
@@ -275,7 +275,7 @@ const AdminDashboard: React.FC = () => {
                                             </div>
                                         </div>
                                         <div className="flex items-center space-x-2">
-                                            <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                                            <span className="px-2 py-1 status-success text-xs font-medium rounded-full">
                                                 Active
                                             </span>
                                             <button
@@ -297,13 +297,13 @@ const AdminDashboard: React.FC = () => {
                     <div className="space-y-6">
                         <div className="flex items-center justify-between">
                             <h3 className="text-lg font-semibold">Recycler Management</h3>
-                            <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                            <button className="px-4 py-2 brand-gradient-secondary text-white rounded-lg hover:shadow-brand-secondary transition-all">
                                 Add Recycler
                             </button>
                         </div>
 
                         {/* Add Recycler Form */}
-                        <div className="bg-white rounded-xl shadow-sm border p-6">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-brand-secondary border border-brand-secondary/20 p-6">
                             <h4 className="text-lg font-medium mb-4">Add New Recycler</h4>
                             <form onSubmit={handleAddRecycler} className="flex gap-4">
                                 <input
@@ -311,12 +311,12 @@ const AdminDashboard: React.FC = () => {
                                     value={newRecycler}
                                     onChange={(e) => setNewRecycler(e.target.value)}
                                     placeholder="Enter recycler wallet address (0x...)"
-                                    className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                    className="flex-1 p-3 border border-brand-secondary/30 rounded-lg focus:ring-2 focus:ring-brand-secondary focus:border-transparent"
                                     required
                                 />
                                 <button
                                     type="submit"
-                                    className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+                                    className="px-6 py-3 brand-gradient-secondary text-white rounded-lg hover:shadow-brand-secondary transition-all font-medium"
                                 >
                                     Add Recycler
                                 </button>
@@ -324,14 +324,14 @@ const AdminDashboard: React.FC = () => {
                         </div>
 
                         {/* Recyclers List */}
-                        <div className="bg-white rounded-xl shadow-sm border p-6">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-brand-secondary border border-brand-secondary/20 p-6">
                             <h4 className="text-lg font-medium mb-4">Registered Recyclers</h4>
                             <div className="space-y-3">
                                 {["EcoRecycle Ltd", "GreenTech Solutions", "Sustainable Disposal Co"].map((recycler, index) => (
-                                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                    <div key={index} className="flex items-center justify-between p-3 bg-brand-secondary/5 rounded-lg">
                                         <div className="flex items-center space-x-3">
-                                            <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                                                <span className="text-purple-600 font-semibold text-sm">R</span>
+                                            <div className="w-8 h-8 bg-brand-accent/10 rounded-full flex items-center justify-center">
+                                                <span className="text-brand-accent font-semibold text-sm">R</span>
                                             </div>
                                             <div>
                                                 <p className="font-medium text-gray-900">{recycler}</p>
@@ -339,7 +339,7 @@ const AdminDashboard: React.FC = () => {
                                             </div>
                                         </div>
                                         <div className="flex items-center space-x-2">
-                                            <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                                            <span className="px-2 py-1 status-success text-xs font-medium rounded-full">
                                                 Active
                                             </span>
                                             <button
