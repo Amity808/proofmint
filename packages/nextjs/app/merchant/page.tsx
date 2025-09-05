@@ -18,7 +18,8 @@ const MerchantDashboard: React.FC = () => {
         description: "",
         price: "",
         category: "",
-        specs: ""
+        specs: "",
+        image: new File([], ""),
     });
 
     const merchantReceipts = dummyReceipts.filter(receipt =>
@@ -29,7 +30,7 @@ const MerchantDashboard: React.FC = () => {
         e.preventDefault();
         console.log("Adding product:", newProduct);
         // TODO: Implement product addition
-        setNewProduct({ name: "", description: "", price: "", category: "", specs: "" });
+        setNewProduct({ name: "", description: "", price: "", category: "", specs: "", image: new File([], "") });
     };
 
     const handleIssueReceipt = (buyerAddress: string, productId: string) => {

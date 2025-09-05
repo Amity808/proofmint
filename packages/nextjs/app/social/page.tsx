@@ -69,7 +69,7 @@ const Social: React.FC = () => {
             trustScore: 92,
             badges: [
                 { id: "3", name: "Green Certified", type: "achievement" as const, color: "bg-green-100 text-green-800" },
-                { id: "4", name: "Community Leader", type: "community" as const, color: "bg-purple-100 text-purple-800" }
+                { id: "4", name: "Community Leader", type: "achievement" as const, color: "bg-purple-100 text-purple-800" }
             ]
         },
         {
@@ -125,7 +125,7 @@ const Social: React.FC = () => {
             id: "3",
             name: "Community Builder",
             description: "100+ followers",
-            type: "community" as const,
+            type: "achievement" as const,
             level: "gold" as const,
             icon: "👥"
         }
@@ -303,8 +303,8 @@ const Social: React.FC = () => {
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id as any)}
                                     className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors flex items-center gap-2 ${activeTab === tab.id
-                                            ? "border-brand-primary text-brand-primary"
-                                            : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                                        ? "border-brand-primary text-brand-primary"
+                                        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                                         }`}
                                 >
                                     <tab.icon className="w-4 h-4" />
