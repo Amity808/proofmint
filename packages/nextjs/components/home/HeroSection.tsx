@@ -1,5 +1,5 @@
 import Link from "next/link";
-import proofmint from "../assets/proofmint.png";
+import proofmint from "~~/components/assets/proofmint.png";
 import { motion } from "framer-motion";
 import { ArrowRight, Recycle, Shield, Zap } from "lucide-react";
 import { useAccount } from "wagmi";
@@ -43,7 +43,7 @@ const HeroSection = () => {
           {/* Left Column - Content */}
           <div className="text-center lg:text-left">
             <motion.div
-              className="inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium mb-6"
+              className="inline-flex items-center gap-2 px-3 py-1 bg-brand-primary/10 text-brand-primary rounded-full text-sm font-medium mb-6"
               variants={textVariants}
               initial="hidden"
               animate="visible"
@@ -60,7 +60,7 @@ const HeroSection = () => {
               transition={{ delay: 0.1 }}
             >
               The Future of{" "}
-              <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+              <span className="brand-gradient-multi bg-clip-text text-transparent">
                 Digital Receipts
               </span>
             </motion.h1>
@@ -85,8 +85,8 @@ const HeroSection = () => {
               transition={{ delay: 0.3 }}
             >
               <div className="flex items-center gap-3 p-3 bg-white/70 backdrop-blur-sm rounded-lg border border-gray-100">
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <Shield className="w-5 h-5 text-green-600" />
+                <div className="p-2 bg-brand-primary/10 rounded-lg">
+                  <Shield className="w-5 h-5 text-brand-primary" />
                 </div>
                 <div className="text-left">
                   <p className="font-semibold text-gray-900 text-sm">Verified</p>
@@ -95,8 +95,8 @@ const HeroSection = () => {
               </div>
 
               <div className="flex items-center gap-3 p-3 bg-white/70 backdrop-blur-sm rounded-lg border border-gray-100">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <Recycle className="w-5 h-5 text-blue-600" />
+                <div className="p-2 bg-brand-secondary/10 rounded-lg">
+                  <Recycle className="w-5 h-5 text-brand-secondary" />
                 </div>
                 <div className="text-left">
                   <p className="font-semibold text-gray-900 text-sm">Sustainable</p>
@@ -105,8 +105,8 @@ const HeroSection = () => {
               </div>
 
               <div className="flex items-center gap-3 p-3 bg-white/70 backdrop-blur-sm rounded-lg border border-gray-100">
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <Zap className="w-5 h-5 text-purple-600" />
+                <div className="p-2 bg-brand-accent/10 rounded-lg">
+                  <Zap className="w-5 h-5 text-brand-accent" />
                 </div>
                 <div className="text-left">
                   <p className="font-semibold text-gray-900 text-sm">Fast</p>
@@ -125,7 +125,7 @@ const HeroSection = () => {
             >
               <Link href={isConnected ? "/dashboard" : "/marketplace"}>
                 <motion.button
-                  className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-xl font-semibold hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all shadow-lg shadow-green-500/25"
+                  className="group inline-flex items-center gap-2 px-8 py-4 brand-gradient-primary text-white rounded-xl font-semibold hover-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 transition-all shadow-brand-primary"
                   variants={buttonVariants}
                   whileHover="hover"
                   whileTap="tap"

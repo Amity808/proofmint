@@ -1,127 +1,369 @@
-# 🏗 Scaffold-ETH 2
+# 🚀 ProofMint - Proof of Ownership NFT Receipts
 
-<h4 align="center">
-  <a href="https://docs.scaffoldeth.io">Documentation</a> |
-  <a href="https://scaffoldeth.io">Website</a>
-</h4>
+> **Hackathon Project**: A blockchain-powered system that mints NFT receipts at the point of purchase, serving as verifiable proof of ownership for electronics and gadgets.
 
-🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
+## 📋 Project Overview
 
-⚙️ Built using NextJS, RainbowKit, Foundry, Wagmi, Viem, and Typescript.
+ProofMint revolutionizes product ownership by creating blockchain-verified NFT receipts when customers purchase electronics. These NFTs serve as immutable proof of ownership, enabling:
 
-- ✅ **Contract Hot Reload**: Your frontend auto-adapts to your smart contract as you edit it.
-- 🪝 **[Custom hooks](https://docs.scaffoldeth.io/hooks/)**: Collection of React hooks wrapper around [wagmi](https://wagmi.sh/) to simplify interactions with smart contracts with typescript autocompletion.
-- 🧱 [**Components**](https://docs.scaffoldeth.io/components/): Collection of common web3 components to quickly build your frontend.
-- 🔥 **Burner Wallet & Local Faucet**: Quickly test your application with a burner wallet and local faucet.
-- 🔐 **Integration with Wallet Providers**: Connect to different wallet providers and interact with the Ethereum network.
+- **🔐 Authentic Ownership**: Blockchain-verified proof of purchase
+- **♻️ Sustainable Tracking**: Track products through their lifecycle
+- **🎁 Recycling Rewards**: Earn tokens for responsible disposal
+- **⚡ 0G Network Speed**: Lightning-fast transactions powered by 0G
 
-![Debug Contracts tab](https://github.com/scaffold-eth/scaffold-eth-2/assets/55535804/b237af0c-5027-4849-a5c1-2e31495cccb1)
+## 🎯 Core Features
 
-## Requirements
+### ✅ Implemented
 
-Before you begin, you need to install the following tools:
+- Modern landing page with hero section
+- Responsive design with Tailwind CSS
+- Web3 wallet integration (RainbowKit)
+- ENS support for user profiles
+- Component-based architecture
+- **Ethereum Identity Kit** integration for enhanced user experience
 
-- [Node (>= v20.18.3)](https://nodejs.org/en/download/)
-- Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
-- [Git](https://git-scm.com/downloads)
+### 🔄 In Development (2-Day Sprint)
 
-## Quickstart
+- **Marketplace**: Browse and purchase electronics
+- **NFT Minting**: Automatic receipt generation on purchase
+- **User Dashboard**: View owned NFT receipts
+- **QR Verification**: Scan QR codes for ownership proof
+- **Recycling System**: Track and earn rewards for disposal
 
-To get started with Scaffold-ETH 2, follow the steps below:
+## 🆔 Ethereum Identity Kit Integration
 
-1. Install dependencies if it was skipped in CLI:
+ProofMint leverages the [Ethereum Identity Kit](https://ethidentitykit.com/docs) to provide enhanced user experience and social features:
 
+### 🎭 **User Profile Enhancement**
+
+- **ProfileCard**: Display user profiles with ENS names, avatars, and social stats
+- **Profile Stats**: Show user's transaction history, reputation, and activity metrics
+- **Avatar**: ENS-based profile pictures for personalized experience
+
+### 🤝 **Social Features & Trust**
+
+- **Follow System**: Users can follow trusted merchants and recyclers
+- **Follower Tags**: Community-driven verification (e.g., "Verified Recycler", "Trusted Merchant")
+- **Followers You Know**: Social proof showing mutual connections
+- **Leaderboard**: Gamify sustainability efforts with recycling leaderboards
+
+### ⚡ **Enhanced UX**
+
+- **Transaction Modal**: Streamlined transaction flows for purchases and recycling
+- **Notifications**: Real-time updates for receipt status changes, new products
+- **SIWE (Sign-In with Ethereum)**: Seamless authentication without traditional passwords
+- **POAP Integration**: Award badges for environmental achievements
+
+### 🔧 **Implementation Benefits**
+
+- **Trust & Reputation**: Social verification for merchants and users
+- **Community Building**: Follow system creates sustainable ecosystem
+- **Gamification**: Leaderboards encourage recycling participation
+- **Seamless UX**: Modern authentication and transaction flows
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+- **Next.js 15** with App Router
+- **TypeScript** for type safety
+- **Tailwind CSS** + **DaisyUI** for styling
+- **Framer Motion** for animations
+- **React Icons** + **Lucide React** for icons
+
+### Web3 Integration
+
+- **Wagmi** + **Viem** for Ethereum interactions
+- **RainbowKit** for wallet connection
+- **React Query** for state management
+- **0G Network** for high-speed transactions
+- **Ethereum Identity Kit** for enhanced user profiles and social features
+
+### Smart Contracts
+
+- **Foundry** for contract development
+- **Solidity** for smart contract logic
+- **OpenZeppelin** for security standards
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 18+
+- Yarn package manager
+- Git
+
+### Installation
+
+1. **Clone the repository**
+
+```bash
+git clone <your-repo-url>
+cd proofmint
 ```
-cd my-dapp-example
+
+2. **Install dependencies**
+
+```bash
+# Install root dependencies
+yarn install
+
+# Install frontend dependencies
+cd packages/nextjs
 yarn install
 ```
 
-2. Run a local network in the first terminal:
+3. **Install missing dependencies**
 
-```
-yarn chain
-```
-
-This command starts a local Ethereum network using Foundry. The network runs on your local machine and can be used for testing and development. You can customize the network configuration in `packages/foundry/foundry.toml`.
-
-3. On a second terminal, deploy the test contract:
-
-```
-yarn deploy
+```bash
+yarn add framer-motion@^12.23.6 lucide-react@^0.539.0 react-icons
 ```
 
-This command deploys a test smart contract to the local network. The contract is located in `packages/foundry/contracts` and can be modified to suit your needs. The `yarn deploy` command uses the deploy script located in `packages/foundry/script` to deploy the contract to the network. You can also customize the deploy script.
+4. **Install Ethereum Identity Kit**
 
-4. On a third terminal, start your NextJS app:
-
-```
-yarn start
+```bash
+yarn add ethereum-identity-kit @tanstack/react-query
 ```
 
-Visit your app on: `http://localhost:3000`. You can interact with your smart contract using the `Debug Contracts` page. You can tweak the app config in `packages/nextjs/scaffold.config.ts`.
+5. **Start development server**
 
-Run smart contract test with `yarn foundry:test`
+```bash
+yarn dev
+```
 
-- Edit your smart contracts in `packages/foundry/contracts`
-- Edit your frontend homepage at `packages/nextjs/app/page.tsx`. For guidance on [routing](https://nextjs.org/docs/app/building-your-application/routing/defining-routes) and configuring [pages/layouts](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts) checkout the Next.js documentation.
-- Edit your deployment scripts in `packages/foundry/script`
+5. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
 
-## 🚀 Setup ERC-721 NFT Extension
+## 📁 Project Structure
 
-This extension introduces an ERC-721 token contract and demonstrates how to use it, including getting the total supply and holder balance, listing all NFTs from the collection and NFTs from the connected address, and how to transfer NFTs.
+```
+proofmint/
+├── packages/
+│   ├── nextjs/                 # Frontend application
+│   │   ├── app/               # Next.js app router
+│   │   │   ├── marketplace/   # Product marketplace
+│   │   │   ├── dashboard/     # User dashboard
+│   │   │   ├── nft-receipts/  # NFT management
+│   │   │   └── recycling/     # Sustainability features
+│   │   ├── components/        # React components
+│   │   │   ├── home/         # Landing page components
+│   │   │   └── scaffold-eth/ # Web3 components
+│   │   ├── hooks/            # Custom React hooks
+│   │   ├── utils/            # Utility functions
+│   │   └── contracts/        # Contract ABIs
+│   └── foundry/              # Smart contracts
+│       ├── contracts/        # Solidity contracts
+│       ├── scripts/         # Deployment scripts
+│       └── test/            # Contract tests
+└── README.md
+```
 
-The ERC-721 Token Standard introduces a standard for Non-Fungible Tokens ([EIP-721](https://eips.ethereum.org/EIPS/eip-721)), in other words, each token is unique.
+## ⚙️ Ethereum Identity Kit Configuration
 
-The ERC-721 token contract is implemented using the [ERC-721 token implementation](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol) from OpenZeppelin.
+### Setup Providers
 
-The ERC-721 token implementation uses the [ERC-721 Enumerable extension](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/extensions/ERC721Enumerable.sol) from OpenZeppelin to list all tokens from the collection and all the tokens owned by an address. You can remove this if you plan to use an indexer, like a Subgraph or Ponder ([extensions available](https://scaffoldeth.io/extensions)).
+Add the required providers to your `app/layout.tsx`:
 
-### Setup
+```typescript
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { TransactionProvider } from "ethereum-identity-kit";
+import "ethereum-identity-kit/css";
 
-Deploy your contract running ```yarn deploy```
+const queryClient = new QueryClient();
 
-### Interact with the NFT
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>
+        <QueryClientProvider client={queryClient}>
+          <WagmiProvider config={wagmiConfig}>
+            <TransactionProvider>{children}</TransactionProvider>
+          </WagmiProvider>
+        </QueryClientProvider>
+      </body>
+    </html>
+  );
+}
+```
 
-Start the front-end with ```yarn start``` and go to the _/erc721_ page to interact with your deployed ERC-721 token.
+### Usage Examples
 
-You can check the code at ```packages/nextjs/app/erc721```.
+```typescript
+// Enhanced user profiles
+import { ProfileCard, ProfileStats, Avatar } from "ethereum-identity-kit";
 
+// In your dashboard
+<ProfileCard addressOrName={userAddress} showStats={true} showSocials={true} />;
 
-## Documentation
+// Merchant verification
+import { FollowerTag, FollowersYouKnow } from "ethereum-identity-kit";
 
-Visit our [docs](https://docs.scaffoldeth.io) to learn how to start building with Scaffold-ETH 2.
+<FollowerTag
+  address={merchantAddress}
+  tag="Verified Merchant"
+  variant="success"
+/>;
 
-To know more about its features, check out our [website](https://scaffoldeth.io).
+// Transaction flows
+import { TransactionModal } from "ethereum-identity-kit";
 
-## Contributing to Scaffold-ETH 2
+<TransactionModal
+  onSuccess={handlePurchaseSuccess}
+  onError={handleTransactionError}
+/>;
+```
 
-We welcome contributions to Scaffold-ETH 2!
+## 🎯 2-Day Development Plan
 
-Please see [CONTRIBUTING.MD](https://github.com/scaffold-eth/scaffold-eth-2/blob/main/CONTRIBUTING.md) for more information and guidelines for contributing to Scaffold-ETH 2.
+### Day 1: Core Infrastructure & MVP
 
+**Morning (4-5 hours)**
 
-ens registery
-<!-- 0x83cd331268a0381eea0e304614636777ccf08c57 -->
-<!-- 
-0x771f1e3bd2261fff516e9a316d2d7280e3a1009b
+- [x] Setup & Dependencies
+- [ ] Marketplace Page with product listings
+- [ ] NFT Minting System for purchases
 
-Enter private key:
-Deployer: 0x9dBa18e9b96b905919cC828C399d313EfD55D800
-Deployed to: 0xCF68b6D517dDf8e702653dE6e7984ae149595F26
-Transaction hash: 0x290314a92e8e7f2ab7146c54277ca9be4cc7313f3f84cff03d48a33c3381ee00
-Starting contract verification...
-Waiting for sourcify to detect contract deployment...
-Start verifying contract `0xCF68b6D517dDf8e702653dE6e7984ae149595F26` deployed on base-sepolia
-Compiler version: 0.8.20
-Constructor args: 000000000000000000000000771f1e3bd2261fff516e9a316d2d7280e3a1009b
+**Afternoon (4-5 hours)**
 
-Submitting verification for [src/examples/L2Registrar.sol:L2Registrar] 0xCF68b6D517dDf8e702653dE6e7984ae149595F26.
-Submitted contract for verification:
-        Response: `OK`
-        GUID: `ynzlibvbucnnthfq3ia9vvrvid5hywdqyheqnet2ipf1dqmzdi`
-        URL: https://sepolia.basescan.org/address/0xcf68b6d517ddf8e702653de6e7984ae149595f26
-Contract verification status:
-Response: `OK`
-Details: `Pass - Verified`
-Contract successfully verified
-amityclev@Amityclevs-MacBook-Pro durin %  -->
+- [ ] User Dashboard for owned NFTs
+- [ ] Core Pages Structure (receipts, recycling, track)
+
+### Day 2: Integration & Polish
+
+**Morning (4-5 hours)**
+
+- [ ] Smart Contract Integration
+- [ ] Payment & Transaction Flow
+
+**Afternoon (4-5 hours)**
+
+- [ ] Advanced Features (ENS, QR codes)
+- [ ] Testing & Polish
+- [ ] Deployment & Demo Prep
+
+## 🔧 Available Scripts
+
+```bash
+# Development
+yarn dev              # Start development server
+yarn build            # Build for production
+yarn start            # Start production server
+
+# Code Quality
+yarn lint             # Run ESLint
+yarn format           # Format code with Prettier
+yarn check-types      # TypeScript type checking
+
+# Deployment
+yarn vercel           # Deploy to Vercel
+yarn ipfs             # Deploy to IPFS
+```
+
+## 🌐 Environment Variables
+
+Create a `.env.local` file in `packages/nextjs/`:
+
+```env
+# Alchemy API Key
+NEXT_PUBLIC_ALCHEMY_API_KEY=your_alchemy_key
+
+# WalletConnect Project ID
+NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=your_project_id
+
+# Contract Addresses
+NEXT_PUBLIC_CONTRACT_ADDRESS=your_contract_address
+```
+
+## 🎨 Design System
+
+### Colors
+
+- **Primary**: Green (#22c55e) - Sustainability theme
+- **Secondary**: Blue (#3b82f6) - Trust and technology
+- **Accent**: Purple (#8b5cf6) - Innovation
+- **Neutral**: Gray scale for text and backgrounds
+
+### Components
+
+- **Cards**: Product listings, NFT displays
+- **Buttons**: Primary (green), Secondary (white)
+- **Forms**: Input fields with validation
+- **Modals**: Transaction confirmations, QR displays
+
+## 🔗 Smart Contract Integration
+
+### Key Functions
+
+```solidity
+// Mint NFT receipt on purchase
+function mintReceipt(
+    address to,
+    string memory productId,
+    string memory metadataURI
+) external returns (uint256);
+
+// Verify ownership
+function verifyOwnership(
+    address owner,
+    uint256 tokenId
+) external view returns (bool);
+```
+
+## 📱 User Flow
+
+1. **Browse** → User visits marketplace
+2. **Select** → Choose product to purchase
+3. **Connect** → Connect wallet (MetaMask, etc.)
+4. **Purchase** → Complete transaction
+5. **Mint** → NFT receipt automatically minted
+6. **View** → Access dashboard to see owned NFTs
+7. **Verify** → Use QR code for ownership proof
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+
+```bash
+yarn vercel
+```
+
+### IPFS (Decentralized)
+
+```bash
+yarn ipfs
+```
+
+## 🤝 Contributing
+
+This is a hackathon project. For contributions:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🏆 Hackathon Goals
+
+- **Innovation**: Novel approach to product ownership
+- **Sustainability**: Encouraging responsible disposal
+- **User Experience**: Seamless Web3 integration
+- **Technical Excellence**: Clean, maintainable code
+- **Demo Ready**: Polished presentation
+
+## 📞 Contact
+
+- **Email**: contact@proofmint.com
+- **Twitter**: [@ProofMint](https://twitter.com/proofmint)
+- **LinkedIn**: [ProofMint](https://linkedin.com/company/proofmint)
+
+---
+
+**Built with ❤️ for the hackathon** | **Powered by 0G Network** | **Secured by Ethereum**

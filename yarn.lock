@@ -3304,6 +3304,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:5.86.0":
+  version: 5.86.0
+  resolution: "@tanstack/query-core@npm:5.86.0"
+  checksum: fb833046e6cd5f897e370855accf02f54a24ea8183cc5b46e4eca5ff966913286bb75a7b34962f1ec0b8ebb3d5f83e617dbf0f56c3e435c1d9023b6227f8d627
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^5.86.0":
+  version: 5.86.0
+  resolution: "@tanstack/react-query@npm:5.86.0"
+  dependencies:
+    "@tanstack/query-core": 5.86.0
+  peerDependencies:
+    react: ^18 || ^19
+  checksum: 02cb3947946ffa94feb2f2a1ef76eb704c20c8cfee63954d1bdc27ef902a15dd36c4e8128f07d5c3154b3244625bd77404c5f54061ebe083f79e5688f6ebff6d
+  languageName: node
+  linkType: hard
+
 "@tanstack/react-query@npm:~5.59.15":
   version: 5.59.20
   resolution: "@tanstack/react-query@npm:5.59.20"
@@ -7220,6 +7238,24 @@ __metadata:
     "@scure/bip32": 1.4.0
     "@scure/bip39": 1.3.0
   checksum: 1466e4c417b315a6ac67f95088b769fafac8902b495aada3c6375d827e5a7882f9e0eea5f5451600d2250283d9198b8a3d4d996e374e07a80a324e29136f25c6
+  languageName: node
+  linkType: hard
+
+"ethereum-identity-kit@npm:^0.2.53":
+  version: 0.2.53
+  resolution: "ethereum-identity-kit@npm:0.2.53"
+  peerDependencies:
+    "@tanstack/react-query": ^5.0.0
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+    viem: ^2.0.0
+    wagmi: ^2.0.0
+  peerDependenciesMeta:
+    react:
+      optional: false
+    react-dom:
+      optional: false
+  checksum: 968217cee80f93520b1ee1b7d24387b05ef87ef570f2f94ec8df4ca00149f4ac0d0b15647219ea9841d60cb59efca2ba5c44063c74a69c80137875009169c9e6
   languageName: node
   linkType: hard
 
@@ -12361,12 +12397,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "se-2@workspace:."
   dependencies:
+    "@tanstack/react-query": ^5.86.0
     dompurify: ^3.2.6
+    ethereum-identity-kit: ^0.2.53
     framer-motion: ^12.23.6
     husky: ~9.1.6
     lint-staged: ~13.2.2
     lucide-react: ^0.539.0
     react-icons: ^5.5.0
+    viem: ^2.37.3
   languageName: unknown
   linkType: soft
 
@@ -14161,7 +14200,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"viem@npm:>=2.29.0, viem@npm:^2.1.1, viem@npm:^2.27.2, viem@npm:^2.31.7":
+"viem@npm:>=2.29.0, viem@npm:^2.1.1, viem@npm:^2.27.2, viem@npm:^2.31.7, viem@npm:^2.37.3":
   version: 2.37.3
   resolution: "viem@npm:2.37.3"
   dependencies:

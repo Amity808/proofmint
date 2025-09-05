@@ -8,7 +8,6 @@ const Footer = () => {
       <div className="max-w-[1240px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="flex flex-col items-start gap-4">
           <Link href="/" className="flex items-center space-x-2" aria-label="ProofMint Home">
-            <span className="material-symbols-outlined text-3xl text-green-600">receipt_long</span>
             <h1 className="text-xl font-bold">ProofMint</h1>
           </Link>
           <div className="flex items-center text-[#3C4D35]">
@@ -23,16 +22,16 @@ const Footer = () => {
         <div className="flex flex-col items-start gap-4">
           <p className="text-[#3C4D35] font-semibold text-base">Quick Links</p>
           <div className="flex flex-col gap-2">
-            <Link href="/marketplace" className="text-[#3C4D35] hover:text-green-600">
+            <Link href="/marketplace" className="text-[#3C4D35] hover:text-brand-primary">
               Marketplace
             </Link>
-            <Link href="/nft-receipts" className="text-[#3C4D35] hover:text-green-600">
+            <Link href="/nft-receipts" className="text-[#3C4D35] hover:text-brand-primary">
               NFT Receipts
             </Link>
-            <Link href="/recycling" className="text-[#3C4D35] hover:text-green-600">
+            <Link href="/recycling" className="text-[#3C4D35] hover:text-brand-primary">
               Recycling
             </Link>
-            <Link href="/track" className="text-[#3C4D35] hover:text-green-600">
+            <Link href="/track" className="text-[#3C4D35] hover:text-brand-primary">
               Track Items
             </Link>
           </div>
@@ -45,7 +44,7 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="ProofMint on LinkedIn"
-              className="text-[#3C4D35] hover:text-green-600"
+              className="text-[#3C4D35] hover:text-brand-primary"
             >
               <FaLinkedin size={24} />
             </a>
@@ -54,7 +53,7 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="ProofMint on Twitter"
-              className="text-[#3C4D35] hover:text-green-600"
+              className="text-[#3C4D35] hover:text-brand-primary"
             >
               <FaTwitter size={24} />
             </a>
@@ -63,7 +62,7 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="ProofMint on Facebook"
-              className="text-[#3C4D35] hover:text-green-600"
+              className="text-[#3C4D35] hover:text-brand-primary"
             >
               <FaFacebook size={24} />
             </a>

@@ -74,13 +74,13 @@ const HowItWorks = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-100 to-blue-100 rounded-full text-sm font-medium text-gray-700 mb-4">
+          <div className="inline-flex items-center gap-2 px-4 py-2 brand-gradient-multi rounded-full text-sm font-medium text-white mb-4 shadow-brand-primary">
             <Sparkles className="w-4 h-4" />
             How ProofMint Works
           </div>
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
             Simple, Secure,
-            <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+            <span className="brand-gradient-multi bg-clip-text text-transparent">
               {" "}
               Sustainable
             </span>

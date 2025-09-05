@@ -29,34 +29,34 @@ const Description = () => {
   ];
 
   return (
-    <main className="max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-20 bg-gray-100">
+    <main className="max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-20 bg-gradient-to-br from-gray-50 via-brand-primary/5 to-brand-secondary/5">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mb-12 md:mb-20">
         {featureCards.map((card, index) => (
           <div
             key={index}
-            className="p-6 rounded-2xl bg-white shadow-lg hover:shadow-xl transition-shadow hover:-translate-y-1"
+            className="p-6 rounded-2xl bg-white/80 backdrop-blur-sm shadow-brand-primary hover:shadow-brand-secondary transition-all hover:-translate-y-1 border border-brand-primary/10"
           >
-            <span className="material-symbols-outlined text-green-600 text-4xl mb-4">{card.icon}</span>
-            <h3 className="text-xl font-semibold mb-2">{card.title}</h3>
+            <span className="material-symbols-outlined text-brand-primary text-4xl mb-4">{card.icon}</span>
+            <h3 className="text-xl font-semibold mb-2 text-gray-900">{card.title}</h3>
             <p className="text-gray-600">{card.description}</p>
           </div>
         ))}
       </div>
-      <div className="flex flex-col md:flex-row items-center justify-between gap-8 bg-gradient-to-r from-green-50 to-blue-50 p-6 md:p-12 rounded-3xl">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-8 brand-gradient-multi p-6 md:p-12 rounded-3xl shadow-brand-primary">
         <div className="w-full md:w-1/2">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6">Revolutionizing Electronics on 0G Chain</h2>
-          <p className="text-lg mb-6 md:mb-8 text-gray-600">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-white">Revolutionizing Electronics on 0G Chain</h2>
+          <p className="text-lg mb-6 md:mb-8 text-white/90">
             Our 0G-powered platform, built for the 0G WaveHack Wave 2, ensures secure transactions, verifiable NFT
-            ownership via ProofMint, and responsible recycling tracking with 0G’s AI-ready infrastructure.
+            ownership via ProofMint, and responsible recycling tracking with 0G's AI-ready infrastructure.
           </p>
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
             <Link href="/marketplace">
-              <button className="px-6 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 hover:scale-105 transition-all">
+              <button className="px-6 py-3 bg-white text-brand-primary rounded-full hover:bg-white/90 hover:scale-105 transition-all font-semibold shadow-lg">
                 Shop Now
               </button>
             </Link>
             <Link href="/about">
-              <button className="px-6 py-3 border-2 border-green-600 text-green-600 rounded-full hover:bg-green-50 hover:scale-105 transition-all">
+              <button className="px-6 py-3 border-2 border-white text-white rounded-full hover:bg-white/10 hover:scale-105 transition-all font-semibold">
                 Learn More
               </button>
             </Link>

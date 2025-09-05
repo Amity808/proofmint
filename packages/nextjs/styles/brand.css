@@ -1,0 +1,200 @@
+/* ProofMint Brand Color System */
+
+:root {
+  /* Primary Brand Colors */
+  --brand-primary: #22c55e;        /* Emerald-500 - Sustainability, trust */
+  --brand-primary-dark: #16a34a;   /* Emerald-600 - Hover states */
+  --brand-primary-light: #34d399;  /* Emerald-400 - Light accents */
+  
+  /* Secondary Brand Colors */
+  --brand-secondary: #3b82f6;      /* Blue-500 - Technology, reliability */
+  --brand-secondary-dark: #2563eb; /* Blue-600 - Hover states */
+  --brand-secondary-light: #60a5fa; /* Blue-400 - Light accents */
+  
+  /* Accent Colors */
+  --brand-accent: #8b5cf6;         /* Violet-500 - Innovation, premium */
+  --brand-accent-dark: #7c3aed;    /* Violet-600 - Hover states */
+  --brand-accent-light: #a78bfa;   /* Violet-400 - Light accents */
+  
+  /* Status Colors */
+  --status-success: #10b981;       /* Emerald-600 - Verified, active */
+  --status-warning: #f59e0b;       /* Amber-500 - Pending, misplaced */
+  --status-error: #ef4444;         /* Red-500 - Stolen, critical */
+  --status-neutral: #6b7280;       /* Gray-500 - Recycled, inactive */
+  
+  /* Supporting Colors */
+  --brand-success: #10b981;        /* Emerald-600 */
+  --brand-warning: #f59e0b;        /* Amber-500 */
+  --brand-error: #ef4444;          /* Red-500 */
+  --brand-info: #3b82f6;           /* Blue-500 */
+  
+  /* Background Colors */
+  --bg-primary: #ffffff;           /* White */
+  --bg-secondary: #f8fafc;         /* Slate-50 */
+  --bg-tertiary: #f1f5f9;          /* Slate-100 */
+  --bg-success: #ecfdf5;           /* Emerald-50 */
+  --bg-warning: #fffbeb;           /* Amber-50 */
+  --bg-error: #fef2f2;             /* Red-50 */
+  --bg-info: #eff6ff;              /* Blue-50 */
+  
+  /* Text Colors */
+  --text-primary: #0f172a;         /* Slate-900 */
+  --text-secondary: #475569;       /* Slate-600 */
+  --text-tertiary: #64748b;        /* Slate-500 */
+  --text-muted: #94a3b8;           /* Slate-400 */
+  
+  /* Border Colors */
+  --border-primary: #e2e8f0;       /* Slate-200 */
+  --border-secondary: #cbd5e1;     /* Slate-300 */
+  --border-success: #bbf7d0;       /* Emerald-200 */
+  --border-warning: #fed7aa;       /* Amber-200 */
+  --border-error: #fecaca;         /* Red-200 */
+  --border-info: #bfdbfe;          /* Blue-200 */
+  
+  /* Shadow Colors */
+  --shadow-primary: rgba(34, 197, 94, 0.1);    /* Green shadow */
+  --shadow-secondary: rgba(59, 130, 246, 0.1); /* Blue shadow */
+  --shadow-accent: rgba(139, 92, 246, 0.1);    /* Purple shadow */
+  --shadow-neutral: rgba(0, 0, 0, 0.1);        /* Neutral shadow */
+}
+
+/* Dark Mode Variables */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #0f172a;         /* Slate-900 */
+    --bg-secondary: #1e293b;       /* Slate-800 */
+    --bg-tertiary: #334155;        /* Slate-700 */
+    
+    --text-primary: #f8fafc;       /* Slate-50 */
+    --text-secondary: #cbd5e1;     /* Slate-300 */
+    --text-tertiary: #94a3b8;      /* Slate-400 */
+    --text-muted: #64748b;         /* Slate-500 */
+    
+    --border-primary: #334155;     /* Slate-700 */
+    --border-secondary: #475569;   /* Slate-600 */
+  }
+}
+
+/* Brand Utility Classes */
+.brand-primary {
+  color: var(--brand-primary);
+}
+
+.brand-secondary {
+  color: var(--brand-secondary);
+}
+
+.brand-accent {
+  color: var(--brand-accent);
+}
+
+.bg-brand-primary {
+  background-color: var(--brand-primary);
+}
+
+.bg-brand-secondary {
+  background-color: var(--brand-secondary);
+}
+
+.bg-brand-accent {
+  background-color: var(--brand-accent);
+}
+
+.border-brand-primary {
+  border-color: var(--brand-primary);
+}
+
+.border-brand-secondary {
+  border-color: var(--brand-secondary);
+}
+
+.border-brand-accent {
+  border-color: var(--brand-accent);
+}
+
+/* Status Utility Classes */
+.status-success {
+  color: var(--status-success);
+  background-color: var(--bg-success);
+  border-color: var(--border-success);
+}
+
+.status-warning {
+  color: var(--status-warning);
+  background-color: var(--bg-warning);
+  border-color: var(--border-warning);
+}
+
+.status-error {
+  color: var(--status-error);
+  background-color: var(--bg-error);
+  border-color: var(--border-error);
+}
+
+.status-neutral {
+  color: var(--status-neutral);
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-primary);
+}
+
+/* Brand Gradients */
+.brand-gradient-primary {
+  background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
+}
+
+.brand-gradient-secondary {
+  background: linear-gradient(135deg, var(--brand-secondary) 0%, var(--brand-secondary-dark) 100%);
+}
+
+.brand-gradient-accent {
+  background: linear-gradient(135deg, var(--brand-accent) 0%, var(--brand-accent-dark) 100%);
+}
+
+.brand-gradient-multi {
+  background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 50%, var(--brand-accent) 100%);
+}
+
+/* Brand Shadows */
+.shadow-brand-primary {
+  box-shadow: 0 4px 14px 0 var(--shadow-primary);
+}
+
+.shadow-brand-secondary {
+  box-shadow: 0 4px 14px 0 var(--shadow-secondary);
+}
+
+.shadow-brand-accent {
+  box-shadow: 0 4px 14px 0 var(--shadow-accent);
+}
+
+/* Hover Effects */
+.hover-brand-primary:hover {
+  background-color: var(--brand-primary-dark);
+  color: white;
+}
+
+.hover-brand-secondary:hover {
+  background-color: var(--brand-secondary-dark);
+  color: white;
+}
+
+.hover-brand-accent:hover {
+  background-color: var(--brand-accent-dark);
+  color: white;
+}
+
+/* Focus States */
+.focus-brand-primary:focus {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+}
+
+.focus-brand-secondary:focus {
+  outline: 2px solid var(--brand-secondary);
+  outline-offset: 2px;
+}
+
+.focus-brand-accent:focus {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+}

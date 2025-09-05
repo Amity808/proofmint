@@ -2,9 +2,13 @@ import { useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaBars, FaTimes } from "react-icons/fa";
+import ProfileDropdown from "~~/components/common/ProfileDropdown";
+import NotificationBell from "~~/components/common/NotificationBell";
+import { useAccount } from "wagmi";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { address, isConnected } = useAccount();
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
@@ -21,13 +25,13 @@ export default function Header() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2" aria-label="ProofMint Home">
-            <motion.span
+            {/* <motion.span
               className="material-symbols-outlined text-green-600 text-2xl"
               whileHover={{ scale: 1.1 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
               receipt_long
-            </motion.span>
+            </motion.span> */}
             <h1 className="text-xl font-bold text-gray-900">ProofMint</h1>
           </Link>
 
@@ -35,13 +39,15 @@ export default function Header() {
           <div className="hidden md:flex items-center space-x-8">
             {[
               { to: "/marketplace", label: "Marketplace" },
+              { to: "/discover", label: "Discover" },
+              { to: "/social", label: "Social" },
               { to: "/nft-receipts", label: "NFT Receipts" },
               { to: "/recycling", label: "Recycling" },
               { to: "/track", label: "Track Items" },
               { to: "/dashboard", label: "Dashboard" }, // Role-based dashboard link
             ].map(item => (
               <motion.div key={item.to} whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 300 }}>
-                <Link href={item.to} className="text-gray-700 hover:text-green-600 font-medium transition-colors">
+                <Link href={item.to} className="text-gray-700 hover:text-brand-primary font-medium transition-colors">
                   {item.label}
                 </Link>
               </motion.div>
@@ -50,10 +56,24 @@ export default function Header() {
 
           {/* CTA and Mobile Menu Toggle */}
           <div className="flex items-center space-x-4">
-            {/* Fixed the nested button issue and linked to dashboard */}
+            {/* User Actions - Only show when connected */}
+            {isConnected ? (
+              <>
+                <NotificationBell />
+                <ProfileDropdown
+                  userAddress={address}
+                  stats={{
+                    receipts: 12,
+                    recycled: 5,
+                    followers: 23,
+                    following: 18
+                  }}
+                />
+              </>
+            ) : (
             <Link href="/dashboard">
               <motion.button
-                className="px-6 py-2 bg-green-600 text-white rounded-full text-base font-semibold hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
+                  className="px-6 py-2 brand-gradient-primary text-white rounded-full text-base font-semibold hover-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 transition-colors shadow-brand-primary"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Get started with ProofMint"
@@ -61,6 +81,8 @@ export default function Header() {
                 Get Started
               </motion.button>
             </Link>
+            )}
+
             <button
               className="md:hidden text-gray-700"
               onClick={toggleMobileMenu}
@@ -83,6 +105,8 @@ export default function Header() {
             >
               {[
                 { to: "/marketplace", label: "Marketplace" },
+                { to: "/discover", label: "Discover" },
+                { to: "/social", label: "Social" },
                 { to: "/nft-receipts", label: "NFT Receipts" },
                 { to: "/recycling", label: "Recycling" },
                 { to: "/track", label: "Track Items" },
@@ -91,7 +115,7 @@ export default function Header() {
                 <Link
                   key={item.to}
                   href={item.to}
-                  className="text-gray-700 hover:text-green-600 font-medium"
+                  className="text-gray-700 hover:text-brand-primary font-medium"
                   onClick={toggleMobileMenu} // Close menu on link click
                 >
                   {item.label}
