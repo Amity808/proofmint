@@ -3,11 +3,15 @@ pragma solidity ^0.8.30;
 
 // Importing OpenZeppelin's Ownable for access control, allowing only the contract owner to perform admin tasks.
 import "@openzeppelin/contracts/access/Ownable.sol";
+import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import {ERC721Enumerable} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import {ERC721URIStorage} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+
 
 // ProofMint contract enables decentralized tracking of gadget ownership and lifecycle (active, stolen, misplaced, recycled).
 // It uses IPFS for immutable receipt metadata storage and enforces role-based access for merchants, buyers, and recyclers.
 // This contract prioritizes security, transparency, and extensibility for supply chain use cases.
-contract ProofMint is Ownable {
+contract ProofMint is Ownable,  ERC721, ERC721Enumerable, ERC721URIStorage {
 
     // Enum defining gadget lifecycle states for clear status tracking.
     enum GadgetStatus {
@@ -87,7 +91,7 @@ contract ProofMint is Ownable {
     error InvalidDuration();      // Thrown when subscription duration is invalid
 
     // Constructor initializing the contract with the deployer as the owner.
-    constructor() Ownable(msg.sender) {}
+    constructor() Ownable(msg.sender) ERC721("Proofmint", "PFMT") {}
 
     // Modifier ensuring only verified merchants can call specific functions.
     modifier onlyVerifiedMerchant() {
@@ -185,9 +189,11 @@ contract ProofMint is Ownable {
         string calldata ipfsHash
     ) external onlyVerifiedMerchant returns (uint256 id) {
         // Check subscription validity and limits
-        _checkSubscriptionAndLimits(msg.sender);
+        // _checkSubscriptionAndLimits(msg.sender);
         
         id = nextReceiptId++; // Increment receipt ID counter
+        
+
         
         // Create new receipt with initial Active status
         receipts[id] = Receipt({
@@ -206,6 +212,8 @@ contract ProofMint is Ownable {
 
         // Increment receipt counter for the merchant
         subscriptions[msg.sender].receiptsIssued++;
+        _safeMint(buyer, id);
+        _setTokenURI(id, ipfsHash);
 
         // Emit event for transparency
         emit ReceiptIssued(id, msg.sender, buyer, ipfsHash);
@@ -357,6 +365,40 @@ contract ProofMint is Ownable {
         );
     }
 
+
+     function _update(address to, uint256 tokenId, address auth)
+        internal
+        override(ERC721, ERC721Enumerable)
+        returns (address)
+    {
+        return super._update(to, tokenId, auth);
+    }
+
+    function _increaseBalance(address account, uint128 value)
+        internal
+        override(ERC721, ERC721Enumerable)
+    {
+        super._increaseBalance(account, value);
+    }
+
+    function tokenURI(uint256 tokenId)
+        public
+        view
+        override(ERC721, ERC721URIStorage)
+        returns (string memory)
+    {
+        return super.tokenURI(tokenId);
+    }
+
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        override(ERC721, ERC721Enumerable, ERC721URIStorage)
+        returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
+    }
+
     // Public view function to get subscription pricing.
     function getSubscriptionPricing() external pure returns (
         uint256 basicMonthly,
@@ -411,5 +453,9 @@ contract ProofMint is Ownable {
         }
         
         return true;
+    }
+
+    function getnextReceiptId () external view returns (uint256) {
+        return nextReceiptId;
     }
 }
