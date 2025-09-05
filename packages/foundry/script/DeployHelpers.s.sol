@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.30;
 
 import { Script, console } from "forge-std/Script.sol";
 import { Vm } from "forge-std/Vm.sol";
@@ -69,13 +69,7 @@ contract ScaffoldETHDeploy is Script {
             vm.serializeString(jsonWrite, vm.toString(deployments[i].addr), deployments[i].name);
         }
 
-        string memory chainName;
-
-        try vm.getChain(block.chainid) returns (Vm.Chain memory chain) {
-            chainName = chain.name;
-        } catch {
-            chainName = findChainName();
-        }
+        string memory chainName = findChainName();
         jsonWrite = vm.serializeString(jsonWrite, "networkName", chainName);
         vm.writeJson(jsonWrite, path);
     }
