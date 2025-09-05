@@ -53,9 +53,9 @@ contract ProofMint is Ownable {
     mapping(address => Subscription) public subscriptions;   // Maps merchant to their subscription details
 
     // Subscription pricing in wei (ETH)
-    uint256 public constant BASIC_MONTHLY_PRICE = 0.01 ether;     // 0.01 ETH per month
-    uint256 public constant PREMIUM_MONTHLY_PRICE = 0.05 ether;   // 0.05 ETH per month  
-    uint256 public constant ENTERPRISE_MONTHLY_PRICE = 0.1 ether; // 0.1 ETH per month
+    uint256 public constant BASIC_MONTHLY_PRICE = 0.001 ether;     // 0.01 ETH per month
+    uint256 public constant PREMIUM_MONTHLY_PRICE = 0.005 ether;   // 0.005 ETH per month  
+    uint256 public constant ENTERPRISE_MONTHLY_PRICE = 0.01 ether; // 0.01 ETH per month
     
     // Subscription limits
     uint256 public constant BASIC_RECEIPT_LIMIT = 100;
