@@ -219,31 +219,267 @@ import { TransactionModal } from "ethereum-identity-kit";
 
 ## 🎯 2-Day Development Plan
 
-### Day 1: Core Infrastructure & MVP
+### Day 1: Core Infrastructure & MVP ✅ COMPLETED
 
 **Morning (4-5 hours)**
 
 - [x] Setup & Dependencies
-- [ ] Marketplace Page with product listings
-- [ ] NFT Minting System for purchases
+- [x] Marketplace Page with product listings
+- [x] User Dashboard for owned NFTs
+- [x] Core Pages Structure (receipts, recycling, track)
+- [x] Brand color system implementation
+- [x] EFP UI components (ProfileCard, FollowSystem, etc.)
 
 **Afternoon (4-5 hours)**
 
-- [ ] User Dashboard for owned NFTs
-- [ ] Core Pages Structure (receipts, recycling, track)
+- [x] Responsive design with Tailwind CSS
+- [x] Component-based architecture
+- [x] Social features UI (Follow, Trust, Discovery)
+- [x] Profile management components
+- [x] Notification system UI
 
-### Day 2: Integration & Polish
+### Day 2: EFP + Smart Contract Integration 🚀 FINAL DAY
 
-**Morning (4-5 hours)**
+## **Phase 1: EFP Setup & Configuration (1-2 hours)**
 
-- [ ] Smart Contract Integration
-- [ ] Payment & Transaction Flow
+### **1.1 Install Missing Dependencies**
 
-**Afternoon (4-5 hours)**
+```bash
+yarn add @ethereum-identity-kit/core @ethereum-identity-kit/react
+```
 
-- [ ] Advanced Features (ENS, QR codes)
-- [ ] Testing & Polish
-- [ ] Deployment & Demo Prep
+### **1.2 EFP Provider Setup**
+
+**File: `app/layout.tsx`**
+
+- Add EFP providers alongside existing QueryClient and TransactionProvider
+- Configure EFP settings for ProofMint
+- Set up ENS resolution and social features
+
+### **1.3 EFP Configuration**
+
+**File: `services/efp/config.ts`** (NEW)
+
+- Configure EFP settings
+- Set up social features
+- Configure profile management
+
+---
+
+## **Phase 2: Smart Contract Integration (2-3 hours)**
+
+### **2.1 Contract ABI & Address Setup**
+
+**File: `contracts/ProofMint.json`** (NEW)
+
+- Extract ABI from deployed contract
+- Configure contract addresses for different networks
+
+### **2.2 Custom Hooks Creation**
+
+**File: `hooks/useProofMint.ts`** (NEW)
+
+- `useIssueReceipt()` - For merchants to mint receipts
+- `useFlagGadget()` - For users to update gadget status
+- `useRecycleGadget()` - For recyclers to mark items as recycled
+- `useGetReceipts()` - Fetch user's receipts
+- `useGetMerchantReceipts()` - Fetch merchant's issued receipts
+
+### **2.3 Role Management Hooks**
+
+**File: `hooks/useRoles.ts`** (NEW)
+
+- `useIsMerchant()` - Check if address is verified merchant
+- `useIsRecycler()` - Check if address is verified recycler
+- `useAddMerchant()` - Admin function to add merchants
+- `useAddRecycler()` - Admin function to add recyclers
+
+---
+
+## **Phase 3: EFP Profile Integration (2-3 hours)**
+
+### **3.1 Profile Data Integration**
+
+**File: `hooks/useEFPProfile.ts`** (NEW)
+
+- Replace dummy profile data with EFP profile
+- ENS name resolution
+- Avatar integration
+- Social connections
+
+### **3.2 Update Profile Components**
+
+**Files: `components/profile/ProfileCard.tsx`, `components/common/ProfileDropdown.tsx`**
+
+- Integrate real EFP profile data
+- Add ENS name display
+- Connect to real social features
+
+### **3.3 Social Features Integration**
+
+**Files: `components/social/*`**
+
+- Connect follow/unfollow to EFP
+- Real trust indicators
+- Mutual connections with EFP data
+
+---
+
+## **Phase 4: Dashboard Integration (2-3 hours)**
+
+### **4.1 Receipt Management**
+
+**File: `app/dashboard/page.tsx`**
+
+- Replace dummy data with real contract data
+- Connect to `useGetReceipts()` hook
+- Real-time status updates
+
+### **4.2 Merchant Dashboard**
+
+**File: `app/merchant/page.tsx`**
+
+- Connect to `useGetMerchantReceipts()` hook
+- Real receipt minting functionality
+- Merchant verification status
+
+### **4.3 Recycler Dashboard**
+
+**File: `app/recycler/page.tsx`**
+
+- Connect to recycling functionality
+- Real recycler verification
+- Environmental impact tracking
+
+### **4.4 Admin Dashboard**
+
+**File: `app/admin/page.tsx`**
+
+- Connect to role management hooks
+- Real merchant/recycler management
+- System statistics from contract
+
+---
+
+## **Phase 5: Core Functionality (3-4 hours)**
+
+### **5.1 Receipt Minting**
+
+**File: `components/merchant/ReceiptMinter.tsx`** (NEW)
+
+- Form for creating new receipts
+- IPFS metadata upload
+- Contract interaction for minting
+
+### **5.2 Status Updates**
+
+**File: `components/common/StatusUpdater.tsx`** (NEW)
+
+- Allow users to flag gadgets as stolen/misplaced
+- Real-time status updates
+- Transaction confirmation
+
+### **5.3 QR Code Generation**
+
+**File: `components/common/QRGenerator.tsx`** (NEW)
+
+- Generate QR codes for receipts
+- Link to receipt verification page
+- Download functionality
+
+---
+
+## **Phase 6: EFP Social Features (2-3 hours)**
+
+### **6.1 Follow System**
+
+**Files: `components/social/FollowSystem.tsx`, `app/social/page.tsx`**
+
+- Real follow/unfollow functionality
+- EFP-based social connections
+- Trust indicators with real data
+
+### **6.2 Discovery Engine**
+
+**File: `app/discover/page.tsx`**
+
+- EFP-based user discovery
+- Real social connections
+- Trust scoring integration
+
+### **6.3 Notifications**
+
+**File: `components/common/NotificationBell.tsx`**
+
+- Real-time notifications from contract events
+- Social activity notifications
+- EFP-based notification system
+
+---
+
+## **Phase 7: Testing & Polish (1-2 hours)**
+
+### **7.1 Integration Testing**
+
+- Test all contract interactions
+- Verify EFP features work correctly
+- Cross-browser compatibility
+
+### **7.2 Performance Optimization**
+
+- Optimize contract calls
+- Implement proper loading states
+- Error handling improvements
+
+### **7.3 Final UI Polish**
+
+- Loading states for all async operations
+- Error boundaries
+- Success/error notifications
+
+---
+
+## **🎯 PRIORITY ORDER FOR IMPLEMENTATION**
+
+### **HIGH PRIORITY (Must Complete)**
+
+1. **Smart Contract Hooks** - Core functionality
+2. **Dashboard Integration** - Replace dummy data
+3. **Receipt Minting** - Core feature
+4. **Status Updates** - Core feature
+
+### **MEDIUM PRIORITY (Should Complete)**
+
+5. **EFP Profile Integration** - Enhanced UX
+6. **Role Management** - Admin features
+7. **QR Code Generation** - User convenience
+
+### **LOW PRIORITY (Nice to Have)**
+
+8. **Advanced Social Features** - EFP social
+9. **Real-time Notifications** - Enhanced UX
+10. **Performance Optimizations** - Polish
+
+---
+
+## **⏰ TIME ESTIMATES**
+
+- **Phase 1-2 (Setup)**: 3-5 hours
+- **Phase 3-4 (Core Integration)**: 5-7 hours
+- **Phase 5-6 (Advanced Features)**: 5-7 hours
+- **Phase 7 (Testing/Polish)**: 1-2 hours
+
+**Total Estimated Time: 14-21 hours**
+
+---
+
+## **🚀 RECOMMENDED IMPLEMENTATION STRATEGY**
+
+1. **Start with Smart Contract Hooks** - Foundation for everything
+2. **Update Dashboards** - Replace dummy data with real data
+3. **Add Core Functionality** - Receipt minting and status updates
+4. **Integrate EFP** - Enhanced profile and social features
+5. **Test & Polish** - Ensure everything works smoothly
 
 ## 🔧 Available Scripts
 

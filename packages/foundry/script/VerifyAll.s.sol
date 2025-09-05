@@ -3,7 +3,7 @@ pragma solidity ^0.8.19;
 
 import "forge-std/Script.sol";
 import "forge-std/Vm.sol";
-import "solidity-bytes-utils/BytesLib.sol";
+// Removed solidity-bytes-utils dependency - using native Solidity instead
 
 /**
  * @dev Temp Vm implementation
@@ -52,8 +52,10 @@ contract VerifyAll is Script {
             abi.decode(vm.parseJson(content, searchStr(currTransactionIdx, "transaction.input")), (bytes));
         bytes memory compiledBytecode =
             abi.decode(vm.parseJson(_getCompiledBytecode(contractName), ".bytecode.object"), (bytes));
-        bytes memory constructorArgs =
-            BytesLib.slice(deployedBytecode, compiledBytecode.length, deployedBytecode.length - compiledBytecode.length);
+        bytes memory constructorArgs = new bytes(deployedBytecode.length - compiledBytecode.length);
+        for (uint256 i = 0; i < constructorArgs.length; i++) {
+            constructorArgs[i] = deployedBytecode[compiledBytecode.length + i];
+        }
 
         string[] memory inputs = new string[](9);
         inputs[0] = "forge";
