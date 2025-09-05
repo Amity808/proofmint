@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {ERC721Enumerable} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import {ERC721URIStorage} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 
 // ProofMint contract enables decentralized tracking of gadget ownership and lifecycle (active, stolen, misplaced, recycled).
@@ -56,10 +57,18 @@ contract ProofMint is Ownable,  ERC721, ERC721Enumerable, ERC721URIStorage {
     mapping(address => uint256[]) public buyerReceipts;      // Maps buyer to their purchased receipt IDs
     mapping(address => Subscription) public subscriptions;   // Maps merchant to their subscription details
 
-    // Subscription pricing in wei (ETH)
-    uint256 public constant BASIC_MONTHLY_PRICE = 0.001 ether;     // 0.01 ETH per month
-    uint256 public constant PREMIUM_MONTHLY_PRICE = 0.005 ether;   // 0.005 ETH per month  
-    uint256 public constant ENTERPRISE_MONTHLY_PRICE = 0.01 ether; // 0.01 ETH per month
+    // USDC token address (Base Sepolia testnet)
+    IERC20 public constant USDC = IERC20(0x036CbD53842c5426634e7929541eC2318f3dCF7e);
+    
+    // Subscription pricing in USDC (6 decimals)
+    uint256 public constant BASIC_MONTHLY_PRICE = 10 * 10**6;      // $10 USDC
+    uint256 public constant PREMIUM_MONTHLY_PRICE = 50 * 10**6;    // $50 USDC  
+    uint256 public constant ENTERPRISE_MONTHLY_PRICE = 100 * 10**6; // $100 USDC
+    
+    // ETH pricing (for backward compatibility)
+    uint256 public constant BASIC_MONTHLY_PRICE_ETH = 0.001 ether;
+    uint256 public constant PREMIUM_MONTHLY_PRICE_ETH = 0.005 ether;  
+    uint256 public constant ENTERPRISE_MONTHLY_PRICE_ETH = 0.01 ether;
     
     // Subscription limits
     uint256 public constant BASIC_RECEIPT_LIMIT = 100;
@@ -78,17 +87,18 @@ contract ProofMint is Ownable,  ERC721, ERC721Enumerable, ERC721URIStorage {
     event GadgetRecycled(uint256 indexed receiptId, address indexed recycler); // Emitted when gadget is recycled
     event SubscriptionPurchased(address indexed merchant, SubscriptionTier tier, uint256 duration, uint256 expiresAt); // Emitted when subscription is purchased
     event SubscriptionExpired(address indexed merchant); // Emitted when subscription expires
+    event BasePaySubscriptionActivated(address indexed merchant, string paymentId, SubscriptionTier tier); // Emitted when Base Pay subscription is activated
 
     // Custom errors for gas-efficient revert messages.
-    error NotVerifiedMerchant();  // Thrown when a non-verified merchant attempts an action
-    error NotRecycler();          // Thrown when a non-verified recycler attempts an action
-    error OnlyAdmin();            // Thrown when a non-owner attempts admin actions
-    error OnlyBuyerCanFlag();     // Thrown when a non-buyer attempts to flag gadget status
-    error InvalidReceipt();       // Thrown when an invalid receipt ID is provided
-    error SubscriptionInactive(); // Thrown when merchant's subscription has expired
-    error ReceiptLimitExceeded(); // Thrown when merchant exceeds their tier's receipt limit
-    error InvalidPayment();       // Thrown when payment amount is incorrect
-    error InvalidDuration();      // Thrown when subscription duration is invalid
+    error NotVerifiedMerchant();
+    error NotRecycler();
+    error OnlyAdmin();
+    error OnlyBuyerCanFlag();
+    error InvalidReceipt();
+    error SubscriptionInactive();
+    error ReceiptLimitExceeded();
+    error InvalidPayment();
+    error InvalidDuration();
 
     // Constructor initializing the contract with the deployer as the owner.
     constructor() Ownable(msg.sender) ERC721("Proofmint", "PFMT") {}
@@ -169,11 +179,84 @@ contract ProofMint is Ownable,  ERC721, ERC721Enumerable, ERC721URIStorage {
         emit SubscriptionPurchased(msg.sender, sub.tier, durationMonths, sub.expiresAt);
     }
 
-    // Internal function to get subscription price based on tier.
+    // Internal function to get subscription price based on tier (ETH).
     function getSubscriptionPrice(SubscriptionTier tier) internal pure returns (uint256) {
+        if (tier == SubscriptionTier.Basic) return BASIC_MONTHLY_PRICE_ETH;
+        if (tier == SubscriptionTier.Premium) return PREMIUM_MONTHLY_PRICE_ETH;
+        return ENTERPRISE_MONTHLY_PRICE_ETH;
+    }
+
+    // Internal function to get subscription price in USDC based on tier.
+    function getSubscriptionPriceUSDC(SubscriptionTier tier) internal pure returns (uint256) {
         if (tier == SubscriptionTier.Basic) return BASIC_MONTHLY_PRICE;
         if (tier == SubscriptionTier.Premium) return PREMIUM_MONTHLY_PRICE;
         return ENTERPRISE_MONTHLY_PRICE;
+    }
+
+    // Function for merchants to purchase subscription with USDC (via Base Pay integration).
+    function purchaseSubscriptionUSDC(
+        SubscriptionTier tier, 
+        uint256 durationMonths,
+        string calldata basePayPaymentId
+    ) external {
+        if (!verifiedMerchants[msg.sender]) revert NotVerifiedMerchant();
+        if (durationMonths == 0 || durationMonths > 12) revert InvalidDuration();
+        
+        uint256 monthlyPrice = getSubscriptionPriceUSDC(tier);
+        uint256 totalPrice = monthlyPrice * durationMonths;
+        
+        // Apply yearly discount (10% off for 12 months)
+        if (durationMonths == 12) {
+            totalPrice = (totalPrice * 90) / 100;
+        }
+        
+        // Transfer USDC from merchant to contract
+        require(USDC.transferFrom(msg.sender, address(this), totalPrice), "USDC transfer failed");
+        
+        uint256 newExpirationTime = block.timestamp + (durationMonths * MONTHLY_DURATION);
+        
+        subscriptions[msg.sender] = Subscription({
+            tier: tier,
+            expiresAt: newExpirationTime,
+            receiptsIssued: 0,
+            lastResetTime: block.timestamp,
+            isActive: true
+        });
+        
+        emit SubscriptionPurchased(msg.sender, tier, durationMonths, newExpirationTime);
+        emit BasePaySubscriptionActivated(msg.sender, basePayPaymentId, tier);
+    }
+
+    // Function for backend to activate subscription after Base Pay confirmation.
+    function activateSubscriptionFromBasePay(
+        address merchant,
+        SubscriptionTier tier,
+        uint256 durationMonths,
+        string calldata paymentId
+    ) external onlyAdmin {
+        if (!verifiedMerchants[merchant]) revert NotVerifiedMerchant();
+        if (durationMonths == 0 || durationMonths > 12) revert InvalidDuration();
+        
+        uint256 newExpirationTime = block.timestamp + (durationMonths * MONTHLY_DURATION);
+        
+        // Extend existing subscription or create new one
+        Subscription storage sub = subscriptions[merchant];
+        if (sub.expiresAt > block.timestamp) {
+            // Extend existing subscription
+            sub.expiresAt += (durationMonths * MONTHLY_DURATION);
+        } else {
+            // Create or reactivate subscription
+            subscriptions[merchant] = Subscription({
+                tier: tier,
+                expiresAt: newExpirationTime,
+                receiptsIssued: 0,
+                lastResetTime: block.timestamp,
+                isActive: true
+            });
+        }
+        
+        emit SubscriptionPurchased(merchant, tier, durationMonths, sub.expiresAt);
+        emit BasePaySubscriptionActivated(merchant, paymentId, tier);
     }
 
     // Admin function to add a verified recycler, restricted to contract owner.
@@ -414,13 +497,20 @@ contract ProofMint is Ownable,  ERC721, ERC721Enumerable, ERC721URIStorage {
         );
     }
 
-    // Admin function to withdraw accumulated subscription payments.
+    // Admin function to withdraw accumulated ETH payments.
     function withdrawFunds() external onlyAdmin {
         uint256 balance = address(this).balance;
         require(balance > 0, "No funds to withdraw");
         
         (bool success, ) = payable(owner()).call{value: balance}("");
         require(success, "Withdrawal failed");
+    }
+
+    // Admin function to withdraw accumulated USDC payments.
+    function withdrawUSDC() external onlyAdmin {
+        uint256 balance = USDC.balanceOf(address(this));
+        require(balance > 0, "No USDC to withdraw");
+        require(USDC.transfer(owner(), balance), "USDC withdrawal failed");
     }
 
     // Admin function to pause/unpause a merchant's subscription (emergency).

@@ -37,7 +37,7 @@ const HowItWorks = () => {
       number: "02",
       title: "Receive NFT Receipt",
       description:
-        "Get an immutable NFT receipt stored on 0G Chain. Your purchase is permanently recorded with all product details.",
+        "Get an immutable NFT receipt stored on the blockchain. Your purchase is permanently recorded with all product details.",
       color: "from-green-500 to-emerald-500",
       bgColor: "bg-green-50",
       iconColor: "text-green-600",

@@ -5,26 +5,26 @@ const Description = () => {
   const featureCards = [
     {
       icon: "token",
-      title: "0G-Powered NFT Receipts",
+      title: "Blockchain-Powered NFT Receipts",
       description:
-        "Receive unique NFT receipts issued by ProofMint (0x045962833e855095DbE8B061d0e7E929a3f5C55c) on 0G Chain for ownership proof.",
+        "Receive unique NFT receipts issued by ProofMint (0x045962833e855095DbE8B061d0e7E929a3f5C55c) on the blockchain for ownership proof.",
     },
     {
       icon: "recycling",
-      title: "Track Recycling on 0G",
+      title: "Track Recycling on Blockchain",
       description:
-        "Monitor your electronics’ lifecycle with AI insights, stored securely via 0G Storage, supporting sustainable e-waste management.",
+        "Monitor your electronics' lifecycle with AI insights, stored securely on the blockchain, supporting sustainable e-waste management.",
     },
     {
       icon: "swap_horiz",
-      title: "Easy Transfers on 0G",
+      title: "Easy Blockchain Transfers",
       description:
-        "Transfer ownership seamlessly using 0G Chain’s fast transactions when reselling or gifting electronics.",
+        "Transfer ownership seamlessly using fast blockchain transactions when reselling or gifting electronics.",
     },
     {
       icon: "security",
-      title: "0G Secure Platform",
-      description: "Blockchain-powered security on 0G Chain ensures tamper-proof transactions for all your devices.",
+      title: "Secure Blockchain Platform",
+      description: "Blockchain-powered security ensures tamper-proof transactions for all your devices.",
     },
   ];
 
@@ -44,10 +44,10 @@ const Description = () => {
       </div>
       <div className="flex flex-col md:flex-row items-center justify-between gap-8 brand-gradient-multi p-6 md:p-12 rounded-3xl shadow-brand-primary">
         <div className="w-full md:w-1/2">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-white">Revolutionizing Electronics on 0G Chain</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-white">Revolutionizing Electronics on Blockchain</h2>
           <p className="text-lg mb-6 md:mb-8 text-white/90">
-            Our 0G-powered platform, built for the 0G WaveHack Wave 2, ensures secure transactions, verifiable NFT
-            ownership via ProofMint, and responsible recycling tracking with 0G's AI-ready infrastructure.
+            Our blockchain-powered platform ensures secure transactions, verifiable NFT
+            ownership via ProofMint, and responsible recycling tracking with AI-ready infrastructure.
           </p>
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
             <Link href="/marketplace">
@@ -65,7 +65,7 @@ const Description = () => {
         <div className="w-full md:w-1/2 relative mt-8 md:mt-0">
           <ImageWithGradient
             src="https://images.unsplash.com/photo-1654892968823-ea564870a96f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHw3fHxibG9ja2NoYWluJTIwY2VydGlmaWNhdGUlMjBkaWdpdGFsJTIwcmVjZWlwdCUyME5GVHxlbnwwfDB8fGJsdWV8MTc1NDM3Njc3OHww&ixlib=rb-4.1.0&q=85"
-            alt="0G-powered Digital NFT receipt blockchain certificate - Photo by 2H Media on Unsplash"
+            alt="Blockchain-powered Digital NFT receipt certificate - Photo by 2H Media on Unsplash"
             className="w-full"
             gradientOpacity="visible"
           />

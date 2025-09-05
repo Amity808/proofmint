@@ -76,7 +76,7 @@ const FAQ = () => {
     {
       question: "What is ProofMint and how does it work?",
       answer:
-        "ProofMint is a blockchain-based receipt management system built on 0G Network. When you purchase electronics from verified merchants, you receive an NFT receipt that serves as immutable proof of ownership, stored permanently on-chain.",
+        "ProofMint is a blockchain-based receipt management system. When you purchase electronics from verified merchants, you receive an NFT receipt that serves as immutable proof of ownership, stored permanently on-chain.",
     },
     {
       question: "How are NFT receipts different from regular receipts?",
@@ -94,14 +94,14 @@ const FAQ = () => {
         "When your electronics reach end-of-life, present your NFT receipt to authorized recyclers. You'll earn 10 PMT tokens per item recycled, promoting sustainable e-waste management while rewarding responsible disposal.",
     },
     {
-      question: "Is my data secure on 0G Network?",
+      question: "Is my data secure on the blockchain?",
       answer:
-        "0G Network provides enterprise-grade security with fast finality (1-2 seconds) and high throughput (2,500+ TPS). All data is decentralized and encrypted, with ProofMint smart contracts ensuring secure, transparent operations.",
+        "The blockchain provides enterprise-grade security with fast finality and high throughput. All data is decentralized and encrypted, with ProofMint smart contracts ensuring secure, transparent operations.",
     },
     {
       question: "Which wallets are compatible with ProofMint?",
       answer:
-        "ProofMint works with any wallet that supports 0G Network (Chain ID: 16601), including MetaMask, WalletConnect-compatible wallets, and other EVM-compatible wallets configured for the 0G testnet.",
+        "ProofMint works with any EVM-compatible wallet, including MetaMask, WalletConnect-compatible wallets, and other standard Ethereum wallets.",
     },
   ];
 

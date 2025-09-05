@@ -49,7 +49,7 @@ const HeroSection = () => {
               animate="visible"
             >
               <Zap className="w-4 h-4" />
-              Powered by 0G Network
+              Powered by Blockchain Technology
             </motion.div>
 
             <motion.h1
@@ -110,7 +110,7 @@ const HeroSection = () => {
                 </div>
                 <div className="text-left">
                   <p className="font-semibold text-gray-900 text-sm">Fast</p>
-                  <p className="text-xs text-gray-600">0G Network speed</p>
+                  <p className="text-xs text-gray-600">Lightning speed</p>
                 </div>
               </div>
             </motion.div>
@@ -154,7 +154,7 @@ const HeroSection = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6 }}
               >
-                <p className="text-sm text-gray-600 mb-2">Connected to 0G Testnet</p>
+                <p className="text-sm text-gray-600 mb-2">Connected to Blockchain Network</p>
                 <p className="text-xs text-gray-500 font-mono">Contract: 0x045962...5c55c</p>
               </motion.div>
             )}
@@ -172,7 +172,7 @@ const HeroSection = () => {
               <div className="absolute -inset-4 bg-gradient-to-r from-green-400/20 to-blue-400/20 rounded-2xl blur-xl"></div>
               <img
                 src={proofmint.src}
-                alt="ProofMint dashboard displaying 0G-powered NFT receipts and gadget lifecycle tracking"
+                alt="ProofMint dashboard displaying blockchain-powered NFT receipts and gadget lifecycle tracking"
                 className="relative w-full max-w-lg h-auto rounded-xl shadow-2xl shadow-black/10 border border-white/20"
                 loading="lazy"
               />

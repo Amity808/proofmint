@@ -21,8 +21,8 @@ const DashboardRouter: React.FC<DashboardRouterProps> = ({ forceRole }) => {
   const [loading, setLoading] = useState(true);
   const [networkError, setNetworkError] = useState<string | null>(null);
 
-  // 0G Testnet chain ID
-  const ZG_TESTNET_ID = 16601;
+  // Ethereum Mainnet chain ID
+  const ETHEREUM_MAINNET_ID = 1;
 
   // Validate address safely
   const accountAddress = address && isAddress(address) ? address : undefined;
@@ -34,8 +34,8 @@ const DashboardRouter: React.FC<DashboardRouterProps> = ({ forceRole }) => {
 
   
   useEffect(() => {
-    if (chainId && chainId !== ZG_TESTNET_ID) {
-      setNetworkError("This application only works on 0G Testnet. Please add 0G Testnet to your wallet.");
+    if (chainId && chainId !== ETHEREUM_MAINNET_ID) {
+      setNetworkError("This application works best on Ethereum Mainnet. Please switch to the correct network.");
     } else {
       setNetworkError(null);
     }
@@ -52,22 +52,14 @@ const DashboardRouter: React.FC<DashboardRouterProps> = ({ forceRole }) => {
     if (typeof window.ethereum !== 'undefined') {
       try {
         await window.ethereum.request({
-          method: 'wallet_addEthereumChain',
+          method: 'wallet_switchEthereumChain',
           params: [{
-            chainId: '0x40D9', // 16601 in hex
-            chainName: '0G Testnet',
-            nativeCurrency: {
-              name: '0G',
-              symbol: 'OG',
-              decimals: 18,
-            },
-            rpcUrls: ['https://evmrpc-testnet.0g.ai'],
-            blockExplorerUrls: ['https://chainscan-galileo.0g.ai'],
+            chainId: '0x1', // 1 in hex for Ethereum Mainnet
           }],
         });
       } catch (error) {
-        console.error('Failed to add 0G network:', error);
-        alert('Failed to add 0G network to wallet');
+        console.error('Failed to add network:', error);
+        alert('Failed to add network to wallet');
       }
     } else {
       alert('Please install a Web3 wallet like MetaMask');
@@ -86,7 +78,7 @@ const DashboardRouter: React.FC<DashboardRouterProps> = ({ forceRole }) => {
           </div>
           <h1 className="text-2xl font-bold mb-4 text-gray-900">Welcome to ProofMint</h1>
           <p className="mb-2 text-gray-600">Connect your wallet to access your personalized dashboard</p>
-          <p className="text-sm text-gray-500 mb-8">Network: 0G Testnet</p>
+          <p className="text-sm text-gray-500 mb-8">Network: Ethereum</p>
           <ConnectButton />
           <div className="mt-6 p-4 bg-blue-50 rounded-lg">
             <h3 className="font-semibold text-blue-900 mb-2">What happens next?</h3>
@@ -102,7 +94,7 @@ const DashboardRouter: React.FC<DashboardRouterProps> = ({ forceRole }) => {
     );
   }
 
-  // Show network error if not on 0G testnet
+  // Show network error if not on correct network
   if (networkError) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gradient-to-br from-orange-50 to-red-50">
@@ -118,17 +110,17 @@ const DashboardRouter: React.FC<DashboardRouterProps> = ({ forceRole }) => {
             <p className="text-sm text-gray-600 mb-4">
               Detected network: {chainId ? `Chain ID ${chainId}` : 'Unknown'}
               <br />
-              Required: 0G Testnet only
+              Required: Ethereum Mainnet
             </p>
             <div className="space-y-3">
               <button
                 onClick={handleAddNetworkToWallet}
                 className="w-full px-4 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-medium"
               >
-                Add 0G Testnet to Wallet
+                Switch to Ethereum Mainnet
               </button>
               <p className="text-xs text-gray-500">
-                After adding, manually switch to 0G Testnet in your wallet
+                After adding, manually switch to Ethereum Mainnet in your wallet
               </p>
             </div>
           </div>

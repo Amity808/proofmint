@@ -63,7 +63,7 @@ const MerchantDashboard: React.FC = () => {
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Merchant Dashboard</h1>
             <p className="text-gray-600 mt-1">
-              Issue receipts and manage your sales on 0G Network
+              Issue receipts and manage your sales on the blockchain
             </p>
           </div>
           <div className="text-right">
@@ -78,7 +78,7 @@ const MerchantDashboard: React.FC = () => {
           <UserRoleBadge address={accountAddress} showAllRoles />
           <div className="flex items-center space-x-2">
             <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-            <span className="text-sm text-gray-600">0G Testnet</span>
+            <span className="text-sm text-gray-600">Blockchain Network</span>
           </div>
         </div>
       </div>
@@ -179,12 +179,11 @@ const MerchantDashboard: React.FC = () => {
 
       {/* Network Info */}
       <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h4 className="font-semibold text-blue-900 mb-2">0G Network Information</h4>
+        <h4 className="font-semibold text-blue-900 mb-2">Network Information</h4>
         <div className="text-sm text-blue-800 space-y-1">
-          <p>• Network: 0G Testnet</p>
-          <p>• Chain ID: 16601</p>
-          <p>• All transactions are processed on the 0G blockchain</p>
-          <p>• NFT receipts are minted on 0G for fast, low-cost transactions</p>
+          <p>• All transactions are processed on the blockchain</p>
+          <p>• NFT receipts are minted for fast, low-cost transactions</p>
+          <p>• Secure and transparent operations</p>
         </div>
       </div>
     </div>

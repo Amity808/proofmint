@@ -116,11 +116,9 @@ const AdminDashboard: React.FC = () => {
         <h4 className="font-semibold text-blue-900 mb-2">System Information</h4>
         <div className="text-sm text-blue-800 space-y-1">
           <p>• Status: Demo Mode</p>
-          <p>• Network: 0G Testnet</p>
-          <p>• Chain ID: 16601</p>
-          <p>• RPC: evmrpc-testnet.0g.ai</p>
-          <p>• Explorer: <a href="https://chainscan-galileo.0g.ai" target="_blank" rel="noopener noreferrer" className="underline">chainscan-galileo.0g.ai</a></p>
-          <p>• Currency: OG</p>
+          <p>• Network: Ethereum</p>
+          <p>• Blockchain-powered platform</p>
+          <p>• Secure and transparent operations</p>
         </div>
       </div>
     </div>
