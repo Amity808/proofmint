@@ -2,8 +2,8 @@
 pragma solidity ^0.8.19;
 
 import "./DeployHelpers.s.sol";
-import { DeploySE2Nft } from "./DeploySE2Nft.s.sol";
-import { DeployProofMint } from "./DeployProofMint.s.sol";
+import {DeploySE2Nft} from "./DeploySE2Nft.s.sol";
+import {DeployProofMint} from "./DeployProofMint.s.sol";
 
 /**
  * @notice Main deployment script for all contracts
@@ -12,19 +12,18 @@ import { DeployProofMint } from "./DeployProofMint.s.sol";
  * Example: yarn deploy # runs this script(without`--file` flag)
  */
 contract DeployScript is ScaffoldETHDeploy {
-  function run() external {
-    // Deploys all your contracts sequentially
-    // Add new deployments here when needed
+    function run() external {
+        // Deploys all your contracts sequentially
+        // Add new deployments here when needed
 
-    
-    DeploySE2Nft deploySE2Nft = new DeploySE2Nft();
-    deploySE2Nft.run();
+        DeploySE2Nft deploySE2Nft = new DeploySE2Nft();
+        deploySE2Nft.run();
 
-    DeployProofMint deployProofMint = new DeployProofMint();
-    deployProofMint.run();
+        DeployProofMint deployProofMint = new DeployProofMint();
+        deployProofMint.run();
 
-    // Deploy another contract
-    // DeployMyContract myContract = new DeployMyContract();
-    // myContract.run();
-  }
+        // Deploy another contract
+        // DeployMyContract myContract = new DeployMyContract();
+        // myContract.run();
+    }
 }
