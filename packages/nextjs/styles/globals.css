@@ -101,7 +101,6 @@
   }
 }
 
-
 .btn {
   @apply shadow-md;
 }
@@ -117,4 +116,3 @@
 .link:hover {
   opacity: 80%;
 }
-  

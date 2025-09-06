@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useAccount, useChainId } from "wagmi";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ProofMintService, Receipt } from "../../services/ProofMintService";
-import { Receipt as ReceiptIcon, RefreshCw, AlertCircle, Smartphone, Gift, Recycle } from "lucide-react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { AlertCircle, Gift, Receipt as ReceiptIcon, Recycle, RefreshCw, Smartphone } from "lucide-react";
+import { useAccount, useChainId } from "wagmi";
 
 const BuyerDashboard: React.FC = () => {
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
-  
+
   const [receipts, setReceipts] = useState<Receipt[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [nfcKeyHash, setNfcKeyHash] = useState<string>("");
-  
+
   // NFC linking form
   const [showNfcForm, setShowNfcForm] = useState(false);
   const [nfcPubKey, setNfcPubKey] = useState("");
@@ -27,12 +27,12 @@ const BuyerDashboard: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      
+
       const [buyerReceipts, nfcHash] = await Promise.all([
         ProofMintService.getBuyerReceipts(address),
         ProofMintService.getNFCKeyHash(address),
       ]);
-      
+
       setReceipts(buyerReceipts);
       setNfcKeyHash(nfcHash);
     } catch (err) {
@@ -80,7 +80,8 @@ const BuyerDashboard: React.FC = () => {
       .reduce((sum, r) => sum + Number(ProofMintService.formatAmount(r.amount)), 0),
   };
 
-  const hasNfcLinked = nfcKeyHash && nfcKeyHash !== "0x0000000000000000000000000000000000000000000000000000000000000000";
+  const hasNfcLinked =
+    nfcKeyHash && nfcKeyHash !== "0x0000000000000000000000000000000000000000000000000000000000000000";
 
   if (!isConnected) {
     return (
@@ -149,19 +150,15 @@ const BuyerDashboard: React.FC = () => {
         {showNfcForm && !hasNfcLinked && (
           <div className="mb-6 bg-white rounded-lg p-6 shadow">
             <h2 className="text-lg font-semibold mb-4">Link NFC Device</h2>
-            <p className="text-gray-600 mb-4">
-              Link your NFC device to enable contactless receipt verification
-            </p>
+            <p className="text-gray-600 mb-4">Link your NFC device to enable contactless receipt verification</p>
             <form onSubmit={handleLinkNFC} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  NFC Public Key
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">NFC Public Key</label>
                 <input
                   type="text"
                   placeholder="Enter your NFC public key"
                   value={nfcPubKey}
-                  onChange={(e) => setNfcPubKey(e.target.value)}
+                  onChange={e => setNfcPubKey(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   required
                 />
@@ -307,16 +304,12 @@ const BuyerDashboard: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {receipts.map((receipt) => (
+                      {receipts.map(receipt => (
                         <tr key={receipt.id.toString()} className="border-t">
                           <td className="px-4 py-2 font-mono">#{receipt.id.toString()}</td>
-                          <td className="px-4 py-2 font-mono">
-                            {ProofMintService.formatAddress(receipt.merchant)}
-                          </td>
+                          <td className="px-4 py-2 font-mono">{ProofMintService.formatAddress(receipt.merchant)}</td>
                           <td className="px-4 py-2">{receipt.productType}</td>
-                          <td className="px-4 py-2">
-                            {ProofMintService.formatAmount(receipt.amount)} ETH
-                          </td>
+                          <td className="px-4 py-2">{ProofMintService.formatAmount(receipt.amount)} ETH</td>
                           <td className="px-4 py-2">
                             <div className="flex gap-1 flex-wrap">
                               {receipt.isPaid ? (
@@ -325,16 +318,16 @@ const BuyerDashboard: React.FC = () => {
                                 <span className="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">Unpaid</span>
                               )}
                               {receipt.isRecycled && (
-                                <span className="px-2 py-1 bg-emerald-100 text-emerald-800 text-xs rounded">Recycled</span>
+                                <span className="px-2 py-1 bg-emerald-100 text-emerald-800 text-xs rounded">
+                                  Recycled
+                                </span>
                               )}
                               {receipt.isPaid && !receipt.isRecycled && (
                                 <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">Recyclable</span>
                               )}
                             </div>
                           </td>
-                          <td className="px-4 py-2">
-                            {ProofMintService.formatDate(receipt.timestamp)}
-                          </td>
+                          <td className="px-4 py-2">{ProofMintService.formatDate(receipt.timestamp)}</td>
                           <td className="px-4 py-2">
                             {receipt.isRecycled ? (
                               <span className="text-green-600 font-medium">10 PMT</span>

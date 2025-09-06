@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { useAccount, useChainId } from "wagmi";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ProofMintService, Receipt, ReceiptStats } from "../../services/ProofMintService";
-import { Receipt as ReceiptIcon, DollarSign, Recycle, Plus, RefreshCw, AlertCircle, CheckCircle } from "lucide-react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { AlertCircle, CheckCircle, DollarSign, Plus, Receipt as ReceiptIcon, Recycle, RefreshCw } from "lucide-react";
+import { useAccount, useChainId } from "wagmi";
 
 const AdminDashboard: React.FC = () => {
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
-  
+
   const [stats, setStats] = useState<ReceiptStats>({ total: 0, paid: 0, unpaid: 0, recycled: 0 });
   const [receipts, setReceipts] = useState<Receipt[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Add merchant form
   const [showAddMerchant, setShowAddMerchant] = useState(false);
   const [newMerchantAddress, setNewMerchantAddress] = useState("");
   const [addingMerchant, setAddingMerchant] = useState(false);
-  
+
   // Add recycler form
   const [showAddRecycler, setShowAddRecycler] = useState(false);
   const [newRecyclerAddress, setNewRecyclerAddress] = useState("");
@@ -251,7 +251,7 @@ const AdminDashboard: React.FC = () => {
                       type="text"
                       placeholder="Merchant address (0x...)"
                       value={newMerchantAddress}
-                      onChange={(e) => setNewMerchantAddress(e.target.value)}
+                      onChange={e => setNewMerchantAddress(e.target.value)}
                       className="w-full px-3 py-2 border rounded mb-3"
                       required
                     />
@@ -295,7 +295,7 @@ const AdminDashboard: React.FC = () => {
                       type="text"
                       placeholder="Recycler address (0x...)"
                       value={newRecyclerAddress}
-                      onChange={(e) => setNewRecyclerAddress(e.target.value)}
+                      onChange={e => setNewRecyclerAddress(e.target.value)}
                       className="w-full px-3 py-2 border rounded mb-3"
                       required
                     />
@@ -340,18 +340,12 @@ const AdminDashboard: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {receipts.map((receipt) => (
+                      {receipts.map(receipt => (
                         <tr key={receipt.id.toString()} className="border-t">
                           <td className="px-4 py-2 font-mono">#{receipt.id.toString()}</td>
-                          <td className="px-4 py-2 font-mono">
-                            {ProofMintService.formatAddress(receipt.merchant)}
-                          </td>
-                          <td className="px-4 py-2 font-mono">
-                            {ProofMintService.formatAddress(receipt.buyer)}
-                          </td>
-                          <td className="px-4 py-2">
-                            {ProofMintService.formatAmount(receipt.amount)} ETH
-                          </td>
+                          <td className="px-4 py-2 font-mono">{ProofMintService.formatAddress(receipt.merchant)}</td>
+                          <td className="px-4 py-2 font-mono">{ProofMintService.formatAddress(receipt.buyer)}</td>
+                          <td className="px-4 py-2">{ProofMintService.formatAmount(receipt.amount)} ETH</td>
                           <td className="px-4 py-2">
                             <div className="flex gap-1">
                               {receipt.isPaid && (
@@ -361,13 +355,13 @@ const AdminDashboard: React.FC = () => {
                                 <span className="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">Unpaid</span>
                               )}
                               {receipt.isRecycled && (
-                                <span className="px-2 py-1 bg-emerald-100 text-emerald-800 text-xs rounded">Recycled</span>
+                                <span className="px-2 py-1 bg-emerald-100 text-emerald-800 text-xs rounded">
+                                  Recycled
+                                </span>
                               )}
                             </div>
                           </td>
-                          <td className="px-4 py-2">
-                            {ProofMintService.formatDate(receipt.timestamp)}
-                          </td>
+                          <td className="px-4 py-2">{ProofMintService.formatDate(receipt.timestamp)}</td>
                         </tr>
                       ))}
                     </tbody>

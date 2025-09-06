@@ -1,12 +1,7 @@
-import React from 'react'
-                
+import React from "react";
 
 const Receipt = () => {
-  return (
-    <div>
+  return <div></div>;
+};
 
-    </div>
-  )
-}
-
-export default Receipt
+export default Receipt;

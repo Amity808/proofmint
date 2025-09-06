@@ -44,10 +44,12 @@ const Description = () => {
       </div>
       <div className="flex flex-col md:flex-row items-center justify-between gap-8 brand-gradient-multi p-6 md:p-12 rounded-3xl shadow-brand-primary">
         <div className="w-full md:w-1/2">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-white">Revolutionizing Electronics on Blockchain</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-white">
+            Revolutionizing Electronics on Blockchain
+          </h2>
           <p className="text-lg mb-6 md:mb-8 text-white/90">
-            Our blockchain-powered platform ensures secure transactions, verifiable NFT
-            ownership via ProofMint, and responsible recycling tracking with AI-ready infrastructure.
+            Our blockchain-powered platform ensures secure transactions, verifiable NFT ownership via ProofMint, and
+            responsible recycling tracking with AI-ready infrastructure.
           </p>
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
             <Link href="/marketplace">

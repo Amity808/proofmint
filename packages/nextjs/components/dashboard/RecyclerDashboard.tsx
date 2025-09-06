@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useAccount, useChainId } from "wagmi";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ProofMintService, Receipt } from "../../services/ProofMintService";
-import { Recycle, RefreshCw, AlertCircle, Award, DollarSign, CheckCircle } from "lucide-react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { AlertCircle, Award, CheckCircle, DollarSign, Recycle, RefreshCw } from "lucide-react";
+import { useAccount, useChainId } from "wagmi";
 
 const RecyclerDashboard: React.FC = () => {
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
-  
+
   const [recycledReceipts, setRecycledReceipts] = useState<Receipt[]>([]);
   const [availableReceipts, setAvailableReceipts] = useState<Receipt[]>([]);
   const [loading, setLoading] = useState(true);
@@ -22,15 +22,15 @@ const RecyclerDashboard: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      
+
       const [recyclerReceipts, allReceipts] = await Promise.all([
         ProofMintService.getRecyclerReceipts(address),
         ProofMintService.getAllReceipts(0, 100),
       ]);
-      
+
       // Filter receipts that are paid but not recycled
       const available = allReceipts.filter(r => r.isPaid && !r.isRecycled);
-      
+
       setRecycledReceipts(recyclerReceipts);
       setAvailableReceipts(available);
     } catch (err) {
@@ -63,9 +63,7 @@ const RecyclerDashboard: React.FC = () => {
     totalRecycled: recycledReceipts.length,
     availableForRecycling: availableReceipts.length,
     totalRewards: recycledReceipts.length * 10, // 10 tokens per recycled item
-    totalValue: recycledReceipts.reduce((sum, r) => 
-      sum + Number(ProofMintService.formatAmount(r.amount)), 0
-    ),
+    totalValue: recycledReceipts.reduce((sum, r) => sum + Number(ProofMintService.formatAmount(r.amount)), 0),
   };
 
   if (!isConnected) {
@@ -205,22 +203,14 @@ const RecyclerDashboard: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {availableReceipts.map((receipt) => (
+                      {availableReceipts.map(receipt => (
                         <tr key={receipt.id.toString()} className="border-t">
                           <td className="px-4 py-2 font-mono">#{receipt.id.toString()}</td>
-                          <td className="px-4 py-2 font-mono">
-                            {ProofMintService.formatAddress(receipt.merchant)}
-                          </td>
-                          <td className="px-4 py-2 font-mono">
-                            {ProofMintService.formatAddress(receipt.buyer)}
-                          </td>
+                          <td className="px-4 py-2 font-mono">{ProofMintService.formatAddress(receipt.merchant)}</td>
+                          <td className="px-4 py-2 font-mono">{ProofMintService.formatAddress(receipt.buyer)}</td>
                           <td className="px-4 py-2">{receipt.productType}</td>
-                          <td className="px-4 py-2">
-                            {ProofMintService.formatAmount(receipt.amount)} ETH
-                          </td>
-                          <td className="px-4 py-2">
-                            {ProofMintService.formatDate(receipt.timestamp)}
-                          </td>
+                          <td className="px-4 py-2">{ProofMintService.formatAmount(receipt.amount)} ETH</td>
+                          <td className="px-4 py-2">{ProofMintService.formatDate(receipt.timestamp)}</td>
                           <td className="px-4 py-2">
                             <button
                               onClick={() => handleMarkRecycled(receipt.id)}
@@ -261,24 +251,15 @@ const RecyclerDashboard: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {recycledReceipts.map((receipt) => (
+                      {recycledReceipts.map(receipt => (
                         <tr key={receipt.id.toString()} className="border-t">
                           <td className="px-4 py-2 font-mono">#{receipt.id.toString()}</td>
-                          <td className="px-4 py-2 font-mono">
-                            {ProofMintService.formatAddress(receipt.merchant)}
-                          </td>
-                          <td className="px-4 py-2 font-mono">
-                            {ProofMintService.formatAddress(receipt.buyer)}
-                          </td>
+                          <td className="px-4 py-2 font-mono">{ProofMintService.formatAddress(receipt.merchant)}</td>
+                          <td className="px-4 py-2 font-mono">{ProofMintService.formatAddress(receipt.buyer)}</td>
                           <td className="px-4 py-2">{receipt.productType}</td>
+                          <td className="px-4 py-2">{ProofMintService.formatAmount(receipt.amount)} ETH</td>
                           <td className="px-4 py-2">
-                            {ProofMintService.formatAmount(receipt.amount)} ETH
-                          </td>
-                          <td className="px-4 py-2">
-                            {receipt.recycledAt > 0n ? 
-                              ProofMintService.formatDate(receipt.recycledAt) : 
-                              "N/A"
-                            }
+                            {receipt.recycledAt > 0n ? ProofMintService.formatDate(receipt.recycledAt) : "N/A"}
                           </td>
                           <td className="px-4 py-2">
                             <span className="text-green-600 font-medium">10 PMT</span>

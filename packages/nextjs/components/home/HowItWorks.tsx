@@ -80,10 +80,7 @@ const HowItWorks = () => {
           </div>
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
             Simple, Secure,
-            <span className="brand-gradient-multi bg-clip-text text-transparent">
-              {" "}
-              Sustainable
-            </span>
+            <span className="brand-gradient-multi bg-clip-text text-transparent"> Sustainable</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Experience the future of electronics shopping with blockchain-verified receipts and sustainable recycling
