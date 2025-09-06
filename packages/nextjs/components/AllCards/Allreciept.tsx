@@ -57,8 +57,8 @@ const Allreciept = () => {
           type="text"
           placeholder="Search receipts..."
           value={searchQuery}
-          onChange={e => handleSearch(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          onChange={(e) => handleSearch(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black bg-white"
         />
       </div>
 
@@ -67,8 +67,8 @@ const Allreciept = () => {
           <ReceiptCard
             key={key}
             id={value}
-            onViewDetails={id => console.log("View receipt:", id)}
-            onGenerateQR={id => console.log("Generate QR:", id)}
+            onViewDetails={(id) => console.log("View receipt:", id)}
+            onGenerateQR={(id) => console.log("Generate QR:", id)}
             onUpdateStatus={(id, status) => console.log("Update status:", id, status)}
           />
         ))}

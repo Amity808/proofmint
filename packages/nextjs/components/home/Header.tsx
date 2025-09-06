@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
@@ -86,14 +87,14 @@ export default function Header() {
 
   const navigationItems = [
     {
-      to: "/marketplace",
-      label: "Marketplace",
+      to: "/merchant",
+      label: "Merchant",
       icon: FaStore,
       description: "Browse & buy electronics",
     },
     {
-      to: "/discover",
-      label: "Discover",
+      to: "/profile",
+      label: "Profile",
       icon: FaCompass,
       description: "Find new products",
     },
