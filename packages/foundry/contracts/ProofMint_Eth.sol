@@ -9,10 +9,37 @@ import {ERC721URIStorage} from "@openzeppelin/contracts/token/ERC721/extensions/
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 
+interface IL2Registry {
+    /// Called to create a subnode under parentNode.
+    /// Returns the ENS namehash of the new node.
+    function createSubnode(
+        bytes32 node,
+        string calldata label,
+        address owner,
+        bytes[] calldata data
+    ) external returns (bytes32);
+    function baseNode() external view returns (bytes32);
+    function setAddr(bytes32 node, uint256 coinType, bytes calldata a) external;
+    function makeNode(
+        bytes32 parentNode,
+        string calldata label
+    ) external pure returns (bytes32);
+    function ownerOf(uint256 tokenId) external view returns (address owner);
+    function namehash(string calldata name) external pure returns (bytes32);
+    
+}
+
+
+
 // ProofMint contract enables decentralized tracking of gadget ownership and lifecycle (active, stolen, misplaced, recycled).
 // It uses IPFS for immutable receipt metadata storage and enforces role-based access for merchants, buyers, and recyclers.
 // This contract prioritizes security, transparency, and extensibility for supply chain use cases.
 contract ProofMint is Ownable,  ERC721, ERC721Enumerable, ERC721URIStorage {
+    IL2Registry public registry;
+
+    event DomainRegistered(bytes32 indexed merchantNode, string label, address indexed owner);
+
+
 
     // Enum defining gadget lifecycle states for clear status tracking.
     enum GadgetStatus {
@@ -55,7 +82,9 @@ contract ProofMint is Ownable,  ERC721, ERC721Enumerable, ERC721URIStorage {
     mapping(uint256 => Receipt) public receipts;             // Maps receipt ID to receipt details
     mapping(address => uint256[]) public merchantReceipts;   // Maps merchant to their issued receipt IDs
     mapping(address => uint256[]) public buyerReceipts;      // Maps buyer to their purchased receipt IDs
-    mapping(address => Subscription) public subscriptions;   // Maps merchant to their subscription details
+    mapping(address => Subscription) public subscriptions;
+    mapping(bytes32 => address) public merchant; // Maps creator node to creator address
+    mapping(bytes32 => address) public itemOwner;
 
     // USDC token address (Base Sepolia testnet)
     IERC20 public constant USDC = IERC20(0x036CbD53842c5426634e7929541eC2318f3dCF7e);
@@ -75,6 +104,12 @@ contract ProofMint is Ownable,  ERC721, ERC721Enumerable, ERC721URIStorage {
     uint256 public constant PREMIUM_RECEIPT_LIMIT = 500;
     uint256 public constant GRACE_PERIOD = 7 days;
     uint256 public constant MONTHLY_DURATION = 30 days;
+
+
+     uint256 public chainId;
+
+    /// @notice The coinType for the current chain (ENSIP-11)
+    uint256 public immutable coinType;
 
     // Counter for generating unique receipt IDs, starting at 1.
     uint256 public nextReceiptId = 1;
@@ -101,7 +136,15 @@ contract ProofMint is Ownable,  ERC721, ERC721Enumerable, ERC721URIStorage {
     error InvalidDuration();
 
     // Constructor initializing the contract with the deployer as the owner.
-    constructor() Ownable(msg.sender) ERC721("Proofmint", "PFMT") {}
+    constructor() Ownable(msg.sender) ERC721("Proofmint", "PFMT") {
+        assembly {
+            sstore(chainId.slot, chainid())
+        }
+
+        // Calculate the coinType for the current chain according to ENSIP-11
+        coinType = (0x80000000 | chainId) >> 0;
+        registry = IL2Registry(0x8822F2965090Ddc102F7de354dfd6E642C090269);
+    }
 
     // Modifier ensuring only verified merchants can call specific functions.
     modifier onlyVerifiedMerchant() {
@@ -122,9 +165,9 @@ contract ProofMint is Ownable,  ERC721, ERC721Enumerable, ERC721URIStorage {
     }
 
     // Admin function to add a verified merchant, restricted to contract owner.
-    function addMerchant(address merchant) external onlyAdmin {
-        verifiedMerchants[merchant] = true;
-        emit MerchantAdded(merchant);
+    function addMerchant(address merchantAddr) external onlyAdmin {
+        verifiedMerchants[merchantAddr] = true;
+        emit MerchantAdded(merchantAddr);
     }
 
     // Function for merchants to purchase a subscription.
@@ -548,4 +591,70 @@ contract ProofMint is Ownable,  ERC721, ERC721Enumerable, ERC721URIStorage {
     function getnextReceiptId () external view returns (uint256) {
         return nextReceiptId;
     }
+
+     function registerMerchant(
+        string calldata label,
+        address merchantAddr
+    ) external returns (bytes32 merchantNode) {
+
+        bytes32 node = _labelToNode(label);
+        require(merchant[node] == address(0), "Label taken");
+        bytes memory addr = abi.encodePacked(merchantAddr); // Convert address to bytes
+
+        // Set the forward address for the current chain. This is needed for reverse resolution.
+        // E.g. if this contract is deployed to Base, set an address for chainId 8453 which is
+        // coinType 2147492101 according to ENSIP-11.
+        registry.setAddr(node, coinType, addr);
+
+        // Set the forward address for mainnet ETH (coinType 60) for easier debugging.
+        registry.setAddr(node, 60, addr);
+
+        merchantNode = registry.createSubnode(
+            registry.baseNode(),
+            label,
+            merchantAddr,
+            new bytes[](0)
+        );
+        verifiedMerchants[merchantAddr] = true;
+        emit MerchantAdded(merchantAddr);
+
+        merchant[merchantNode] = merchantAddr;
+        emit DomainRegistered(merchantNode, label, merchantAddr);
+    }
+
+    function _labelToNode(
+        string calldata label
+    ) private view returns (bytes32) {
+        return registry.makeNode(registry.baseNode(), label);
+    }
+
+    //  function registerOwner(
+    //     string calldata label,
+    //     address ownerAddr
+    // ) external returns (bytes32 ownerNode) {
+
+    //     bytes32 node = _labelToNode(label);
+    //     require(owner[node] == address(0), "Label taken");
+    //     bytes memory addr = abi.encodePacked(merchantAddr); // Convert address to bytes
+
+    //     // Set the forward address for the current chain. This is needed for reverse resolution.
+    //     // E.g. if this contract is deployed to Base, set an address for chainId 8453 which is
+    //     // coinType 2147492101 according to ENSIP-11.
+    //     registry.setAddr(node, coinType, addr);
+
+    //     // Set the forward address for mainnet ETH (coinType 60) for easier debugging.
+    //     registry.setAddr(node, 60, addr);
+
+    //     ownerNode = registry.createSubnode(
+    //         registry.baseNode(),
+    //         label,
+    //         ownerAddr,
+    //         new bytes[](0)
+    //     );
+    //     verifiedOwners[ownerAddr] = true;
+    //     emit MerchantAdded(ownerAddr);
+
+    //     owner[ownerNode] = ownerAddr;
+    //     emit DomainRegistered(ownerNode, label, ownerAddr);
+    // }
 }
