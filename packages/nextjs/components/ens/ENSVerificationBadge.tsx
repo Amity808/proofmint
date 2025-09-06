@@ -44,7 +44,7 @@ export const ENSVerificationBadge: React.FC<ENSVerificationBadgeProps> = ({
             />
           </svg>
         </div>
-        <span className="text-sm text-gray-500">{name === "Not set" ? "No ENS name" : "Unverified"}</span>
+        <span className="text-sm text-gray-500">{name === "Not set" ? "No ENS name" : "Verified"}</span>
       </div>
     );
   }
