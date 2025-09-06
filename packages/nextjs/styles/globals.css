@@ -101,10 +101,6 @@
   }
 }
 
-:root,
-[data-theme] {
-  background: var(--color-base-200);
-}
 
 .btn {
   @apply shadow-md;

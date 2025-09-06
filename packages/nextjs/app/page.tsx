@@ -19,7 +19,7 @@ interface HomeProps {
 
 const Home: React.FC<HomeProps> = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
       <Header />
       <main role="main" aria-labelledby="home-title">
         <Suspense fallback={<div className="text-center py-8">Loading...</div>}>

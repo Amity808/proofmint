@@ -4,7 +4,7 @@ import { FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-100 p-6 lg:p-12">
+    <footer className="bg-white p-6 lg:p-12">
       <div className="max-w-[1240px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="flex flex-col items-start gap-4">
           <Link href="/" className="flex items-center space-x-2" aria-label="ProofMint Home">

@@ -60,7 +60,7 @@ const HeroSection = () => {
               transition={{ delay: 0.1 }}
             >
               The Future of{" "}
-              <span className="brand-gradient-multi bg-clip-text text-transparent">
+              <span className="brand-gradient-multi bg-clip-text ">
                 Digital Receipts
               </span>
             </motion.h1>

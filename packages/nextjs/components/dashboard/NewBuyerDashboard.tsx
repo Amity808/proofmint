@@ -100,7 +100,7 @@ const BuyerDashboard: React.FC = () => {
         <div className="bg-white p-8 rounded-lg shadow-md text-center">
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
           <h2 className="text-2xl font-bold mb-4">Wrong Network</h2>
-          <p className="text-gray-600">Please switch to 0G Testnet (Chain ID: 16601)</p>
+          <p className="text-gray-600">Please switch to the correct network</p>
         </div>
       </div>
     );
