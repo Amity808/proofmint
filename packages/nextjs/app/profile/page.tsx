@@ -24,7 +24,9 @@ import {
     TrendingUp,
     Users,
     Package,
-    CreditCard
+    CreditCard,
+    Globe,
+    Plus
 } from "lucide-react";
 import { useEnsName } from 'wagmi'
 
@@ -33,6 +35,8 @@ const Profile: React.FC = () => {
     const { address, isConnected } = useAccount();
     const [activeTab, setActiveTab] = useState<"overview" | "activity" | "badges" | "merchant" | "settings">("overview");
     const [isMounted, setIsMounted] = useState(false);
+    const [showRegisterModal, setShowRegisterModal] = useState(false);
+    const [merchantLabel, setMerchantLabel] = useState("");
     const { data: ensName1 } = useEnsName({ address });
 
     console.log('ensName', ensName1);
@@ -53,6 +57,8 @@ const Profile: React.FC = () => {
         functionName: "isVerifiedMerchant",
         args: [address],
     });
+
+
 
     const { data: merchantReceipts } = useScaffoldReadContract({
         contractName: "ProofMint",
@@ -189,6 +195,22 @@ const Profile: React.FC = () => {
     const handleDownloadQR = () => {
         console.log("Download QR code");
         // TODO: Generate and download QR code
+    };
+
+    const handleRegisterMerchant = async () => {
+        if (!merchantLabel.trim()) return;
+
+        try {
+            await writeProofMintAsync({
+                functionName: "registerMerchant",
+                args: [merchantLabel.trim(), address],
+            });
+            setShowRegisterModal(false);
+            setMerchantLabel("");
+            // TODO: Show success toast
+        } catch (error) {
+            console.error("Error registering merchant:", error);
+        }
     };
 
     // Show loading state during hydration
@@ -402,11 +424,20 @@ const Profile: React.FC = () => {
                                         <Store className="w-6 h-6 text-green-600" />
                                         Merchant Dashboard
                                     </h3>
-                                    <div className={`px-3 py-1 rounded-full text-sm font-medium ${canIssueReceipts
+                                    <div className="flex items-center gap-3">
+                                        <div className={`px-3 py-1 rounded-full text-sm font-medium ${canIssueReceipts
                                             ? 'bg-green-100 text-green-800'
                                             : 'bg-red-100 text-red-800'
-                                        }`}>
-                                        {canIssueReceipts ? 'Active' : 'Inactive'}
+                                            }`}>
+                                            {canIssueReceipts ? 'Active' : 'Inactive'}
+                                        </div>
+                                        <button
+                                            onClick={() => setShowRegisterModal(true)}
+                                            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                                        >
+                                            <Globe className="w-4 h-4" />
+                                            Register Domain
+                                        </button>
                                     </div>
                                 </div>
 
@@ -447,8 +478,8 @@ const Profile: React.FC = () => {
                                         <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
                                             <span className="font-medium text-gray-700">Tier</span>
                                             <span className={`px-3 py-1 rounded-full text-sm font-medium ${subscription[0] === 0 ? 'bg-blue-100 text-blue-800' :
-                                                    subscription[0] === 1 ? 'bg-purple-100 text-purple-800' :
-                                                        'bg-yellow-100 text-yellow-800'
+                                                subscription[0] === 1 ? 'bg-purple-100 text-purple-800' :
+                                                    'bg-yellow-100 text-yellow-800'
                                                 }`}>
                                                 {subscription[0] === 0 ? 'Basic' :
                                                     subscription[0] === 1 ? 'Premium' : 'Enterprise'}
@@ -492,7 +523,7 @@ const Profile: React.FC = () => {
 
                                 {merchantReceipts && merchantReceipts.length > 0 ? (
                                     <div className="space-y-3">
-                                        {merchantReceipts.slice(0, 5).map((receiptId, index) => (
+                                        {merchantReceipts.slice(0, 5).map((receiptId: bigint) => (
                                             <div key={receiptId.toString()} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                                                 <div className="flex items-center gap-3">
                                                     <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
@@ -577,6 +608,63 @@ const Profile: React.FC = () => {
                 </div>
             </main>
             <Footer />
+
+            {/* Register Merchant Modal */}
+            {showRegisterModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md mx-4">
+                        <div className="flex items-center justify-between mb-6">
+                            <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                                <Globe className="w-6 h-6 text-green-600" />
+                                Register Merchant Domain
+                            </h3>
+                            <button
+                                onClick={() => setShowRegisterModal(false)}
+                                className="text-gray-400 hover:text-gray-600"
+                            >
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Domain Label
+                                </label>
+                                <input
+                                    type="text"
+                                    value={merchantLabel}
+                                    onChange={(e) => setMerchantLabel(e.target.value)}
+                                    placeholder="Enter your domain label (e.g., 'mystore')"
+                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                />
+                                <p className="text-sm text-gray-500 mt-1">
+                                    This will create: {merchantLabel || 'yourlabel'}.proofmint.eth
+                                </p>
+                            </div>
+
+                            <div className="flex items-center gap-3 pt-4">
+                                <button
+                                    onClick={handleRegisterMerchant}
+                                    disabled={!merchantLabel.trim()}
+                                    className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                                >
+                                    <Plus className="w-4 h-4" />
+                                    Register Domain
+                                </button>
+                                <button
+                                    onClick={() => setShowRegisterModal(false)}
+                                    className="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

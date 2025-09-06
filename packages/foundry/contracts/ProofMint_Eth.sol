@@ -85,6 +85,7 @@ contract ProofMint is Ownable,  ERC721, ERC721Enumerable, ERC721URIStorage {
     mapping(address => Subscription) public subscriptions;
     mapping(bytes32 => address) public merchant; // Maps creator node to creator address
     mapping(bytes32 => address) public itemOwner;
+    mapping(address => string) public merchantName;
 
     // USDC token address (Base Sepolia testnet)
     IERC20 public constant USDC = IERC20(0x036CbD53842c5426634e7929541eC2318f3dCF7e);
@@ -616,6 +617,7 @@ contract ProofMint is Ownable,  ERC721, ERC721Enumerable, ERC721URIStorage {
             new bytes[](0)
         );
         verifiedMerchants[merchantAddr] = true;
+        merchantName[merchantAddr] = label;
         emit MerchantAdded(merchantAddr);
 
         merchant[merchantNode] = merchantAddr;
