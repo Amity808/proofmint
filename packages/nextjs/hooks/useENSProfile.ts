@@ -37,20 +37,20 @@ export function useENSProfile({ address, name, type = "general" }: UseENSProfile
   // Resolve ENS name from address
   const { data: ensName, isLoading: isNameLoading } = useEnsName({
     address: address as `0x${string}`,
-    enabled: !!address && isMounted,
+    query: { enabled: !!address && isMounted },
   });
 
   // Resolve address from ENS name
   const { data: ensAddress, isLoading: isAddressLoading } = useEnsAddress({
     name: name as string,
-    enabled: !!name && isValidENSName(name) && isMounted,
+    query: { enabled: !!name && isValidENSName(name) && isMounted },
   });
 
   // Get ENS avatar - use address if available, otherwise use name
   const { data: ensAvatar, isLoading: isAvatarLoading } = useEnsAvatar({
     name: (ensName || name) as string,
     chainId: 1, // Ethereum Mainnet
-    enabled: !!(ensName || name) && isMounted,
+    query: { enabled: !!(ensName || name) && isMounted },
   });
 
   const targetName = ensName || name;
@@ -92,7 +92,7 @@ export function useENSProfile({ address, name, type = "general" }: UseENSProfile
     useEnsText({
       name: normalizedName,
       key,
-      enabled: !!normalizedName && isMounted,
+      query: { enabled: !!normalizedName && isMounted },
     }),
   );
 

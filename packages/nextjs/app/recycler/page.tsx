@@ -25,12 +25,12 @@ const RecyclerDashboard: React.FC = () => {
     // TODO: Implement recycling transaction
   };
 
-  const handleViewDetails = (id: number) => {
+  const handleViewDetails = (id: string) => {
     console.log("View details for receipt:", id);
     // TODO: Implement receipt details modal
   };
 
-  const handleGenerateQR = (id: number) => {
+  const handleGenerateQR = (id: string) => {
     console.log("Generate QR for receipt:", id);
     // TODO: Implement QR code generation
   };
@@ -78,11 +78,10 @@ const RecyclerDashboard: React.FC = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                    activeTab === tab.id
+                  className={`py-2 px-1 border-b-2 font-medium text-sm ${activeTab === tab.id
                       ? "border-brand-primary text-brand-primary"
                       : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                  }`}
+                    }`}
                 >
                   {tab.label}
                 </button>
@@ -251,13 +250,12 @@ const RecyclerDashboard: React.FC = () => {
                         <p>
                           <span className="font-medium">Status:</span>
                           <span
-                            className={`ml-1 px-2 py-1 rounded-full text-xs ${
-                              receipt.status === GadgetStatus.Active
+                            className={`ml-1 px-2 py-1 rounded-full text-xs ${receipt.status === GadgetStatus.Active
                                 ? "status-success"
                                 : receipt.status === GadgetStatus.Stolen
                                   ? "status-error"
                                   : "status-warning"
-                            }`}
+                              }`}
                           >
                             {receipt.status === GadgetStatus.Active
                               ? "Active"
@@ -275,7 +273,7 @@ const RecyclerDashboard: React.FC = () => {
                           Process Recycling
                         </button>
                         <button
-                          onClick={() => handleViewDetails(receipt.id)}
+                          onClick={() => handleViewDetails(receipt.id.toString())}
                           className="px-4 py-2 border border-brand-primary text-brand-primary rounded-lg hover:bg-brand-primary/10 transition-colors text-sm font-medium"
                         >
                           Details
@@ -319,7 +317,7 @@ const RecyclerDashboard: React.FC = () => {
                 {recycledItems.map(receipt => (
                   <ReceiptCard
                     key={receipt.id}
-                    receipt={receipt}
+                    id={receipt.id.toString()}
                     onViewDetails={handleViewDetails}
                     onGenerateQR={handleGenerateQR}
                   />

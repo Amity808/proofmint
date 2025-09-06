@@ -40,13 +40,13 @@ export const AllNfts = () => {
           const tokenURI = await se2NftContract.read.tokenURI([tokenId]);
           const owner = await se2NftContract.read.ownerOf([tokenId]);
 
-          const tokenMetadata = await fetch(tokenURI);
+          const tokenMetadata = await fetch(tokenURI as string);
           const metadata = await tokenMetadata.json();
 
           collectibleUpdate.push({
-            id: parseInt(tokenId.toString()),
-            uri: tokenURI,
-            owner,
+            id: parseInt((tokenId as bigint).toString()),
+            uri: tokenURI as string,
+            owner: owner as string,
             image: metadata.image,
             name: metadata.name,
           });

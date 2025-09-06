@@ -13,7 +13,7 @@ import Header from "~~/components/home/Header";
 import { useENSValidation } from "~~/hooks/useENSProfile";
 
 const ENSPage: React.FC = () => {
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
   const [activeTab, setActiveTab] = useState<"overview" | "merchants" | "recyclers" | "payments">("overview");
   const [searchQuery, setSearchQuery] = useState("");
   const { isValid, error, validateName } = useENSValidation();
@@ -68,11 +68,10 @@ const ENSPage: React.FC = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                    activeTab === tab.id
+                  className={`py-2 px-1 border-b-2 font-medium text-sm ${activeTab === tab.id
                       ? "border-blue-500 text-blue-600"
                       : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                  }`}
+                    }`}
                 >
                   {tab.label}
                 </button>
@@ -94,9 +93,8 @@ const ENSPage: React.FC = () => {
                     value={searchQuery}
                     onChange={e => handleSearchChange(e.target.value)}
                     placeholder="Enter ENS name (e.g., merchant.proofmint.eth)"
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                      searchQuery && !isValid ? "border-red-300" : "border-gray-300"
-                    }`}
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${searchQuery && !isValid ? "border-red-300" : "border-gray-300"
+                      }`}
                   />
                   {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
                   {isValid && searchQuery && <p className="mt-2 text-sm text-green-600">✓ Valid ENS name format</p>}

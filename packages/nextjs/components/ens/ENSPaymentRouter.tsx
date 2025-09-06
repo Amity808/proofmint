@@ -18,7 +18,7 @@ export const ENSPaymentRouter: React.FC<ENSPaymentRouterProps> = ({ onPaymentIni
   // Resolve ENS name to address
   const { data: resolvedAddress, isLoading: isResolving } = useEnsAddress({
     name: recipient as string,
-    enabled: !!recipient && isValid,
+    query: { enabled: !!recipient && isValid },
   });
 
   const handleRecipientChange = (value: string) => {
@@ -77,9 +77,8 @@ export const ENSPaymentRouter: React.FC<ENSPaymentRouterProps> = ({ onPaymentIni
               value={recipient}
               onChange={e => handleRecipientChange(e.target.value)}
               placeholder="merchant.proofmint.eth"
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                recipient && !isValid ? "border-red-300" : "border-gray-300"
-              }`}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${recipient && !isValid ? "border-red-300" : "border-gray-300"
+                }`}
             />
             {isResolving && (
               <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
@@ -90,15 +89,14 @@ export const ENSPaymentRouter: React.FC<ENSPaymentRouterProps> = ({ onPaymentIni
 
           {paymentStatus && (
             <div
-              className={`mt-1 text-sm ${
-                paymentStatus.status === "success"
+              className={`mt-1 text-sm ${paymentStatus.status === "success"
                   ? "text-green-600"
                   : paymentStatus.status === "error"
                     ? "text-red-600"
                     : paymentStatus.status === "resolving"
                       ? "text-blue-600"
                       : "text-gray-500"
-              }`}
+                }`}
             >
               {paymentStatus.message}
             </div>

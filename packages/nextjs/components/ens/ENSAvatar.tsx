@@ -32,15 +32,14 @@ export const ENSAvatar: React.FC<ENSAvatarProps> = ({
   // Get ENS name from address
   const { data: ensName } = useEnsName({
     address: targetAddress as `0x${string}`,
-    enabled: !!targetAddress,
+    query: { enabled: !!targetAddress },
   });
 
   // Get ENS avatar
   const { data: ensAvatar, isLoading } = useEnsAvatar({
-    address: targetAddress as `0x${string}`,
     name: (name || ensName) as string,
     chainId: 1, // Ethereum Mainnet
-    enabled: !!(targetAddress || name),
+    query: { enabled: !!(targetAddress || name) },
   });
 
   const displayName = name || ensName || "Not set";

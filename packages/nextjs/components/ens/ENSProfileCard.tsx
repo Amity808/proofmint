@@ -100,7 +100,7 @@ export const ENSProfileCard: React.FC<ENSProfileCardProps> = ({
         <div className="flex-1 min-w-0">
           <div className="flex items-center space-x-2 mb-2">
             <h3 className="text-lg font-semibold text-gray-900 truncate">{ensName}</h3>
-            <ENSVerificationBadge address={ensAddress} name={ensName} type={type} showDetails={true} />
+            <ENSVerificationBadge address={ensAddress || undefined} name={ensName} type={type} showDetails={true} />
           </div>
 
           <p className={`text-sm font-medium ${getProfileColor()}`}>{getProfileType()}</p>
@@ -158,7 +158,7 @@ export const ENSProfileCard: React.FC<ENSProfileCardProps> = ({
         </div>
       )}
 
-      {textRecords[ENS_TEXT_RECORDS.AGENT_CAPABILITIES] && (
+      {/* {textRecords[ENS_TEXT_RECORDS.AGENT_CAPABILITIES] && (
         <div className="mt-4 p-3 bg-purple-50 rounded-lg">
           <h5 className="text-sm font-medium text-purple-800 mb-1">Agent Capabilities</h5>
           <div className="flex flex-wrap gap-1">
@@ -169,7 +169,7 @@ export const ENSProfileCard: React.FC<ENSProfileCardProps> = ({
             ))}
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
