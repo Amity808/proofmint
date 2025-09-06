@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { toast } from "react-hot-toast";
 import { useAccount } from "wagmi";
-import StatsCard from "~~/components/common/StatsCard";
 import Footer from "~~/components/home/Footer";
 import Header from "~~/components/home/Header";
 import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
@@ -21,7 +20,7 @@ const AdminDashboard: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [allReceipts, setAllReceipts] = useState<any[]>([]);
   const [subscriptionPricing, setSubscriptionPricing] = useState<any>(null);
-  const [contractBalance, setContractBalance] = useState<string>("0");
+  // const [contractBalance, setContractBalance] = useState<string>("0");
   const [usdcBalance, setUsdcBalance] = useState<string>("0");
   const [basePayMerchant, setBasePayMerchant] = useState("");
   const [basePayTier, setBasePayTier] = useState<"0" | "1" | "2">("0");
@@ -33,11 +32,7 @@ const AdminDashboard: React.FC = () => {
     contractName: "ProofMint",
   });
 
-  // Read contract data
-  const { data: totalReceipts } = useScaffoldReadContract({
-    contractName: "ProofMint",
-    functionName: "getTotalStats",
-  });
+
 
   // Read all receipts
   const { data: receiptsData } = useScaffoldReadContract({
@@ -263,10 +258,7 @@ const AdminDashboard: React.FC = () => {
     toast.error("Merchant removal not implemented in contract");
   };
 
-  const handleRemoveRecycler = (address: string) => {
-    console.log("Removing recycler:", address);
-    toast.error("Recycler removal not implemented in contract");
-  };
+
 
   if (!isConnected) {
     return (
@@ -923,11 +915,11 @@ const AdminDashboard: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <h5 className="font-semibold text-blue-600">ETH Balance</h5>
-                      <p className="text-2xl font-bold text-blue-600">{contractBalance} ETH</p>
+                      <p className="text-2xl font-bold text-blue-600">0 ETH</p>
                     </div>
                     <button
                       onClick={handleWithdrawFunds}
-                      disabled={isLoading || contractBalance === "0"}
+                      disabled={isLoading}
                       className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Withdraw ETH

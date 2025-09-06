@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { motion } from "framer-motion";
-import { Filter, MapPin, Search, Shield, Star, TrendingUp, Users } from "lucide-react";
+import { Search, Shield, Star, TrendingUp, Users } from "lucide-react";
 import { useAccount } from "wagmi";
 import FollowSuggestions from "~~/components/common/FollowSuggestions";
 import Footer from "~~/components/home/Footer";
