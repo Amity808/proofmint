@@ -12,12 +12,7 @@ const HowItWorks = lazy(() => import("~~/components/home/HowItWorks"));
 const PartnerTestimonials = lazy(() => import("~~/components/home/PartnerTestimonials"));
 const FAQ = lazy(() => import("~~/components/home/FAQ"));
 
-interface HomeProps {
-  account: string;
-  // role: Role;
-}
-
-const Home: React.FC<HomeProps> = () => {
+const Home: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Header />

@@ -1,37 +1,64 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Header from "~~/components/home/Header";
 import Footer from "~~/components/home/Footer";
 import ReceiptCard from "~~/components/common/ReceiptCard";
 import StatsCard from "~~/components/common/StatsCard";
-import { dummyReceipts, dummyDashboardStats } from "~~/data/dummyData";
-import { GadgetStatus } from "~~/types";
+import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
 const Dashboard: React.FC = () => {
     const { isConnected } = useAccount();
-    const [selectedStatus, setSelectedStatus] = useState<GadgetStatus | "all">("all");
+    const [receiptIds, setReceiptIds] = useState<Map<string, string>>(new Map());
+    const [searchQuery, setSearchQuery] = useState("");
 
-    const filteredReceipts = selectedStatus === "all"
-        ? dummyReceipts
-        : dummyReceipts.filter(receipt => receipt.status === selectedStatus);
+    // Get total receipt count from smart contract
+    const { data: totalReceipts } = useScaffoldReadContract({
+        contractName: "ProofMint",
+        functionName: "getTotalStats",
+        args: []
+    });
 
-    const handleViewDetails = (id: number) => {
-        console.log("View details for receipt:", id);
-        // TODO: Implement receipt details modal
+    // Generate receipt IDs based on total count
+    const getReceiptIds = useCallback(() => {
+        try {
+            if (!totalReceipts) {
+                console.log("totalReceipts is undefined or null");
+                return;
+            }
+
+            const newMap = new Map<string, string>();
+            // totalReceipts[0] is the total receipts count
+            const receiptCount = Array.isArray(totalReceipts) ? totalReceipts[0] : totalReceipts;
+
+            if (typeof receiptCount === 'bigint' && receiptCount > 0) {
+                for (let i = 1; i <= receiptCount; i++) { // Receipt IDs start from 1
+                    newMap.set(i.toString(), i.toString());
+                }
+                setReceiptIds(new Map(newMap));
+            } else {
+                console.log("receiptCount is not a valid bigint:", receiptCount);
+            }
+        } catch (error) {
+            console.error("Error setting receipt IDs:", error);
+        }
+    }, [totalReceipts]);
+
+    useEffect(() => {
+        getReceiptIds();
+    }, [totalReceipts, getReceiptIds]);
+
+    const handleSearch = (query: string) => {
+        setSearchQuery(query);
     };
 
-    const handleGenerateQR = (id: number) => {
-        console.log("Generate QR for receipt:", id);
-        // TODO: Implement QR code generation
-    };
+    // Filter receipt IDs based on search query (for now, just by ID)
+    const filteredReceiptIds = [...receiptIds.entries()].filter(([key]) => 
+        searchQuery === "" || key.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
-    const handleUpdateStatus = (id: number, status: GadgetStatus) => {
-        console.log("Update status for receipt:", id, "to:", status);
-        // TODO: Implement status update
-    };
 
     if (!isConnected) {
         return (
@@ -70,7 +97,7 @@ const Dashboard: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                     <StatsCard
                         title="Total Receipts"
-                        value={dummyDashboardStats.totalReceipts}
+                        value={receiptIds.size}
                         icon={
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -79,18 +106,18 @@ const Dashboard: React.FC = () => {
                         color="green"
                     />
                     <StatsCard
-                        title="Total Spent"
-                        value={`$${dummyDashboardStats.totalSpent.toLocaleString()}`}
+                        title="Search Results"
+                        value={filteredReceiptIds.length}
                         icon={
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                         }
                         color="blue"
                     />
                     <StatsCard
-                        title="Verified"
-                        value={dummyDashboardStats.verifiedCount}
+                        title="Available"
+                        value={receiptIds.size > 0 ? "Active" : "None"}
                         icon={
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -100,91 +127,63 @@ const Dashboard: React.FC = () => {
                     />
                 </div>
 
-                {/* Status Filter */}
+
+                {/* Search functionality */}
                 <div className="mb-6">
-                    <div className="flex flex-wrap gap-2">
-                        <button
-                            onClick={() => setSelectedStatus("all")}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${selectedStatus === "all"
-                                ? "brand-gradient-primary text-white shadow-brand-primary"
-                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                                }`}
-                        >
-                            All ({dummyReceipts.length})
-                        </button>
-                        <button
-                            onClick={() => setSelectedStatus(GadgetStatus.Active)}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${selectedStatus === GadgetStatus.Active
-                                ? "status-success text-white"
-                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                                }`}
-                        >
-                            Active ({dummyDashboardStats.activeCount})
-                        </button>
-                        <button
-                            onClick={() => setSelectedStatus(GadgetStatus.Stolen)}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${selectedStatus === GadgetStatus.Stolen
-                                ? "status-error text-white"
-                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                                }`}
-                        >
-                            Stolen ({dummyDashboardStats.stolenCount})
-                        </button>
-                        <button
-                            onClick={() => setSelectedStatus(GadgetStatus.Misplaced)}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${selectedStatus === GadgetStatus.Misplaced
-                                ? "status-warning text-white"
-                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                                }`}
-                        >
-                            Misplaced ({dummyDashboardStats.misplacedCount})
-                        </button>
-                        <button
-                            onClick={() => setSelectedStatus(GadgetStatus.Recycled)}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${selectedStatus === GadgetStatus.Recycled
-                                ? "status-neutral text-white"
-                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                                }`}
-                        >
-                            Recycled ({dummyDashboardStats.recycledCount})
-                        </button>
-                    </div>
+                    <input
+                        type="text"
+                        placeholder="Search receipts..."
+                        value={searchQuery}
+                        onChange={(e) => handleSearch(e.target.value)}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black bg-white"
+                    />
                 </div>
 
                 {/* Receipts Grid */}
-                {filteredReceipts.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {filteredReceipts.map((receipt) => (
-                            <ReceiptCard
-                                key={receipt.id}
-                                receipt={receipt}
-                                onViewDetails={handleViewDetails}
-                                onGenerateQR={handleGenerateQR}
-                                onUpdateStatus={handleUpdateStatus}
-                            />
-                        ))}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredReceiptIds.map(([key, value]) => (
+                        <ReceiptCard
+                            key={key}
+                            id={value}
+                            onViewDetails={(id) => console.log("View receipt:", id)}
+                            onGenerateQR={(id) => console.log("Generate QR:", id)}
+                            onUpdateStatus={(id, status) => console.log("Update status:", id, status)}
+                        />
+                    ))}
+                </div>
+
+                {filteredReceiptIds.length === 0 && receiptIds.size > 0 && (
+                    <div className="text-center py-12 text-black">
+                        <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                        <h3 className="text-lg font-medium text-black mb-2">
+                            No receipts match your search
+                        </h3>
+                        <p className="text-black mb-6">
+                            Try adjusting your search terms or clear the search to see all receipts.
+                        </p>
                     </div>
-                ) : (
-                    <div className="text-center py-12">
+                )}
+
+                {receiptIds.size === 0 && (
+                    <div className="text-center py-12 text-black">
                         <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                             <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                         </div>
-                        <h3 className="text-lg font-medium text-gray-900 mb-2">
-                            {selectedStatus === "all" ? "No receipts yet" : `No ${GadgetStatus[selectedStatus].toLowerCase()} receipts`}
+                        <h3 className="text-lg font-medium text-black mb-2">
+                            No receipts yet
                         </h3>
-                        <p className="text-gray-600 mb-6">
-                            {selectedStatus === "all"
-                                ? "Start shopping to get your first NFT receipt!"
-                                : `No receipts with ${GadgetStatus[selectedStatus].toLowerCase()} status found.`
-                            }
+                        <p className="text-black mb-6">
+                            Start shopping to get your first NFT receipt!
                         </p>
-                        {selectedStatus === "all" && (
-                            <button className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium">
-                                Browse Marketplace
-                            </button>
-                        )}
+                        <button className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium">
+                            Browse Marketplace
+                        </button>
                     </div>
                 )}
             </main>

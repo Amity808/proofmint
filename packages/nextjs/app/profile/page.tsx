@@ -11,6 +11,7 @@ import ENSVerificationBadge from "~~/components/ens/ENSVerificationBadge";
 import { useENSProfile } from "~~/hooks/useENSProfile";
 import ClientOnly from "~~/components/ClientOnly";
 import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import SubscriptionManager from "~~/components/subscription/SubscriptionManager";
 import { motion } from "framer-motion";
 import {
     Edit3,
@@ -22,7 +23,6 @@ import {
     Store,
     Receipt,
     TrendingUp,
-    Users,
     Package,
     CreditCard,
     Globe,
@@ -626,53 +626,8 @@ const Profile: React.FC = () => {
                                         </div>
                                     </div>
 
-                                    {/* Subscription Details */}
-                                    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200 p-6">
-                                        <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                                            <CreditCard className="w-6 h-6 text-green-600" />
-                                            Subscription Details
-                                        </h3>
-
-                                        {subscription ? (
-                                            <div className="space-y-4">
-                                                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                                                    <span className="font-medium text-gray-700">Tier</span>
-                                                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${subscription[0] === 0 ? 'bg-blue-100 text-blue-800' :
-                                                        subscription[0] === 1 ? 'bg-purple-100 text-purple-800' :
-                                                            'bg-yellow-100 text-yellow-800'
-                                                        }`}>
-                                                        {subscription[0] === 0 ? 'Basic' :
-                                                            subscription[0] === 1 ? 'Premium' : 'Enterprise'}
-                                                    </span>
-                                                </div>
-                                                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                                                    <span className="font-medium text-gray-700">Status</span>
-                                                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${subscription[4] ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                                                        }`}>
-                                                        {subscription[4] ? 'Active' : 'Inactive'}
-                                                    </span>
-                                                </div>
-                                                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                                                    <span className="font-medium text-gray-700">Expires</span>
-                                                    <span className="text-gray-900">
-                                                        {subscription[1] ? new Date(Number(subscription[1]) * 1000).toLocaleDateString() : 'N/A'}
-                                                    </span>
-                                                </div>
-                                                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                                                    <span className="font-medium text-gray-700">Receipts Issued</span>
-                                                    <span className="text-gray-900">{subscription[2]?.toString() || 0}</span>
-                                                </div>
-                                                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                                                    <span className="font-medium text-gray-700">Receipts Remaining</span>
-                                                    <span className="text-gray-900">{subscription[3]?.toString() || 0}</span>
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            <div className="text-center py-8 text-gray-500">
-                                                No subscription data available
-                                            </div>
-                                        )}
-                                    </div>
+                                    {/* Subscription Management */}
+                                    <SubscriptionManager onSubscriptionUpdate={() => window.location.reload()} />
 
                                     {/* Recent Receipts */}
                                     <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200 p-6">
