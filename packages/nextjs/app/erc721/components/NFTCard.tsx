@@ -46,6 +46,7 @@ export const NFTCard = ({ nft, transfer }: { nft: Collectible; transfer?: boolea
                     });
                   } catch (err) {
                     console.error("Error calling transferFrom function");
+                    console.log(err);
                   }
                 }}
               >

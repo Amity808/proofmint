@@ -113,8 +113,8 @@ const Dashboard: React.FC = () => {
                         <button
                             onClick={() => setSelectedStatus("all")}
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${selectedStatus === "all"
-                                    ? "brand-gradient-primary text-white shadow-brand-primary"
-                                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                ? "brand-gradient-primary text-white shadow-brand-primary"
+                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                                 }`}
                         >
                             All ({dummyReceipts.length})
@@ -122,8 +122,8 @@ const Dashboard: React.FC = () => {
                         <button
                             onClick={() => setSelectedStatus(GadgetStatus.Active)}
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${selectedStatus === GadgetStatus.Active
-                                    ? "status-success text-white"
-                                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                ? "status-success text-white"
+                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                                 }`}
                         >
                             Active ({dummyDashboardStats.activeCount})
@@ -131,8 +131,8 @@ const Dashboard: React.FC = () => {
                         <button
                             onClick={() => setSelectedStatus(GadgetStatus.Stolen)}
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${selectedStatus === GadgetStatus.Stolen
-                                    ? "status-error text-white"
-                                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                ? "status-error text-white"
+                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                                 }`}
                         >
                             Stolen ({dummyDashboardStats.stolenCount})
@@ -140,8 +140,8 @@ const Dashboard: React.FC = () => {
                         <button
                             onClick={() => setSelectedStatus(GadgetStatus.Misplaced)}
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${selectedStatus === GadgetStatus.Misplaced
-                                    ? "status-warning text-white"
-                                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                ? "status-warning text-white"
+                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                                 }`}
                         >
                             Misplaced ({dummyDashboardStats.misplacedCount})
@@ -149,8 +149,8 @@ const Dashboard: React.FC = () => {
                         <button
                             onClick={() => setSelectedStatus(GadgetStatus.Recycled)}
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${selectedStatus === GadgetStatus.Recycled
-                                    ? "status-neutral text-white"
-                                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                ? "status-neutral text-white"
+                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                                 }`}
                         >
                             Recycled ({dummyDashboardStats.recycledCount})
