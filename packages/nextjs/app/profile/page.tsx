@@ -78,8 +78,18 @@ const Profile: React.FC = () => {
         args: [address],
     });
 
-    const { writeContractAsync: writeProofMintAsync } = useScaffoldWriteContract({ contractName: "ProofMint" });
+    const { data: merchantName } = useScaffoldReadContract({
+        contractName: "ProofMint",
+        functionName: "merchantName",
+        args: [address],
+    });
 
+    // Check if user has a registered domain
+    const hasDomain = merchantName && merchantName.trim() !== "";
+    const isCheckingDomain = merchantName === undefined;
+
+    const { writeContractAsync: writeProofMintAsync, error: errorInteracting } = useScaffoldWriteContract({ contractName: "ProofMint" });
+    console.log(errorInteracting)
     // Handle hydration
     useEffect(() => {
         setIsMounted(true);
@@ -88,7 +98,7 @@ const Profile: React.FC = () => {
     // Profile data using connected address and ENS data
     const profileData = {
         address: address || "0x0000000000000000000000000000000000000000",
-        ensName: ensName || "Not set",
+        ensName: merchantName ? `${merchantName}.proofmint.eth` : (ensName || "Not set"),
         avatar: ensAvatar || undefined,
         bio: "Passionate about sustainable technology and blockchain innovation. Building a greener future through responsible electronics consumption and recycling.",
         location: "San Francisco, CA",
@@ -201,27 +211,38 @@ const Profile: React.FC = () => {
         if (!merchantLabel.trim()) return;
 
         try {
-            await writeProofMintAsync({
+            console.log("Registering merchant with:", {
+                label: merchantLabel.trim(),
+                address: address
+            });
+
+            const tx = await writeProofMintAsync({
                 functionName: "registerMerchant",
                 args: [merchantLabel.trim(), address],
             });
+
+            console.log("Transaction successful:", tx);
             setShowRegisterModal(false);
             setMerchantLabel("");
-            // TODO: Show success toast
+            // Success - the page will automatically refresh and show the profile
+            // since hasDomain will now be true
         } catch (error) {
             console.error("Error registering merchant:", error);
+            // alert(`Registration failed: ${error.message || error}`);
         }
     };
 
-    // Show loading state during hydration
-    if (!isMounted) {
+    // Show loading state during hydration or domain check
+    if (!isMounted || isCheckingDomain) {
         return (
             <div className="min-h-screen flex flex-col">
                 <Header />
                 <div className="flex-1 flex items-center justify-center p-4">
                     <div className="text-center">
                         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
-                        <p className="text-gray-600">Loading profile...</p>
+                        <p className="text-gray-600">
+                            {!isMounted ? "Loading profile..." : "Checking domain status..."}
+                        </p>
                     </div>
                 </div>
                 <Footer />
@@ -241,6 +262,105 @@ const Profile: React.FC = () => {
                     </div>
                 </div>
                 <Footer />
+            </div>
+        );
+    }
+
+    // Check if user has a registered domain
+    if (!hasDomain) {
+        return (
+            <div className="min-h-screen flex flex-col">
+                <Header />
+                <div className="flex-1 flex items-center justify-center p-4">
+                    <div className="text-center max-w-md mx-auto">
+                        <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <Globe className="w-10 h-10 text-gray-400" />
+                        </div>
+                        <h1 className="text-3xl font-bold mb-4">Domain Required</h1>
+                        <p className="text-gray-600 mb-6">
+                            You need to register a domain to access your profile. This creates your unique identity on the ProofMint network.
+                        </p>
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+                                <Globe className="w-4 h-4" />
+                                <span>Get your own .proofmint.eth domain</span>
+                            </div>
+                            <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+                                <Store className="w-4 h-4" />
+                                <span>Access merchant features</span>
+                            </div>
+                            <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+                                <Receipt className="w-4 h-4" />
+                                <span>Issue digital receipts</span>
+                            </div>
+                        </div>
+                        <button
+                            onClick={() => setShowRegisterModal(true)}
+                            className="mt-8 flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors mx-auto"
+                        >
+                            <Plus className="w-5 h-5" />
+                            Register Domain
+                        </button>
+                    </div>
+                </div>
+                <Footer />
+
+                {/* Register Merchant Modal - Show even without domain */}
+                {showRegisterModal && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                        <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md mx-4">
+                            <div className="flex items-center justify-between mb-6">
+                                <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                                    <Globe className="w-6 h-6 text-green-600" />
+                                    Register Merchant Domain
+                                </h3>
+                                <button
+                                    onClick={() => setShowRegisterModal(false)}
+                                    className="text-gray-400 hover:text-gray-600"
+                                >
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Domain Label
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={merchantLabel}
+                                        onChange={(e) => setMerchantLabel(e.target.value)}
+                                        placeholder="Enter your domain label (e.g., 'mystore')"
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
+                                    />
+                                    <p className="text-sm text-gray-500 mt-1">
+                                        This will create: <span className="font-mono text-green-600">{merchantLabel || 'yourlabel'}.proofmint.eth</span>
+                                    </p>
+                                </div>
+
+                                <div className="flex items-center gap-3 pt-4">
+                                    <button
+                                        onClick={handleRegisterMerchant}
+                                        disabled={!merchantLabel.trim()}
+                                        className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                                    >
+                                        <Plus className="w-4 h-4" />
+                                        Register Domain
+                                    </button>
+                                    <button
+                                        onClick={() => setShowRegisterModal(false)}
+                                        className="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         );
     }
@@ -410,142 +530,184 @@ const Profile: React.FC = () => {
                         </motion.div>
                     )}
 
-                    {activeTab === "merchant" && isMerchant && (
+                    {activeTab === "merchant" && (
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3 }}
                             className="space-y-6"
                         >
-                            {/* Merchant Status */}
-                            <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200 p-6">
-                                <div className="flex items-center justify-between mb-6">
-                                    <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                                        <Store className="w-6 h-6 text-green-600" />
-                                        Merchant Dashboard
-                                    </h3>
-                                    <div className="flex items-center gap-3">
-                                        <div className={`px-3 py-1 rounded-full text-sm font-medium ${canIssueReceipts
-                                            ? 'bg-green-100 text-green-800'
-                                            : 'bg-red-100 text-red-800'
-                                            }`}>
-                                            {canIssueReceipts ? 'Active' : 'Inactive'}
-                                        </div>
-                                        <button
-                                            onClick={() => setShowRegisterModal(true)}
-                                            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-                                        >
-                                            <Globe className="w-4 h-4" />
-                                            Register Domain
-                                        </button>
+                            {!isMerchant ? (
+                                /* Not a Merchant - Registration Prompt */
+                                <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200 p-8 text-center">
+                                    <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                                        <Store className="w-10 h-10 text-gray-400" />
                                     </div>
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    <div className="text-center p-4 bg-gray-50 rounded-lg">
-                                        <Receipt className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                                        <div className="text-2xl font-bold text-gray-900">
-                                            {merchantReceipts?.length || 0}
-                                        </div>
-                                        <div className="text-sm text-gray-600">Total Receipts</div>
-                                    </div>
-                                    <div className="text-center p-4 bg-gray-50 rounded-lg">
-                                        <TrendingUp className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                                        <div className="text-2xl font-bold text-gray-900">
-                                            {subscription?.[2]?.toString() || 0}
-                                        </div>
-                                        <div className="text-sm text-gray-600">This Month</div>
-                                    </div>
-                                    <div className="text-center p-4 bg-gray-50 rounded-lg">
-                                        <Package className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-                                        <div className="text-2xl font-bold text-gray-900">
-                                            {subscription?.[3]?.toString() || 0}
-                                        </div>
-                                        <div className="text-sm text-gray-600">Remaining</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Subscription Details */}
-                            <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200 p-6">
-                                <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                                    <CreditCard className="w-6 h-6 text-green-600" />
-                                    Subscription Details
-                                </h3>
-
-                                {subscription ? (
+                                    <h3 className="text-2xl font-bold text-gray-900 mb-4">Become a Verified Merchant</h3>
+                                    <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                                        Register your business domain to start issuing receipts, manage subscriptions, and access merchant features.
+                                    </p>
                                     <div className="space-y-4">
-                                        <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                                            <span className="font-medium text-gray-700">Tier</span>
-                                            <span className={`px-3 py-1 rounded-full text-sm font-medium ${subscription[0] === 0 ? 'bg-blue-100 text-blue-800' :
-                                                subscription[0] === 1 ? 'bg-purple-100 text-purple-800' :
-                                                    'bg-yellow-100 text-yellow-800'
-                                                }`}>
-                                                {subscription[0] === 0 ? 'Basic' :
-                                                    subscription[0] === 1 ? 'Premium' : 'Enterprise'}
-                                            </span>
+                                        <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+                                            <Globe className="w-4 h-4" />
+                                            <span>Get your own .proofmint.eth domain</span>
                                         </div>
-                                        <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                                            <span className="font-medium text-gray-700">Status</span>
-                                            <span className={`px-3 py-1 rounded-full text-sm font-medium ${subscription[4] ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                                                }`}>
-                                                {subscription[4] ? 'Active' : 'Inactive'}
-                                            </span>
+                                        <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+                                            <Receipt className="w-4 h-4" />
+                                            <span>Issue digital receipts for products</span>
                                         </div>
-                                        <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                                            <span className="font-medium text-gray-700">Expires</span>
-                                            <span className="text-gray-900">
-                                                {subscription[1] ? new Date(Number(subscription[1]) * 1000).toLocaleDateString() : 'N/A'}
-                                            </span>
-                                        </div>
-                                        <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                                            <span className="font-medium text-gray-700">Receipts Issued</span>
-                                            <span className="text-gray-900">{subscription[2]?.toString() || 0}</span>
-                                        </div>
-                                        <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                                            <span className="font-medium text-gray-700">Receipts Remaining</span>
-                                            <span className="text-gray-900">{subscription[3]?.toString() || 0}</span>
+                                        <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+                                            <CreditCard className="w-4 h-4" />
+                                            <span>Manage subscription tiers</span>
                                         </div>
                                     </div>
-                                ) : (
-                                    <div className="text-center py-8 text-gray-500">
-                                        No subscription data available
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Recent Receipts */}
-                            <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200 p-6">
-                                <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                                    <Receipt className="w-6 h-6 text-green-600" />
-                                    Recent Receipts
-                                </h3>
-
-                                {merchantReceipts && merchantReceipts.length > 0 ? (
-                                    <div className="space-y-3">
-                                        {merchantReceipts.slice(0, 5).map((receiptId: bigint) => (
-                                            <div key={receiptId.toString()} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                                                        <Receipt className="w-4 h-4 text-green-600" />
-                                                    </div>
-                                                    <div>
-                                                        <div className="font-medium text-gray-900">Receipt #{receiptId.toString()}</div>
-                                                        <div className="text-sm text-gray-500">ID: {receiptId.toString()}</div>
-                                                    </div>
+                                    <button
+                                        onClick={() => setShowRegisterModal(true)}
+                                        className="mt-8 flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors mx-auto"
+                                    >
+                                        <Plus className="w-5 h-5" />
+                                        Register as Merchant
+                                    </button>
+                                </div>
+                            ) : (
+                                /* Merchant Dashboard */
+                                <>
+                                    {/* Merchant Status */}
+                                    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200 p-6">
+                                        <div className="flex items-center justify-between mb-6">
+                                            <div>
+                                                <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                                                    <Store className="w-6 h-6 text-green-600" />
+                                                    Merchant Dashboard
+                                                </h3>
+                                                <p className="text-sm text-gray-500 mt-1">
+                                                    Domain: {merchantName}.proofmint.eth
+                                                </p>
+                                            </div>
+                                            <div className="flex items-center gap-3">
+                                                <div className={`px-3 py-1 rounded-full text-sm font-medium ${canIssueReceipts
+                                                    ? 'bg-green-100 text-green-800'
+                                                    : 'bg-red-100 text-red-800'
+                                                    }`}>
+                                                    {canIssueReceipts ? 'Active' : 'Inactive'}
                                                 </div>
-                                                <button className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
-                                                    <ExternalLink className="w-4 h-4 text-gray-400" />
+                                                <button
+                                                    onClick={() => setShowRegisterModal(true)}
+                                                    className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                                                >
+                                                    <Globe className="w-4 h-4" />
+                                                    Register Domain
                                                 </button>
                                             </div>
-                                        ))}
+                                        </div>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                            <div className="text-center p-4 bg-gray-50 rounded-lg">
+                                                <Receipt className="w-8 h-8 text-green-600 mx-auto mb-2" />
+                                                <div className="text-2xl font-bold text-gray-900">
+                                                    {merchantReceipts?.length || 0}
+                                                </div>
+                                                <div className="text-sm text-gray-600">Total Receipts</div>
+                                            </div>
+                                            <div className="text-center p-4 bg-gray-50 rounded-lg">
+                                                <TrendingUp className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+                                                <div className="text-2xl font-bold text-gray-900">
+                                                    {subscription?.[2]?.toString() || 0}
+                                                </div>
+                                                <div className="text-sm text-gray-600">This Month</div>
+                                            </div>
+                                            <div className="text-center p-4 bg-gray-50 rounded-lg">
+                                                <Package className="w-8 h-8 text-purple-600 mx-auto mb-2" />
+                                                <div className="text-2xl font-bold text-gray-900">
+                                                    {subscription?.[3]?.toString() || 0}
+                                                </div>
+                                                <div className="text-sm text-gray-600">Remaining</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                ) : (
-                                    <div className="text-center py-8 text-gray-500">
-                                        No receipts issued yet
+
+                                    {/* Subscription Details */}
+                                    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200 p-6">
+                                        <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                                            <CreditCard className="w-6 h-6 text-green-600" />
+                                            Subscription Details
+                                        </h3>
+
+                                        {subscription ? (
+                                            <div className="space-y-4">
+                                                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                                                    <span className="font-medium text-gray-700">Tier</span>
+                                                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${subscription[0] === 0 ? 'bg-blue-100 text-blue-800' :
+                                                        subscription[0] === 1 ? 'bg-purple-100 text-purple-800' :
+                                                            'bg-yellow-100 text-yellow-800'
+                                                        }`}>
+                                                        {subscription[0] === 0 ? 'Basic' :
+                                                            subscription[0] === 1 ? 'Premium' : 'Enterprise'}
+                                                    </span>
+                                                </div>
+                                                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                                                    <span className="font-medium text-gray-700">Status</span>
+                                                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${subscription[4] ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                                                        }`}>
+                                                        {subscription[4] ? 'Active' : 'Inactive'}
+                                                    </span>
+                                                </div>
+                                                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                                                    <span className="font-medium text-gray-700">Expires</span>
+                                                    <span className="text-gray-900">
+                                                        {subscription[1] ? new Date(Number(subscription[1]) * 1000).toLocaleDateString() : 'N/A'}
+                                                    </span>
+                                                </div>
+                                                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                                                    <span className="font-medium text-gray-700">Receipts Issued</span>
+                                                    <span className="text-gray-900">{subscription[2]?.toString() || 0}</span>
+                                                </div>
+                                                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                                                    <span className="font-medium text-gray-700">Receipts Remaining</span>
+                                                    <span className="text-gray-900">{subscription[3]?.toString() || 0}</span>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className="text-center py-8 text-gray-500">
+                                                No subscription data available
+                                            </div>
+                                        )}
                                     </div>
-                                )}
-                            </div>
+
+                                    {/* Recent Receipts */}
+                                    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200 p-6">
+                                        <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                                            <Receipt className="w-6 h-6 text-green-600" />
+                                            Recent Receipts
+                                        </h3>
+
+                                        {merchantReceipts && merchantReceipts.length > 0 ? (
+                                            <div className="space-y-3">
+                                                {merchantReceipts.slice(0, 5).map((receiptId: bigint) => (
+                                                    <div key={receiptId.toString()} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                                                <Receipt className="w-4 h-4 text-green-600" />
+                                                            </div>
+                                                            <div>
+                                                                <div className="font-medium text-gray-900">Receipt #{receiptId.toString()}</div>
+                                                                <div className="text-sm text-gray-500">ID: {receiptId.toString()}</div>
+                                                            </div>
+                                                        </div>
+                                                        <button className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
+                                                            <ExternalLink className="w-4 h-4 text-gray-400" />
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <div className="text-center py-8 text-gray-500">
+                                                No receipts issued yet
+                                            </div>
+                                        )}
+                                    </div>
+                                </>
+                            )}
                         </motion.div>
                     )}
 
@@ -608,63 +770,6 @@ const Profile: React.FC = () => {
                 </div>
             </main>
             <Footer />
-
-            {/* Register Merchant Modal */}
-            {showRegisterModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md mx-4">
-                        <div className="flex items-center justify-between mb-6">
-                            <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                                <Globe className="w-6 h-6 text-green-600" />
-                                Register Merchant Domain
-                            </h3>
-                            <button
-                                onClick={() => setShowRegisterModal(false)}
-                                className="text-gray-400 hover:text-gray-600"
-                            >
-                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
-                        </div>
-
-                        <div className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Domain Label
-                                </label>
-                                <input
-                                    type="text"
-                                    value={merchantLabel}
-                                    onChange={(e) => setMerchantLabel(e.target.value)}
-                                    placeholder="Enter your domain label (e.g., 'mystore')"
-                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                />
-                                <p className="text-sm text-gray-500 mt-1">
-                                    This will create: {merchantLabel || 'yourlabel'}.proofmint.eth
-                                </p>
-                            </div>
-
-                            <div className="flex items-center gap-3 pt-4">
-                                <button
-                                    onClick={handleRegisterMerchant}
-                                    disabled={!merchantLabel.trim()}
-                                    className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
-                                >
-                                    <Plus className="w-4 h-4" />
-                                    Register Domain
-                                </button>
-                                <button
-                                    onClick={() => setShowRegisterModal(false)}
-                                    className="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };

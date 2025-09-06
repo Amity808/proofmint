@@ -83,7 +83,29 @@ contract ENSSubnameRegistrar{
         emit CreatorRegistered(creatorNode, label, creatorAddr);
     }
 
- 
+    /// Fan registers their subname under creator, but ONLY if they follow that creator via EFP
+    function registerFan(
+        string calldata creatorLabel,
+        string calldata label
+    ) external returns (bytes32 fanNode) {
+        bytes32 creatorNode = registry.namehash(creatorLabel);
+        address creatorAddr = creatorOwner[creatorNode];
+        require(creatorAddr != address(0), "Unknown creator");
+
+        fanNode = registry.createSubnode(
+            creatorNode,
+            label,
+            msg.sender,
+            new bytes[](0)
+        );
+
+        bytes memory fanAddrBytes = abi.encodePacked(msg.sender);
+        registry.setAddr(fanNode, coinType, fanAddrBytes); // chain-specific coinType
+        registry.setAddr(fanNode, 60, fanAddrBytes);       // 60 = ETH for convenience/debug
+
+        creatorFans[creatorAddr].push(fanNode);
+        emit FanRegistered(fanNode, label, msg.sender);
+    }
 
     function _labelToNode(
         string calldata label
