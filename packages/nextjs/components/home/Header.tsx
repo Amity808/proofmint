@@ -14,11 +14,12 @@ import {
   FaStore,
   FaUsers,
   FaCompass,
-  FaChartLine,
-  FaWallet
+  FaChartLine
 } from "react-icons/fa";
 import { useAccount, useEnsName, useEnsAvatar } from "wagmi";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { RainbowKitCustomConnectButton, FaucetButton } from "~~/components/scaffold-eth";
+import { useTargetNetwork } from "~~/hooks/scaffold-eth";
+import { hardhat } from "viem/chains";
 import ProfileDropdown from "~~/components/common/ProfileDropdown";
 import NotificationBell from "~~/components/common/NotificationBell";
 
@@ -28,6 +29,8 @@ export default function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { address, isConnected } = useAccount();
+  const { targetNetwork } = useTargetNetwork();
+  const isLocalNetwork = targetNetwork.id === hardhat.id;
 
   // ENS integration
   const { data: ensName } = useEnsName({ address });
@@ -287,23 +290,10 @@ export default function Header() {
                 </div>
               </div>
             ) : (
-              <ConnectButton.Custom>
-                {({ openConnectModal, mounted }) => {
-                  return (
-                    <motion.button
-                      onClick={openConnectModal}
-                      className="px-6 py-2 bg-gradient-to-r from-brand-primary to-brand-secondary text-white rounded-lg font-medium hover:shadow-lg transition-all duration-200 flex items-center space-x-2"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <div className="w-4 h-4">
-                        <FaWallet />
-                      </div>
-                      <span>Connect Wallet</span>
-                    </motion.button>
-                  );
-                }}
-              </ConnectButton.Custom>
+              <div className="flex items-center space-x-2">
+                <RainbowKitCustomConnectButton />
+                {isLocalNetwork && <FaucetButton />}
+              </div>
             )}
 
             {/* Mobile Menu Toggle */}
@@ -375,20 +365,9 @@ export default function Header() {
                 ))}
 
                 {!isConnected && (
-                  <div className="pt-4 border-t border-gray-200">
-                    <ConnectButton.Custom>
-                      {({ openConnectModal }) => (
-                        <button
-                          onClick={openConnectModal}
-                          className="w-full px-4 py-3 bg-gradient-to-r from-brand-primary to-brand-secondary text-white rounded-lg font-medium hover:shadow-lg transition-all duration-200 flex items-center justify-center space-x-2"
-                        >
-                          <div className="w-4 h-4">
-                            <FaWallet />
-                          </div>
-                          <span>Connect Wallet</span>
-                        </button>
-                      )}
-                    </ConnectButton.Custom>
+                  <div className="pt-4 border-t border-gray-200 space-y-2">
+                    <RainbowKitCustomConnectButton />
+                    {isLocalNetwork && <FaucetButton />}
                   </div>
                 )}
               </div>

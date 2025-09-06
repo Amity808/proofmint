@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import ENSAvatar from "~~/components/ens/ENSAvatar";
+import ENSVerificationBadge from "~~/components/ens/ENSVerificationBadge";
 import {
     User,
     Shield,
@@ -77,13 +79,13 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     const getActivityIcon = (type: string) => {
         switch (type) {
             case "receipt":
-                return <ShoppingBag className="w-4 h-4 text-brand-primary" />;
+                return <ShoppingBag className="w-4 h-4 text-green-600" />;
             case "recycling":
-                return <Recycle className="w-4 h-4 text-brand-secondary" />;
+                return <Recycle className="w-4 h-4 text-blue-600" />;
             case "follow":
-                return <Users className="w-4 h-4 text-brand-accent" />;
+                return <Users className="w-4 h-4 text-purple-600" />;
             case "achievement":
-                return <Award className="w-4 h-4 text-yellow-500" />;
+                return <Award className="w-4 h-4 text-yellow-600" />;
             default:
                 return <User className="w-4 h-4 text-gray-500" />;
         }
@@ -92,11 +94,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     const getActivityColor = (type: string) => {
         switch (type) {
             case "receipt":
-                return "bg-brand-primary/10 border-brand-primary/20";
+                return "bg-green-50 border-green-200";
             case "recycling":
-                return "bg-brand-secondary/10 border-brand-secondary/20";
+                return "bg-blue-50 border-blue-200";
             case "follow":
-                return "bg-brand-accent/10 border-brand-accent/20";
+                return "bg-purple-50 border-purple-200";
             case "achievement":
                 return "bg-yellow-50 border-yellow-200";
             default:
@@ -106,18 +108,17 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
     if (variant === "minimal") {
         return (
-            <div className="flex items-center gap-3 p-3 bg-white/80 backdrop-blur-sm rounded-lg border border-brand-primary/20">
-                <div className="w-10 h-10 rounded-full bg-brand-gradient-primary flex items-center justify-center text-white font-semibold">
-                    {profileData.avatar ? (
-                        <img src={profileData.avatar} alt="Profile" className="w-full h-full rounded-full object-cover" />
-                    ) : (
-                        displayName.charAt(0).toUpperCase()
-                    )}
-                </div>
+            <div className="flex items-center gap-3 p-3 bg-white/90 backdrop-blur-sm rounded-lg border border-gray-200">
+                <ENSAvatar
+                    address={profileData.address}
+                    name={profileData.ensName}
+                    size="sm"
+                    fallbackSrc={profileData.avatar}
+                />
                 <div className="flex-1">
                     <div className="flex items-center gap-2">
                         <h3 className="font-semibold text-gray-900">{displayName}</h3>
-                        {profileData.verified && <Shield className="w-4 h-4 text-brand-primary" />}
+                        {profileData.verified && <Shield className="w-4 h-4 text-green-600" />}
                     </div>
                     <p className="text-sm text-gray-600">{profileData.stats.followers} followers</p>
                 </div>
@@ -127,19 +128,18 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
     if (variant === "compact") {
         return (
-            <div className="p-4 bg-white/80 backdrop-blur-sm rounded-xl border border-brand-primary/20">
+            <div className="p-4 bg-white/90 backdrop-blur-sm rounded-xl border border-gray-200">
                 <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 rounded-full bg-brand-gradient-primary flex items-center justify-center text-white text-xl font-bold">
-                        {profileData.avatar ? (
-                            <img src={profileData.avatar} alt="Profile" className="w-full h-full rounded-full object-cover" />
-                        ) : (
-                            displayName.charAt(0).toUpperCase()
-                        )}
-                    </div>
+                    <ENSAvatar
+                        address={profileData.address}
+                        name={profileData.ensName}
+                        size="lg"
+                        fallbackSrc={profileData.avatar}
+                    />
                     <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
                             <h3 className="font-bold text-gray-900">{displayName}</h3>
-                            {profileData.verified && <Shield className="w-5 h-5 text-brand-primary" />}
+                            {profileData.verified && <Shield className="w-5 h-5 text-green-600" />}
                         </div>
                         <p className="text-sm text-gray-600 mb-2">{profileData.bio || "Sustainable electronics enthusiast"}</p>
                         <div className="flex items-center gap-4 text-sm text-gray-500">
@@ -155,8 +155,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                         <button
                             onClick={isFollowing ? onUnfollow : onFollow}
                             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${isFollowing
-                                    ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                                    : "bg-brand-primary text-white hover:bg-brand-primary-dark"
+                                ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                : "bg-green-600 text-white hover:bg-green-700"
                                 }`}
                         >
                             {isFollowing ? "Following" : "Follow"}
@@ -168,27 +168,26 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     }
 
     return (
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-brand-primary border border-brand-primary/20 overflow-hidden">
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
             {/* Header */}
-            <div className="relative p-6 bg-gradient-to-r from-brand-primary/5 to-brand-secondary/5">
+            <div className="relative p-6 bg-gradient-to-r from-green-50 to-blue-50">
                 <div className="flex items-start justify-between">
                     <div className="flex items-center gap-4">
-                        <div className="w-20 h-20 rounded-full bg-brand-gradient-primary flex items-center justify-center text-white text-2xl font-bold shadow-lg">
-                            {profileData.avatar ? (
-                                <img src={profileData.avatar} alt="Profile" className="w-full h-full rounded-full object-cover" />
-                            ) : (
-                                displayName.charAt(0).toUpperCase()
-                            )}
-                        </div>
+                        <ENSAvatar
+                            address={profileData.address}
+                            name={profileData.ensName}
+                            size="xl"
+                            fallbackSrc={profileData.avatar}
+                        />
                         <div>
                             <div className="flex items-center gap-2 mb-2">
                                 <h2 className="text-2xl font-bold text-gray-900">{displayName}</h2>
-                                {profileData.verified && (
-                                    <div className="flex items-center gap-1 px-2 py-1 bg-brand-primary/10 text-brand-primary text-xs rounded-full">
-                                        <Shield className="w-3 h-3" />
-                                        Verified
-                                    </div>
-                                )}
+                                <ENSVerificationBadge
+                                    address={profileData.address}
+                                    name={profileData.ensName}
+                                    type="general"
+                                    showDetails={true}
+                                />
                             </div>
                             <p className="text-gray-600 mb-2">
                                 {profileData.bio || "Sustainable electronics enthusiast building a greener future"}
@@ -230,8 +229,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                             <button
                                 onClick={isFollowing ? onUnfollow : onFollow}
                                 className={`px-6 py-2 rounded-full font-medium transition-colors ${isFollowing
-                                        ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                                        : "bg-brand-primary text-white hover:bg-brand-primary-dark"
+                                    ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                    : "bg-green-600 text-white hover:bg-green-700"
                                     }`}
                             >
                                 {isFollowing ? "Following" : "Follow"}
@@ -245,15 +244,15 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             <div className="p-6 border-b border-gray-100">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="text-center p-4 bg-gray-50 rounded-lg">
-                        <div className="text-2xl font-bold text-brand-primary">{profileData.stats.receipts}</div>
+                        <div className="text-2xl font-bold text-green-600">{profileData.stats.receipts}</div>
                         <div className="text-sm text-gray-600">NFT Receipts</div>
                     </div>
                     <div className="text-center p-4 bg-gray-50 rounded-lg">
-                        <div className="text-2xl font-bold text-brand-secondary">{profileData.stats.recycled}</div>
+                        <div className="text-2xl font-bold text-blue-600">{profileData.stats.recycled}</div>
                         <div className="text-sm text-gray-600">Items Recycled</div>
                     </div>
                     <div className="text-center p-4 bg-gray-50 rounded-lg">
-                        <div className="text-2xl font-bold text-brand-accent">{profileData.stats.followers}</div>
+                        <div className="text-2xl font-bold text-purple-600">{profileData.stats.followers}</div>
                         <div className="text-sm text-gray-600">Followers</div>
                     </div>
                     <div className="text-center p-4 bg-gray-50 rounded-lg">

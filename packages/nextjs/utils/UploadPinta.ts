@@ -6,14 +6,15 @@ export async function makeContractMetadata({
   recipt,
   description,
   serial_number,
-
+  spec, ens
     
   }: {
     imageFile: File;
     recipt: string;
     description?: string;
     serial_number?: string;
-    
+    spec?: string; 
+    ens?: string;
   }) {
     // upload image to Pinata
     const imageFileIpfsUrl = await pinFileWithPinata(imageFile);
@@ -24,6 +25,8 @@ export async function makeContractMetadata({
       image: imageFileIpfsUrl,
       recipt,
       serial_number,
+      spec,
+      ens,
       external_link: "https://proofmint.eth",
       "properties": {
         "category": "proof of ship"

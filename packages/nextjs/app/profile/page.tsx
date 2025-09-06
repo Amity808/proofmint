@@ -1,11 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Header from "~~/components/home/Header";
 import Footer from "~~/components/home/Footer";
 import ProfileCard from "~~/components/profile/ProfileCard";
+import ENSAvatar from "~~/components/ens/ENSAvatar";
+import ENSVerificationBadge from "~~/components/ens/ENSVerificationBadge";
+import { useENSProfile } from "~~/hooks/useENSProfile";
+import ClientOnly from "~~/components/ClientOnly";
 import { motion } from "framer-motion";
 import {
     Edit3,
@@ -15,16 +19,37 @@ import {
     QrCode,
     ExternalLink
 } from "lucide-react";
+import { useEnsName } from 'wagmi'
+
 
 const Profile: React.FC = () => {
     const { address, isConnected } = useAccount();
     const [activeTab, setActiveTab] = useState<"overview" | "activity" | "badges" | "settings">("overview");
+    const [isMounted, setIsMounted] = useState(false);
+    const { data: ensName1 } = useEnsName({ address });
 
-    // Mock profile data
+    console.log('ensName', ensName1);
+
+    // Get ENS profile data
+    const {
+        name: ensName,
+        avatar: ensAvatar,
+        isVerified: ensVerified,
+        textRecords,
+        reputationScore,
+        isLoading: ensLoading
+    } = useENSProfile({ address, type: 'general' });
+
+    // Handle hydration
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    // Profile data using connected address and ENS data
     const profileData = {
         address: address || "0x0000000000000000000000000000000000000000",
-        ensName: "sustainable.eth",
-        avatar: "/avatars/profile.jpg",
+        ensName: ensName || "Not set",
+        avatar: ensAvatar || undefined,
         bio: "Passionate about sustainable technology and blockchain innovation. Building a greener future through responsible electronics consumption and recycling.",
         location: "San Francisco, CA",
         joinDate: "March 2024",
@@ -71,35 +96,35 @@ const Profile: React.FC = () => {
         recentActivity: [
             {
                 id: "1",
-                type: "receipt",
+                type: "receipt" as const,
                 title: "New Receipt Generated",
                 description: "iPhone 15 Pro receipt #1234 has been minted",
                 timestamp: "2 hours ago"
             },
             {
                 id: "2",
-                type: "recycling",
+                type: "recycling" as const,
                 title: "Recycling Reward Earned",
                 description: "Earned 50 PMT tokens for recycling MacBook Pro",
                 timestamp: "1 day ago"
             },
             {
                 id: "3",
-                type: "achievement",
+                type: "achievement" as const,
                 title: "Badge Unlocked",
                 description: "Green Warrior badge earned!",
                 timestamp: "3 days ago"
             },
             {
                 id: "4",
-                type: "follow",
+                type: "follow" as const,
                 title: "New Follower",
                 description: "EcoRecycler started following you",
                 timestamp: "1 week ago"
             },
             {
                 id: "5",
-                type: "receipt",
+                type: "receipt" as const,
                 title: "Receipt Shared",
                 description: "Shared MacBook Air receipt with community",
                 timestamp: "2 weeks ago"
@@ -132,6 +157,22 @@ const Profile: React.FC = () => {
         // TODO: Generate and download QR code
     };
 
+    // Show loading state during hydration
+    if (!isMounted) {
+        return (
+            <div className="min-h-screen flex flex-col">
+                <Header />
+                <div className="flex-1 flex items-center justify-center p-4">
+                    <div className="text-center">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
+                        <p className="text-gray-600">Loading profile...</p>
+                    </div>
+                </div>
+                <Footer />
+            </div>
+        );
+    }
+
     if (!isConnected) {
         return (
             <div className="min-h-screen flex flex-col">
@@ -156,12 +197,12 @@ const Profile: React.FC = () => {
                 <div className="mb-8">
                     <div className="relative">
                         <h1 className="text-4xl font-bold text-gray-900 mb-2">
-                            <span className="brand-gradient-multi bg-clip-text text-transparent">
+                            <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
                                 Profile
                             </span>
                         </h1>
                         <p className="text-lg text-gray-600">Manage your ProofMint profile and activity</p>
-                        <div className="absolute -top-2 -right-2 w-16 h-16 bg-brand-primary/10 rounded-full blur-xl"></div>
+                        <div className="absolute -top-2 -right-2 w-16 h-16 bg-green-100 rounded-full blur-xl"></div>
                     </div>
                 </div>
 
@@ -187,7 +228,7 @@ const Profile: React.FC = () => {
                     <div className="flex items-center gap-2">
                         <button
                             onClick={handleEdit}
-                            className="flex items-center gap-2 px-4 py-2 bg-brand-primary text-white rounded-lg hover:bg-brand-primary-dark transition-colors"
+                            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
                         >
                             <Edit3 className="w-4 h-4" />
                             Edit Profile
@@ -215,8 +256,8 @@ const Profile: React.FC = () => {
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id as any)}
                                     className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === tab.id
-                                            ? "border-brand-primary text-brand-primary"
-                                            : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                                        ? "border-green-600 text-green-600"
+                                        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                                         }`}
                                 >
                                     {tab.label}
@@ -234,12 +275,14 @@ const Profile: React.FC = () => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3 }}
                         >
-                            <ProfileCard
-                                profileData={profileData}
-                                isOwnProfile={true}
-                                onEdit={handleEdit}
-                                variant="full"
-                            />
+                            <ClientOnly fallback={<div className="h-96 bg-gray-100 rounded-2xl animate-pulse"></div>}>
+                                <ProfileCard
+                                    profileData={profileData}
+                                    isOwnProfile={true}
+                                    onEdit={handleEdit}
+                                    variant="full"
+                                />
+                            </ClientOnly>
                         </motion.div>
                     )}
 
@@ -248,7 +291,7 @@ const Profile: React.FC = () => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3 }}
-                            className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-brand-primary border border-brand-primary/20 p-6"
+                            className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200 p-6"
                         >
                             <h3 className="text-xl font-bold text-gray-900 mb-6">Activity Timeline</h3>
                             <div className="space-y-4">
@@ -260,8 +303,8 @@ const Profile: React.FC = () => {
                                         transition={{ delay: index * 0.1 }}
                                         className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                                     >
-                                        <div className="w-10 h-10 rounded-full bg-brand-primary/10 flex items-center justify-center flex-shrink-0">
-                                            <span className="text-brand-primary font-bold">
+                                        <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                                            <span className="text-green-600 font-bold">
                                                 {activity.type.charAt(0).toUpperCase()}
                                             </span>
                                         </div>
@@ -284,7 +327,7 @@ const Profile: React.FC = () => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3 }}
-                            className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-brand-primary border border-brand-primary/20 p-6"
+                            className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200 p-6"
                         >
                             <h3 className="text-xl font-bold text-gray-900 mb-6">Achievement Badges</h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -294,7 +337,7 @@ const Profile: React.FC = () => {
                                         initial={{ opacity: 0, scale: 0.9 }}
                                         animate={{ opacity: 1, scale: 1 }}
                                         transition={{ delay: index * 0.1 }}
-                                        className="p-6 bg-white rounded-xl border border-gray-200 hover:border-brand-primary/30 transition-colors"
+                                        className="p-6 bg-white rounded-xl border border-gray-200 hover:border-green-300 transition-colors"
                                     >
                                         <div className="text-center">
                                             <div className="text-4xl mb-3">{badge.icon}</div>
@@ -315,7 +358,7 @@ const Profile: React.FC = () => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3 }}
-                            className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-brand-primary border border-brand-primary/20 p-6"
+                            className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200 p-6"
                         >
                             <h3 className="text-xl font-bold text-gray-900 mb-6">Profile Settings</h3>
                             <div className="space-y-6">
@@ -324,7 +367,7 @@ const Profile: React.FC = () => {
                                         Bio
                                     </label>
                                     <textarea
-                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                                         rows={3}
                                         defaultValue={profileData.bio}
                                     />
@@ -335,7 +378,7 @@ const Profile: React.FC = () => {
                                     </label>
                                     <input
                                         type="text"
-                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                                         defaultValue={profileData.location}
                                     />
                                 </div>
@@ -345,21 +388,21 @@ const Profile: React.FC = () => {
                                     </label>
                                     <div className="space-y-3">
                                         <label className="flex items-center">
-                                            <input type="checkbox" className="rounded border-gray-300 text-brand-primary focus:ring-brand-primary" defaultChecked />
+                                            <input type="checkbox" className="rounded border-gray-300 text-green-600 focus:ring-green-500" defaultChecked />
                                             <span className="ml-2 text-sm text-gray-700">Make profile public</span>
                                         </label>
                                         <label className="flex items-center">
-                                            <input type="checkbox" className="rounded border-gray-300 text-brand-primary focus:ring-brand-primary" defaultChecked />
+                                            <input type="checkbox" className="rounded border-gray-300 text-green-600 focus:ring-green-500" defaultChecked />
                                             <span className="ml-2 text-sm text-gray-700">Show activity to followers</span>
                                         </label>
                                         <label className="flex items-center">
-                                            <input type="checkbox" className="rounded border-gray-300 text-brand-primary focus:ring-brand-primary" />
+                                            <input type="checkbox" className="rounded border-gray-300 text-green-600 focus:ring-green-500" />
                                             <span className="ml-2 text-sm text-gray-700">Allow direct messages</span>
                                         </label>
                                     </div>
                                 </div>
                                 <div className="flex justify-end">
-                                    <button className="px-6 py-2 bg-brand-primary text-white rounded-lg hover:bg-brand-primary-dark transition-colors">
+                                    <button className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
                                         Save Changes
                                     </button>
                                 </div>

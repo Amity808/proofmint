@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Header from "~~/components/home/Header";
@@ -9,34 +9,129 @@ import StatsCard from "~~/components/common/StatsCard";
 import ReceiptCard from "~~/components/common/ReceiptCard";
 import { dummyReceipts, dummyMerchantStats } from "~~/data/dummyData";
 import { GadgetStatus } from "~~/types";
-
+import { FaUpload, FaImage, FaTimes } from "react-icons/fa";
+import { useScaffoldWriteContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+import { makeContractMetadata } from "~~/utils/UploadPinta";
+import toast from "react-hot-toast";
+import Allrecipt from "~~/components/AllCards/Allreciept";
+import ENSVerificationBadge from "~~/components/ens/ENSVerificationBadge";
 const MerchantDashboard: React.FC = () => {
-    const { isConnected } = useAccount();
+    const { isConnected, address } = useAccount();
     const [activeTab, setActiveTab] = useState<"overview" | "receipts" | "products">("overview");
+
+    // Smart contract hooks
+    const { writeContractAsync: writeProofMintAsync } = useScaffoldWriteContract({
+        contractName: "ProofMint"
+    });
     const [newProduct, setNewProduct] = useState({
         name: "",
         description: "",
         price: "",
         category: "",
         specs: "",
-        image: new File([], ""),
+        image: null as File | null,
+        serial_number: "", ens: "", buyerAddress: ""
+    });
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const [isUploading, setIsUploading] = useState(false);
+    const [buyerAddress, setBuyerAddress] = useState("");
+    const [receiptProduct, setReceiptProduct] = useState({
+        name: "",
+        description: "",
+        serial_number: "",
+        image: null as File | null,
     });
 
     const merchantReceipts = dummyReceipts.filter(receipt =>
         receipt.merchant === "Apple Store" // Assuming current merchant
     );
 
-    const handleAddProduct = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log("Adding product:", newProduct);
-        // TODO: Implement product addition
-        setNewProduct({ name: "", description: "", price: "", category: "", specs: "", image: new File([], "") });
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                toast.error('Please select an image file');
+                return;
+            }
+
+            // Validate file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                toast.error('Image size must be less than 5MB');
+                return;
+            }
+
+            setNewProduct(prev => ({ ...prev, image: file }));
+
+            // Create preview
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setImagePreview(e.target?.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
-    const handleIssueReceipt = (buyerAddress: string, productId: string) => {
-        console.log("Issuing receipt for:", buyerAddress, productId);
-        // TODO: Implement receipt issuance
+    const handleRemoveImage = () => {
+        setNewProduct(prev => ({ ...prev, image: null }));
+        setImagePreview(null);
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
     };
+
+    const handleReceipt = async (e?: React.FormEvent) => {
+        if (e) e.preventDefault();
+        setIsUploading(true);
+
+        try {
+            if (!newProduct.image) {
+                toast.error("Please upload a product image");
+                return;
+            }
+
+            console.log("Starting product addition and receipt issuance process...");
+            toast.loading("Uploading metadata to IPFS...", { id: "receipt" });
+
+            // Upload product metadata to IPFS and get the hash
+            const ipfsResponse = await makeContractMetadata({
+                imageFile: newProduct.image,
+                recipt: newProduct.name,
+                description: newProduct.description,
+                serial_number: newProduct.serial_number,
+                ens: newProduct.ens
+            });
+
+            console.log("Product metadata uploaded:", ipfsResponse);
+
+            // Issue receipt on blockchain if buyer address is provided
+            toast.loading("Issuing receipt on blockchain...", { id: "receipt" });
+
+            // Wait a moment for IPFS to propagate
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            // Call the smart contract to issue receipt
+            const result = await writeProofMintAsync({
+                functionName: "issueReceipt",
+                args: [newProduct.buyerAddress, ipfsResponse]
+            });
+
+
+
+        } catch (error) {
+            console.error("Error processing receipt:", error);
+            toast.error("Failed to process receipt. Please try again.", { id: "receipt" });
+        } finally {
+            setIsUploading(false);
+            setNewProduct({ name: "", description: "", price: "", category: "", specs: "", image: null, serial_number: "", ens: "", buyerAddress: "" });
+            setImagePreview(null);
+            if (fileInputRef.current) {
+                fileInputRef.current.value = '';
+            }
+        }
+    };
+
 
     if (!isConnected) {
         return (
@@ -61,12 +156,28 @@ const MerchantDashboard: React.FC = () => {
                 {/* Header */}
                 <div className="mb-8">
                     <div className="relative">
-                        <h1 className="text-4xl font-bold text-gray-900 mb-2">
-                            <span className="brand-gradient-multi bg-clip-text text-transparent">
-                                Merchant Dashboard
-                            </span>
-                        </h1>
-                        <p className="text-lg text-gray-600">Manage your products and track receipts</p>
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <h1 className="text-4xl font-bold text-gray-900 mb-2">
+                                    <span className="brand-gradient-multi bg-clip-text text-transparent">
+                                        Merchant Dashboard
+                                    </span>
+                                </h1>
+                                <p className="text-lg text-gray-600">Manage your products and track receipts</p>
+                            </div>
+                            <div className="flex items-center space-x-4">
+                                <ENSVerificationBadge
+                                    address={address}
+                                    type="merchant"
+                                    showDetails={true}
+                                />
+                                {address && (
+                                    <div className="text-sm text-gray-500">
+                                        {address.slice(0, 6)}...{address.slice(-4)}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                         <div className="absolute -top-2 -right-2 w-16 h-16 bg-brand-secondary/10 rounded-full blur-xl"></div>
                     </div>
                 </div>
@@ -187,16 +298,10 @@ const MerchantDashboard: React.FC = () => {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {merchantReceipts.map((receipt) => (
-                                <ReceiptCard
-                                    key={receipt.id}
-                                    receipt={receipt}
-                                    onViewDetails={(id) => console.log("View receipt:", id)}
-                                    onGenerateQR={(id) => console.log("Generate QR:", id)}
-                                />
-                            ))}
-                        </div>
+                        {/* Issue New Receipt Form */}
+
+                        {/* all receipt display */}
+                        <Allrecipt />
                     </div>
                 )}
 
@@ -216,7 +321,7 @@ const MerchantDashboard: React.FC = () => {
                         {/* Add Product Form */}
                         <div className="bg-white rounded-xl shadow-sm border p-6">
                             <h4 className="text-lg font-medium mb-4">Add New Product</h4>
-                            <form onSubmit={handleAddProduct} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <form onSubmit={(e) => handleReceipt(e)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                         Product Name
@@ -225,7 +330,7 @@ const MerchantDashboard: React.FC = () => {
                                         type="text"
                                         value={newProduct.name}
                                         onChange={(e) => setNewProduct(prev => ({ ...prev, name: e.target.value }))}
-                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
                                         required
                                     />
                                 </div>
@@ -238,7 +343,7 @@ const MerchantDashboard: React.FC = () => {
                                         step="0.01"
                                         value={newProduct.price}
                                         onChange={(e) => setNewProduct(prev => ({ ...prev, price: e.target.value }))}
-                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
                                         required
                                     />
                                 </div>
@@ -249,7 +354,7 @@ const MerchantDashboard: React.FC = () => {
                                     <select
                                         value={newProduct.category}
                                         onChange={(e) => setNewProduct(prev => ({ ...prev, category: e.target.value }))}
-                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
                                         required
                                     >
                                         <option value="">Select Category</option>
@@ -263,6 +368,32 @@ const MerchantDashboard: React.FC = () => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Serial Number
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={newProduct.serial_number}
+                                        onChange={(e) => setNewProduct(prev => ({ ...prev, serial_number: e.target.value }))}
+                                        placeholder="e.g., ABC123456789"
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Buyer Address
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={newProduct.buyerAddress}
+                                        onChange={(e) => setNewProduct(prev => ({ ...prev, buyerAddress: e.target.value }))}
+                                        placeholder="0x..."
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent text-black"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
                                         Specifications (comma-separated)
                                     </label>
                                     <input
@@ -270,7 +401,19 @@ const MerchantDashboard: React.FC = () => {
                                         value={newProduct.specs}
                                         onChange={(e) => setNewProduct(prev => ({ ...prev, specs: e.target.value }))}
                                         placeholder="e.g., 6.1-inch display, A17 Pro chip"
-                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Ens Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={newProduct.ens}
+                                        onChange={(e) => setNewProduct(prev => ({ ...prev, ens: e.target.value }))}
+                                        placeholder="e.g., Ajtech.eth"
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
                                     />
                                 </div>
                                 <div className="md:col-span-2">
@@ -281,16 +424,80 @@ const MerchantDashboard: React.FC = () => {
                                         value={newProduct.description}
                                         onChange={(e) => setNewProduct(prev => ({ ...prev, description: e.target.value }))}
                                         rows={3}
-                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
                                         required
                                     />
+                                </div>
+
+                                {/* Image Upload */}
+                                <div className="md:col-span-2">
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Product Image
+                                    </label>
+
+                                    {!imagePreview ? (
+                                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-brand-primary transition-colors">
+                                            <input
+                                                ref={fileInputRef}
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={handleImageUpload}
+                                                className="hidden"
+                                                id="image-upload"
+                                            />
+                                            <label
+                                                htmlFor="image-upload"
+                                                className="cursor-pointer flex flex-col items-center space-y-2"
+                                            >
+                                                <div className="w-12 h-12 bg-brand-primary/10 rounded-full flex items-center justify-center">
+                                                    <div className="text-brand-primary text-xl">
+                                                        <FaUpload />
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <p className="text-sm font-medium text-gray-900">Upload Product Image</p>
+                                                    <p className="text-xs text-gray-500">PNG, JPG, GIF up to 5MB</p>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    ) : (
+                                        <div className="relative">
+                                            <div className="w-full h-48 bg-gray-100 rounded-lg overflow-hidden">
+                                                <img
+                                                    src={imagePreview}
+                                                    alt="Product preview"
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={handleRemoveImage}
+                                                className="absolute top-2 right-2 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
+                                            >
+                                                <div className="text-sm">
+                                                    <FaTimes />
+                                                </div>
+                                            </button>
+                                            <div className="mt-2 text-xs text-gray-500">
+                                                {newProduct.image?.name} ({((newProduct.image?.size || 0) / 1024 / 1024).toFixed(2)} MB)
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="md:col-span-2">
                                     <button
                                         type="submit"
-                                        className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+                                        disabled={isUploading}
+                                        className="px-6 py-3 bg-brand-primary text-white rounded-lg hover:bg-brand-primary/90 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
                                     >
-                                        Add Product
+                                        {isUploading ? (
+                                            <>
+                                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                                <span>Uploading...</span>
+                                            </>
+                                        ) : (
+                                            <span>Add Product</span>
+                                        )}
                                     </button>
                                 </div>
                             </form>
