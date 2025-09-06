@@ -10,8 +10,6 @@ import { motion } from "framer-motion";
 import {
     Users,
     Search,
-    Filter,
-    MapPin,
     Star,
     Shield,
     TrendingUp

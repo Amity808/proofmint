@@ -215,7 +215,7 @@ const ReceiptCard: React.FC<ReceiptCardProps> = ({
 
     if (isLoading) {
         return (
-            <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
+            <div className="bg-white rounded-xl shadow-sm border overflow-hidden text-black">
                 <div className="h-48 bg-gray-200 flex items-center justify-center">
                     <div className="text-gray-400 text-sm flex flex-col items-center">
                         <div className="w-8 h-8 border-2 border-gray-300 border-t-transparent rounded-full animate-spin mb-2"></div>
@@ -238,7 +238,7 @@ const ReceiptCard: React.FC<ReceiptCardProps> = ({
     }
 
     return (
-        <div className="bg-white rounded-xl shadow-sm border overflow-hidden hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-xl shadow-sm border overflow-hidden hover:shadow-md transition-shadow text-black">
             {/* Product Image */}
             <div className="h-48 bg-gray-200 flex items-center justify-center relative">
                 {getProductImage() ? (
@@ -266,13 +266,13 @@ const ReceiptCard: React.FC<ReceiptCardProps> = ({
             <div className="p-6">
                 {/* Header */}
                 <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
+                    <h3 className="text-lg font-semibold text-black line-clamp-2">
                         {getProductName()}
                     </h3>
                 </div>
 
                 {/* Product Details */}
-                <div className="space-y-2 text-sm text-gray-600 mb-4">
+                <div className="space-y-2 text-sm text-black mb-4">
                     <div className="flex justify-between">
                         <span className="font-medium">Serial Number:</span>
                         <span className="font-mono text-xs">{getSerialNumber()}</span>
@@ -336,7 +336,7 @@ const ReceiptCard: React.FC<ReceiptCardProps> = ({
                 {canFlag() && (
                     <div className="mt-3 pt-3 border-t border-gray-100">
                         <div className="space-y-2">
-                            <p className="text-xs text-gray-500 text-center">
+                            <p className="text-xs text-black text-center">
                                 Current Status: <span className="font-medium">{getStatusText(getStatusFromContract())}</span>
                             </p>
 
@@ -362,7 +362,7 @@ const ReceiptCard: React.FC<ReceiptCardProps> = ({
                             ) : (
                                 // Flagged status - show change options
                                 <div className="space-y-2">
-                                    <p className="text-xs text-gray-500 text-center">Change Status:</p>
+                                    <p className="text-xs text-black text-center">Change Status:</p>
                                     <div className="grid grid-cols-3 gap-2">
                                         <button
                                             onClick={() => handleFlagGadget(0)}
@@ -395,7 +395,7 @@ const ReceiptCard: React.FC<ReceiptCardProps> = ({
                 {/* IPFS Hash Display */}
                 {contractReceipt?.ipfsHash && (
                     <div className="mt-3 pt-3 border-t border-gray-100">
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-black">
                             <span className="font-medium">IPFS Hash:</span>
                             <span className="font-mono ml-1 break-all">{contractReceipt.ipfsHash}</span>
                         </div>

@@ -8,7 +8,6 @@ import Header from "~~/components/home/Header";
 import Footer from "~~/components/home/Footer";
 import StatsCard from "~~/components/common/StatsCard";
 import { useScaffoldWriteContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
-// Removed dummy data imports
 
 const AdminDashboard: React.FC = () => {
     const { isConnected, address } = useAccount();
@@ -18,8 +17,8 @@ const AdminDashboard: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [allReceipts, setAllReceipts] = useState<any[]>([]);
     const [subscriptionPricing, setSubscriptionPricing] = useState<any>(null);
-    const [contractBalance, setContractBalance] = useState<string>("0");
-    const [usdcBalance, setUsdcBalance] = useState<string>("0");
+    const [contractBalance] = useState<string>("0");
+    const [usdcBalance] = useState<string>("0");
     const [basePayMerchant, setBasePayMerchant] = useState("");
     const [basePayTier, setBasePayTier] = useState<"0" | "1" | "2">("0");
     const [basePayDuration, setBasePayDuration] = useState("1");
@@ -31,10 +30,6 @@ const AdminDashboard: React.FC = () => {
     });
 
     // Read contract data
-    const { data: totalReceipts } = useScaffoldReadContract({
-        contractName: "ProofMint",
-        functionName: "getTotalStats"
-    });
 
     // Read all receipts
     const { data: receiptsData } = useScaffoldReadContract({
@@ -257,10 +252,6 @@ const AdminDashboard: React.FC = () => {
         toast.error("Merchant removal not implemented in contract");
     };
 
-    const handleRemoveRecycler = (address: string) => {
-        console.log("Removing recycler:", address);
-        toast.error("Recycler removal not implemented in contract");
-    };
 
     if (!isConnected) {
         return (
