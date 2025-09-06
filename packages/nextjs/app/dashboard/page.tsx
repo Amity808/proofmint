@@ -18,17 +18,17 @@ const Dashboard: React.FC = () => {
         ? dummyReceipts
         : dummyReceipts.filter(receipt => receipt.status === selectedStatus);
 
-    const handleViewDetails = (id: number) => {
+    const handleViewDetails = (id: string) => {
         console.log("View details for receipt:", id);
         // TODO: Implement receipt details modal
     };
 
-    const handleGenerateQR = (id: number) => {
+    const handleGenerateQR = (id: string) => {
         console.log("Generate QR for receipt:", id);
         // TODO: Implement QR code generation
     };
 
-    const handleUpdateStatus = (id: number, status: GadgetStatus) => {
+    const handleUpdateStatus = (id: string, status: GadgetStatus) => {
         console.log("Update status for receipt:", id, "to:", status);
         // TODO: Implement status update
     };
@@ -157,7 +157,7 @@ const Dashboard: React.FC = () => {
                         {filteredReceipts.map((receipt) => (
                             <ReceiptCard
                                 key={receipt.id}
-                                receipt={receipt}
+                                id={receipt.id.toString()}
                                 onViewDetails={handleViewDetails}
                                 onGenerateQR={handleGenerateQR}
                                 onUpdateStatus={handleUpdateStatus}
