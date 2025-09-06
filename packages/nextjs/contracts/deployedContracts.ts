@@ -7,9 +7,9 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
     84532: {
         ProofMint: {
-            address: "0xc64617627d4f880c4a4694797da816af63075551",
+            address: "0x86058fcc782701b7fcbc31f85c2ea76cd58820b3",
             abi: [
-                
+                {
                     "inputs": [],
                     "stateMutability": "nonpayable",
                     "type": "constructor"
