@@ -1,3 +1,5 @@
+## Demo Link
+- Loom Video: https://www.loom.com/share/7cb8f6fde0dd49408f9cdb2231462c6b?sid=0f9262fd-b461-42f3-a905-9f48e055bc94
 # ProofMint - Decentralized Receipt Management System
 
 A blockchain-based platform for managing digital receipts, merchant verification, and sustainable electronics lifecycle tracking.
