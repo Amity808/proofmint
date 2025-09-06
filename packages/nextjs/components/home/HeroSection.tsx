@@ -1,8 +1,8 @@
 import Link from "next/link";
-import proofmint from "~~/components/assets/proofmint.png";
 import { motion } from "framer-motion";
 import { ArrowRight, Recycle, Shield, Zap } from "lucide-react";
 import { useAccount } from "wagmi";
+import proofmint from "~~/components/assets/proofmint.png";
 
 const HeroSection = () => {
   const textVariants = {
@@ -59,10 +59,7 @@ const HeroSection = () => {
               animate="visible"
               transition={{ delay: 0.1 }}
             >
-              The Future of{" "}
-              <span className="brand-gradient-multi bg-clip-text ">
-                Digital Receipts
-              </span>
+              The Future of <span className="brand-gradient-multi bg-clip-text ">Digital Receipts</span>
             </motion.h1>
 
             <motion.p

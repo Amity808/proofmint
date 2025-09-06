@@ -1,11 +1,11 @@
-import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
-import { useAccount } from "wagmi";
 import { parseEther } from "viem";
+import { useAccount } from "wagmi";
+import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
 // Custom hook for ProofMint contract interactions
 export const useProofMint = () => {
   const { address } = useAccount();
-  
+
   // Read contract functions
   const { data: totalStats } = useScaffoldReadContract({
     contractName: "ProofMint",
@@ -38,7 +38,7 @@ export const useProofMint = () => {
   // Issue receipt (merchant only)
   const issueReceipt = async (buyer: string, ipfsHash: string) => {
     if (!writeProofMintAsync) return;
-    
+
     return await writeProofMintAsync({
       functionName: "issueReceipt",
       args: [buyer as `0x${string}`, ipfsHash],
@@ -48,7 +48,7 @@ export const useProofMint = () => {
   // Flag gadget status (buyer only)
   const flagGadget = async (receiptId: number, status: number) => {
     if (!writeProofMintAsync) return;
-    
+
     return await writeProofMintAsync({
       functionName: "flagGadget",
       args: [BigInt(receiptId), BigInt(status)],
@@ -58,7 +58,7 @@ export const useProofMint = () => {
   // Recycle gadget (recycler only)
   const recycleGadget = async (receiptId: number) => {
     if (!writeProofMintAsync) return;
-    
+
     return await writeProofMintAsync({
       functionName: "recycleGadget",
       args: [BigInt(receiptId)],
@@ -68,7 +68,7 @@ export const useProofMint = () => {
   // Add merchant (admin only)
   const addMerchant = async (merchantAddress: string) => {
     if (!writeProofMintAsync) return;
-    
+
     return await writeProofMintAsync({
       functionName: "addMerchant",
       args: [merchantAddress as `0x${string}`],
@@ -78,7 +78,7 @@ export const useProofMint = () => {
   // Add recycler (admin only)
   const addRecycler = async (recyclerAddress: string) => {
     if (!writeProofMintAsync) return;
-    
+
     return await writeProofMintAsync({
       functionName: "addRecycler",
       args: [recyclerAddress as `0x${string}`],
@@ -91,7 +91,7 @@ export const useProofMint = () => {
     userReceipts,
     isMerchant,
     isRecycler,
-    
+
     // Functions
     issueReceipt,
     flagGadget,
@@ -124,7 +124,7 @@ export const useReceipt = (receiptId: number) => {
 // Hook for merchant operations
 export const useMerchantOperations = () => {
   const { address } = useAccount();
-  
+
   const { data: merchantReceipts } = useScaffoldReadContract({
     contractName: "ProofMint",
     functionName: "getMerchantReceipts",
@@ -137,7 +137,7 @@ export const useMerchantOperations = () => {
 
   const issueReceipt = async (buyer: string, ipfsHash: string) => {
     if (!writeProofMintAsync) return;
-    
+
     return await writeProofMintAsync({
       functionName: "issueReceipt",
       args: [buyer as `0x${string}`, ipfsHash],

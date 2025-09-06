@@ -1,13 +1,9 @@
-import React from 'react'
+import React from "react";
 
-type Props = {}
+type Props = {};
 
 const AllRecieptCard = (props: Props) => {
-  return (
-    <div>
-        
-    </div>
-  )
-}
+  return <div></div>;
+};
 
-export default AllRecieptCard
+export default AllRecieptCard;

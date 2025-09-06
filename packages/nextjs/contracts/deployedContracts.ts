@@ -5,1364 +5,1242 @@
 import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
-    84532: {
-        ProofMint: {
-            address: "0x86058fcc782701b7fcbc31f85c2ea76cd58820b3",
-            abi: [
-                {
-                    "inputs": [],
-                    "stateMutability": "nonpayable",
-                    "type": "constructor"
-                },
-                {
-                    "inputs": [],
-                    "type": "error",
-                    "name": "ERC721EnumerableForbiddenBatchMint"
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "sender", "type": "address" },
-                        { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
-                        { "internalType": "address", "name": "owner", "type": "address" }
-                    ],
-                    "type": "error",
-                    "name": "ERC721IncorrectOwner"
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "operator", "type": "address" },
-                        { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
-                    ],
-                    "type": "error",
-                    "name": "ERC721InsufficientApproval"
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "approver", "type": "address" }
-                    ],
-                    "type": "error",
-                    "name": "ERC721InvalidApprover"
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "operator", "type": "address" }
-                    ],
-                    "type": "error",
-                    "name": "ERC721InvalidOperator"
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "owner", "type": "address" }
-                    ],
-                    "type": "error",
-                    "name": "ERC721InvalidOwner"
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "receiver", "type": "address" }
-                    ],
-                    "type": "error",
-                    "name": "ERC721InvalidReceiver"
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "sender", "type": "address" }
-                    ],
-                    "type": "error",
-                    "name": "ERC721InvalidSender"
-                },
-                {
-                    "inputs": [
-                        { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
-                    ],
-                    "type": "error",
-                    "name": "ERC721NonexistentToken"
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "owner", "type": "address" },
-                        { "internalType": "uint256", "name": "index", "type": "uint256" }
-                    ],
-                    "type": "error",
-                    "name": "ERC721OutOfBoundsIndex"
-                },
-                { "inputs": [], "type": "error", "name": "InvalidDuration" },
-                { "inputs": [], "type": "error", "name": "InvalidPayment" },
-                { "inputs": [], "type": "error", "name": "InvalidReceipt" },
-                { "inputs": [], "type": "error", "name": "NotRecycler" },
-                { "inputs": [], "type": "error", "name": "NotVerifiedMerchant" },
-                { "inputs": [], "type": "error", "name": "OnlyAdmin" },
-                { "inputs": [], "type": "error", "name": "OnlyBuyerCanFlag" },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "owner", "type": "address" }
-                    ],
-                    "type": "error",
-                    "name": "OwnableInvalidOwner"
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "account", "type": "address" }
-                    ],
-                    "type": "error",
-                    "name": "OwnableUnauthorizedAccount"
-                },
-                { "inputs": [], "type": "error", "name": "ReceiptLimitExceeded" },
-                { "inputs": [], "type": "error", "name": "SubscriptionInactive" },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "owner",
-                            "type": "address",
-                            "indexed": true
-                        },
-                        {
-                            "internalType": "address",
-                            "name": "approved",
-                            "type": "address",
-                            "indexed": true
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "tokenId",
-                            "type": "uint256",
-                            "indexed": true
-                        }
-                    ],
-                    "type": "event",
-                    "name": "Approval",
-                    "anonymous": false
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "owner",
-                            "type": "address",
-                            "indexed": true
-                        },
-                        {
-                            "internalType": "address",
-                            "name": "operator",
-                            "type": "address",
-                            "indexed": true
-                        },
-                        {
-                            "internalType": "bool",
-                            "name": "approved",
-                            "type": "bool",
-                            "indexed": false
-                        }
-                    ],
-                    "type": "event",
-                    "name": "ApprovalForAll",
-                    "anonymous": false
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "merchant",
-                            "type": "address",
-                            "indexed": true
-                        },
-                        {
-                            "internalType": "string",
-                            "name": "paymentId",
-                            "type": "string",
-                            "indexed": false
-                        },
-                        {
-                            "internalType": "enum ProofMint.SubscriptionTier",
-                            "name": "tier",
-                            "type": "uint8",
-                            "indexed": false
-                        }
-                    ],
-                    "type": "event",
-                    "name": "BasePaySubscriptionActivated",
-                    "anonymous": false
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "uint256",
-                            "name": "_fromTokenId",
-                            "type": "uint256",
-                            "indexed": false
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "_toTokenId",
-                            "type": "uint256",
-                            "indexed": false
-                        }
-                    ],
-                    "type": "event",
-                    "name": "BatchMetadataUpdate",
-                    "anonymous": false
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "bytes32",
-                            "name": "merchantNode",
-                            "type": "bytes32",
-                            "indexed": true
-                        },
-                        {
-                            "internalType": "string",
-                            "name": "label",
-                            "type": "string",
-                            "indexed": false
-                        },
-                        {
-                            "internalType": "address",
-                            "name": "owner",
-                            "type": "address",
-                            "indexed": true
-                        }
-                    ],
-                    "type": "event",
-                    "name": "DomainRegistered",
-                    "anonymous": false
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "uint256",
-                            "name": "receiptId",
-                            "type": "uint256",
-                            "indexed": true
-                        },
-                        {
-                            "internalType": "address",
-                            "name": "recycler",
-                            "type": "address",
-                            "indexed": true
-                        }
-                    ],
-                    "type": "event",
-                    "name": "GadgetRecycled",
-                    "anonymous": false
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "uint256",
-                            "name": "receiptId",
-                            "type": "uint256",
-                            "indexed": true
-                        },
-                        {
-                            "internalType": "enum ProofMint.GadgetStatus",
-                            "name": "newStatus",
-                            "type": "uint8",
-                            "indexed": false
-                        },
-                        {
-                            "internalType": "address",
-                            "name": "updatedBy",
-                            "type": "address",
-                            "indexed": false
-                        }
-                    ],
-                    "type": "event",
-                    "name": "GadgetStatusChanged",
-                    "anonymous": false
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "merchant",
-                            "type": "address",
-                            "indexed": true
-                        }
-                    ],
-                    "type": "event",
-                    "name": "MerchantAdded",
-                    "anonymous": false
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "uint256",
-                            "name": "_tokenId",
-                            "type": "uint256",
-                            "indexed": false
-                        }
-                    ],
-                    "type": "event",
-                    "name": "MetadataUpdate",
-                    "anonymous": false
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "previousOwner",
-                            "type": "address",
-                            "indexed": true
-                        },
-                        {
-                            "internalType": "address",
-                            "name": "newOwner",
-                            "type": "address",
-                            "indexed": true
-                        }
-                    ],
-                    "type": "event",
-                    "name": "OwnershipTransferred",
-                    "anonymous": false
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "uint256",
-                            "name": "id",
-                            "type": "uint256",
-                            "indexed": true
-                        },
-                        {
-                            "internalType": "address",
-                            "name": "merchant",
-                            "type": "address",
-                            "indexed": true
-                        },
-                        {
-                            "internalType": "address",
-                            "name": "buyer",
-                            "type": "address",
-                            "indexed": true
-                        },
-                        {
-                            "internalType": "string",
-                            "name": "ipfsHash",
-                            "type": "string",
-                            "indexed": false
-                        }
-                    ],
-                    "type": "event",
-                    "name": "ReceiptIssued",
-                    "anonymous": false
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "recycler",
-                            "type": "address",
-                            "indexed": true
-                        }
-                    ],
-                    "type": "event",
-                    "name": "RecyclerAdded",
-                    "anonymous": false
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "merchant",
-                            "type": "address",
-                            "indexed": true
-                        }
-                    ],
-                    "type": "event",
-                    "name": "SubscriptionExpired",
-                    "anonymous": false
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "merchant",
-                            "type": "address",
-                            "indexed": true
-                        },
-                        {
-                            "internalType": "enum ProofMint.SubscriptionTier",
-                            "name": "tier",
-                            "type": "uint8",
-                            "indexed": false
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "duration",
-                            "type": "uint256",
-                            "indexed": false
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "expiresAt",
-                            "type": "uint256",
-                            "indexed": false
-                        }
-                    ],
-                    "type": "event",
-                    "name": "SubscriptionPurchased",
-                    "anonymous": false
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "from",
-                            "type": "address",
-                            "indexed": true
-                        },
-                        {
-                            "internalType": "address",
-                            "name": "to",
-                            "type": "address",
-                            "indexed": true
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "tokenId",
-                            "type": "uint256",
-                            "indexed": true
-                        }
-                    ],
-                    "type": "event",
-                    "name": "Transfer",
-                    "anonymous": false
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "BASIC_MONTHLY_PRICE",
-                    "outputs": [
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "BASIC_MONTHLY_PRICE_ETH",
-                    "outputs": [
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "BASIC_RECEIPT_LIMIT",
-                    "outputs": [
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "ENTERPRISE_MONTHLY_PRICE",
-                    "outputs": [
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "ENTERPRISE_MONTHLY_PRICE_ETH",
-                    "outputs": [
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "GRACE_PERIOD",
-                    "outputs": [
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "MONTHLY_DURATION",
-                    "outputs": [
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "PREMIUM_MONTHLY_PRICE",
-                    "outputs": [
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "PREMIUM_MONTHLY_PRICE_ETH",
-                    "outputs": [
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "PREMIUM_RECEIPT_LIMIT",
-                    "outputs": [
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "USDC",
-                    "outputs": [
-                        { "internalType": "contract IERC20", "name": "", "type": "address" }
-                    ]
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "merchant",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "enum ProofMint.SubscriptionTier",
-                            "name": "tier",
-                            "type": "uint8"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "durationMonths",
-                            "type": "uint256"
-                        },
-                        { "internalType": "string", "name": "paymentId", "type": "string" }
-                    ],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "activateSubscriptionFromBasePay",
-                    "outputs": []
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "merchantAddr",
-                            "type": "address"
-                        }
-                    ],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "addMerchant",
-                    "outputs": []
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "recycler", "type": "address" }
-                    ],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "addRecycler",
-                    "outputs": []
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "to", "type": "address" },
-                        { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
-                    ],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "approve",
-                    "outputs": []
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "owner", "type": "address" }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "balanceOf",
-                    "outputs": [
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ]
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "", "type": "address" },
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "buyerReceipts",
-                    "outputs": [
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ]
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "merchant", "type": "address" }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "canIssueReceipts",
-                    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "chainId",
-                    "outputs": [
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "coinType",
-                    "outputs": [
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ]
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "uint256",
-                            "name": "receiptId",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "enum ProofMint.GadgetStatus",
-                            "name": "status",
-                            "type": "uint8"
-                        }
-                    ],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "flagGadget",
-                    "outputs": []
-                },
-                {
-                    "inputs": [
-                        { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "getApproved",
-                    "outputs": [
-                        { "internalType": "address", "name": "", "type": "address" }
-                    ]
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "merchant", "type": "address" }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "getMerchantReceipts",
-                    "outputs": [
-                        { "internalType": "uint256[]", "name": "", "type": "uint256[]" }
-                    ]
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "uint256",
-                            "name": "receiptId",
-                            "type": "uint256"
-                        }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "getReceipt",
-                    "outputs": [
-                        {
-                            "internalType": "struct ProofMint.Receipt",
-                            "name": "",
-                            "type": "tuple",
-                            "components": [
-                                { "internalType": "uint256", "name": "id", "type": "uint256" },
-                                {
-                                    "internalType": "address",
-                                    "name": "merchant",
-                                    "type": "address"
-                                },
-                                {
-                                    "internalType": "address",
-                                    "name": "buyer",
-                                    "type": "address"
-                                },
-                                {
-                                    "internalType": "string",
-                                    "name": "ipfsHash",
-                                    "type": "string"
-                                },
-                                {
-                                    "internalType": "uint256",
-                                    "name": "timestamp",
-                                    "type": "uint256"
-                                },
-                                {
-                                    "internalType": "enum ProofMint.GadgetStatus",
-                                    "name": "gadgetStatus",
-                                    "type": "uint8"
-                                },
-                                {
-                                    "internalType": "uint256",
-                                    "name": "lastStatusUpdate",
-                                    "type": "uint256"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "uint256",
-                            "name": "receiptId",
-                            "type": "uint256"
-                        }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "getReceiptStatus",
-                    "outputs": [
-                        {
-                            "internalType": "enum ProofMint.GadgetStatus",
-                            "name": "status",
-                            "type": "uint8"
-                        },
-                        { "internalType": "address", "name": "owner", "type": "address" },
-                        {
-                            "internalType": "address",
-                            "name": "merchant",
-                            "type": "address"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "lastUpdate",
-                            "type": "uint256"
-                        }
-                    ]
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "merchant", "type": "address" }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "getSubscription",
-                    "outputs": [
-                        {
-                            "internalType": "enum ProofMint.SubscriptionTier",
-                            "name": "tier",
-                            "type": "uint8"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "expiresAt",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "receiptsIssued",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "receiptsRemaining",
-                            "type": "uint256"
-                        },
-                        { "internalType": "bool", "name": "isActive", "type": "bool" },
-                        { "internalType": "bool", "name": "isExpired", "type": "bool" }
-                    ]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "pure",
-                    "type": "function",
-                    "name": "getSubscriptionPricing",
-                    "outputs": [
-                        {
-                            "internalType": "uint256",
-                            "name": "basicMonthly",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "premiumMonthly",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "enterpriseMonthly",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "yearlyDiscount",
-                            "type": "uint256"
-                        }
-                    ]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "getTotalStats",
-                    "outputs": [
-                        {
-                            "internalType": "uint256",
-                            "name": "totalReceipts",
-                            "type": "uint256"
-                        }
-                    ]
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "user", "type": "address" }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "getUserReceipts",
-                    "outputs": [
-                        { "internalType": "uint256[]", "name": "", "type": "uint256[]" }
-                    ]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "getnextReceiptId",
-                    "outputs": [
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ]
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "owner", "type": "address" },
-                        { "internalType": "address", "name": "operator", "type": "address" }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "isApprovedForAll",
-                    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }]
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "recycler", "type": "address" }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "isRecycler",
-                    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }]
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "merchant", "type": "address" }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "isVerifiedMerchant",
-                    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }]
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "buyer", "type": "address" },
-                        { "internalType": "string", "name": "ipfsHash", "type": "string" }
-                    ],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "issueReceipt",
-                    "outputs": [
-                        { "internalType": "uint256", "name": "id", "type": "uint256" }
-                    ]
-                },
-                {
-                    "inputs": [
-                        { "internalType": "bytes32", "name": "", "type": "bytes32" }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "itemOwner",
-                    "outputs": [
-                        { "internalType": "address", "name": "", "type": "address" }
-                    ]
-                },
-                {
-                    "inputs": [
-                        { "internalType": "bytes32", "name": "", "type": "bytes32" }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "merchant",
-                    "outputs": [
-                        { "internalType": "address", "name": "", "type": "address" }
-                    ]
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "", "type": "address" }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "merchantName",
-                    "outputs": [
-                        { "internalType": "string", "name": "", "type": "string" }
-                    ]
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "", "type": "address" },
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "merchantReceipts",
-                    "outputs": [
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "name",
-                    "outputs": [
-                        { "internalType": "string", "name": "", "type": "string" }
-                    ]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "nextReceiptId",
-                    "outputs": [
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "owner",
-                    "outputs": [
-                        { "internalType": "address", "name": "", "type": "address" }
-                    ]
-                },
-                {
-                    "inputs": [
-                        { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "ownerOf",
-                    "outputs": [
-                        { "internalType": "address", "name": "", "type": "address" }
-                    ]
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "merchant",
-                            "type": "address"
-                        },
-                        { "internalType": "bool", "name": "pause", "type": "bool" }
-                    ],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "pauseMerchantSubscription",
-                    "outputs": []
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "enum ProofMint.SubscriptionTier",
-                            "name": "tier",
-                            "type": "uint8"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "durationMonths",
-                            "type": "uint256"
-                        }
-                    ],
-                    "stateMutability": "payable",
-                    "type": "function",
-                    "name": "purchaseSubscription",
-                    "outputs": []
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "enum ProofMint.SubscriptionTier",
-                            "name": "tier",
-                            "type": "uint8"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "durationMonths",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "string",
-                            "name": "basePayPaymentId",
-                            "type": "string"
-                        }
-                    ],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "purchaseSubscriptionUSDC",
-                    "outputs": []
-                },
-                {
-                    "inputs": [
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "receipts",
-                    "outputs": [
-                        { "internalType": "uint256", "name": "id", "type": "uint256" },
-                        {
-                            "internalType": "address",
-                            "name": "merchant",
-                            "type": "address"
-                        },
-                        { "internalType": "address", "name": "buyer", "type": "address" },
-                        { "internalType": "string", "name": "ipfsHash", "type": "string" },
-                        {
-                            "internalType": "uint256",
-                            "name": "timestamp",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "enum ProofMint.GadgetStatus",
-                            "name": "gadgetStatus",
-                            "type": "uint8"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "lastStatusUpdate",
-                            "type": "uint256"
-                        }
-                    ]
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "uint256",
-                            "name": "receiptId",
-                            "type": "uint256"
-                        }
-                    ],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "recycleGadget",
-                    "outputs": []
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "", "type": "address" }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "recyclers",
-                    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }]
-                },
-                {
-                    "inputs": [
-                        { "internalType": "string", "name": "label", "type": "string" },
-                        {
-                            "internalType": "address",
-                            "name": "merchantAddr",
-                            "type": "address"
-                        }
-                    ],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "registerMerchant",
-                    "outputs": [
-                        {
-                            "internalType": "bytes32",
-                            "name": "merchantNode",
-                            "type": "bytes32"
-                        }
-                    ]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "registry",
-                    "outputs": [
-                        {
-                            "internalType": "contract IL2Registry",
-                            "name": "",
-                            "type": "address"
-                        }
-                    ]
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "uint256",
-                            "name": "durationMonths",
-                            "type": "uint256"
-                        }
-                    ],
-                    "stateMutability": "payable",
-                    "type": "function",
-                    "name": "renewSubscription",
-                    "outputs": []
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "renounceOwnership",
-                    "outputs": []
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "from", "type": "address" },
-                        { "internalType": "address", "name": "to", "type": "address" },
-                        { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
-                    ],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "safeTransferFrom",
-                    "outputs": []
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "from", "type": "address" },
-                        { "internalType": "address", "name": "to", "type": "address" },
-                        { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
-                        { "internalType": "bytes", "name": "data", "type": "bytes" }
-                    ],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "safeTransferFrom",
-                    "outputs": []
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "address",
-                            "name": "operator",
-                            "type": "address"
-                        },
-                        { "internalType": "bool", "name": "approved", "type": "bool" }
-                    ],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "setApprovalForAll",
-                    "outputs": []
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "", "type": "address" }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "subscriptions",
-                    "outputs": [
-                        {
-                            "internalType": "enum ProofMint.SubscriptionTier",
-                            "name": "tier",
-                            "type": "uint8"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "expiresAt",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "receiptsIssued",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "lastResetTime",
-                            "type": "uint256"
-                        },
-                        { "internalType": "bool", "name": "isActive", "type": "bool" }
-                    ]
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "bytes4",
-                            "name": "interfaceId",
-                            "type": "bytes4"
-                        }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "supportsInterface",
-                    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "symbol",
-                    "outputs": [
-                        { "internalType": "string", "name": "", "type": "string" }
-                    ]
-                },
-                {
-                    "inputs": [
-                        { "internalType": "uint256", "name": "index", "type": "uint256" }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "tokenByIndex",
-                    "outputs": [
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ]
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "owner", "type": "address" },
-                        { "internalType": "uint256", "name": "index", "type": "uint256" }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "tokenOfOwnerByIndex",
-                    "outputs": [
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ]
-                },
-                {
-                    "inputs": [
-                        { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "tokenURI",
-                    "outputs": [
-                        { "internalType": "string", "name": "", "type": "string" }
-                    ]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "totalSupply",
-                    "outputs": [
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ]
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "from", "type": "address" },
-                        { "internalType": "address", "name": "to", "type": "address" },
-                        { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
-                    ],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "transferFrom",
-                    "outputs": []
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "newOwner", "type": "address" }
-                    ],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "transferOwnership",
-                    "outputs": []
-                },
-                {
-                    "inputs": [
-                        { "internalType": "address", "name": "", "type": "address" }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "verifiedMerchants",
-                    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "name": "viewAllReceipts",
-                    "outputs": [
-                        {
-                            "internalType": "struct ProofMint.Receipt[]",
-                            "name": "",
-                            "type": "tuple[]",
-                            "components": [
-                                { "internalType": "uint256", "name": "id", "type": "uint256" },
-                                {
-                                    "internalType": "address",
-                                    "name": "merchant",
-                                    "type": "address"
-                                },
-                                {
-                                    "internalType": "address",
-                                    "name": "buyer",
-                                    "type": "address"
-                                },
-                                {
-                                    "internalType": "string",
-                                    "name": "ipfsHash",
-                                    "type": "string"
-                                },
-                                {
-                                    "internalType": "uint256",
-                                    "name": "timestamp",
-                                    "type": "uint256"
-                                },
-                                {
-                                    "internalType": "enum ProofMint.GadgetStatus",
-                                    "name": "gadgetStatus",
-                                    "type": "uint8"
-                                },
-                                {
-                                    "internalType": "uint256",
-                                    "name": "lastStatusUpdate",
-                                    "type": "uint256"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "withdrawFunds",
-                    "outputs": []
-                },
-                {
-                    "inputs": [],
-                    "stateMutability": "nonpayable",
-                    "type": "function",
-                    "name": "withdrawUSDC",
-                    "outputs": []
-                }
-            ] as const,
-            inheritedFunctions: {},
-            contractName: "ProofMint",
+  84532: {
+    ProofMint: {
+      address: "0x86058fcc782701b7fcbc31f85c2ea76cd58820b3",
+      abi: [
+        {
+          inputs: [],
+          stateMutability: "nonpayable",
+          type: "constructor",
         },
+        {
+          inputs: [],
+          type: "error",
+          name: "ERC721EnumerableForbiddenBatchMint",
+        },
+        {
+          inputs: [
+            { internalType: "address", name: "sender", type: "address" },
+            { internalType: "uint256", name: "tokenId", type: "uint256" },
+            { internalType: "address", name: "owner", type: "address" },
+          ],
+          type: "error",
+          name: "ERC721IncorrectOwner",
+        },
+        {
+          inputs: [
+            { internalType: "address", name: "operator", type: "address" },
+            { internalType: "uint256", name: "tokenId", type: "uint256" },
+          ],
+          type: "error",
+          name: "ERC721InsufficientApproval",
+        },
+        {
+          inputs: [{ internalType: "address", name: "approver", type: "address" }],
+          type: "error",
+          name: "ERC721InvalidApprover",
+        },
+        {
+          inputs: [{ internalType: "address", name: "operator", type: "address" }],
+          type: "error",
+          name: "ERC721InvalidOperator",
+        },
+        {
+          inputs: [{ internalType: "address", name: "owner", type: "address" }],
+          type: "error",
+          name: "ERC721InvalidOwner",
+        },
+        {
+          inputs: [{ internalType: "address", name: "receiver", type: "address" }],
+          type: "error",
+          name: "ERC721InvalidReceiver",
+        },
+        {
+          inputs: [{ internalType: "address", name: "sender", type: "address" }],
+          type: "error",
+          name: "ERC721InvalidSender",
+        },
+        {
+          inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
+          type: "error",
+          name: "ERC721NonexistentToken",
+        },
+        {
+          inputs: [
+            { internalType: "address", name: "owner", type: "address" },
+            { internalType: "uint256", name: "index", type: "uint256" },
+          ],
+          type: "error",
+          name: "ERC721OutOfBoundsIndex",
+        },
+        { inputs: [], type: "error", name: "InvalidDuration" },
+        { inputs: [], type: "error", name: "InvalidPayment" },
+        { inputs: [], type: "error", name: "InvalidReceipt" },
+        { inputs: [], type: "error", name: "NotRecycler" },
+        { inputs: [], type: "error", name: "NotVerifiedMerchant" },
+        { inputs: [], type: "error", name: "OnlyAdmin" },
+        { inputs: [], type: "error", name: "OnlyBuyerCanFlag" },
+        {
+          inputs: [{ internalType: "address", name: "owner", type: "address" }],
+          type: "error",
+          name: "OwnableInvalidOwner",
+        },
+        {
+          inputs: [{ internalType: "address", name: "account", type: "address" }],
+          type: "error",
+          name: "OwnableUnauthorizedAccount",
+        },
+        { inputs: [], type: "error", name: "ReceiptLimitExceeded" },
+        { inputs: [], type: "error", name: "SubscriptionInactive" },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "owner",
+              type: "address",
+              indexed: true,
+            },
+            {
+              internalType: "address",
+              name: "approved",
+              type: "address",
+              indexed: true,
+            },
+            {
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+              indexed: true,
+            },
+          ],
+          type: "event",
+          name: "Approval",
+          anonymous: false,
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "owner",
+              type: "address",
+              indexed: true,
+            },
+            {
+              internalType: "address",
+              name: "operator",
+              type: "address",
+              indexed: true,
+            },
+            {
+              internalType: "bool",
+              name: "approved",
+              type: "bool",
+              indexed: false,
+            },
+          ],
+          type: "event",
+          name: "ApprovalForAll",
+          anonymous: false,
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "merchant",
+              type: "address",
+              indexed: true,
+            },
+            {
+              internalType: "string",
+              name: "paymentId",
+              type: "string",
+              indexed: false,
+            },
+            {
+              internalType: "enum ProofMint.SubscriptionTier",
+              name: "tier",
+              type: "uint8",
+              indexed: false,
+            },
+          ],
+          type: "event",
+          name: "BasePaySubscriptionActivated",
+          anonymous: false,
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_fromTokenId",
+              type: "uint256",
+              indexed: false,
+            },
+            {
+              internalType: "uint256",
+              name: "_toTokenId",
+              type: "uint256",
+              indexed: false,
+            },
+          ],
+          type: "event",
+          name: "BatchMetadataUpdate",
+          anonymous: false,
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "merchantNode",
+              type: "bytes32",
+              indexed: true,
+            },
+            {
+              internalType: "string",
+              name: "label",
+              type: "string",
+              indexed: false,
+            },
+            {
+              internalType: "address",
+              name: "owner",
+              type: "address",
+              indexed: true,
+            },
+          ],
+          type: "event",
+          name: "DomainRegistered",
+          anonymous: false,
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "receiptId",
+              type: "uint256",
+              indexed: true,
+            },
+            {
+              internalType: "address",
+              name: "recycler",
+              type: "address",
+              indexed: true,
+            },
+          ],
+          type: "event",
+          name: "GadgetRecycled",
+          anonymous: false,
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "receiptId",
+              type: "uint256",
+              indexed: true,
+            },
+            {
+              internalType: "enum ProofMint.GadgetStatus",
+              name: "newStatus",
+              type: "uint8",
+              indexed: false,
+            },
+            {
+              internalType: "address",
+              name: "updatedBy",
+              type: "address",
+              indexed: false,
+            },
+          ],
+          type: "event",
+          name: "GadgetStatusChanged",
+          anonymous: false,
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "merchant",
+              type: "address",
+              indexed: true,
+            },
+          ],
+          type: "event",
+          name: "MerchantAdded",
+          anonymous: false,
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_tokenId",
+              type: "uint256",
+              indexed: false,
+            },
+          ],
+          type: "event",
+          name: "MetadataUpdate",
+          anonymous: false,
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "previousOwner",
+              type: "address",
+              indexed: true,
+            },
+            {
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
+              indexed: true,
+            },
+          ],
+          type: "event",
+          name: "OwnershipTransferred",
+          anonymous: false,
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "id",
+              type: "uint256",
+              indexed: true,
+            },
+            {
+              internalType: "address",
+              name: "merchant",
+              type: "address",
+              indexed: true,
+            },
+            {
+              internalType: "address",
+              name: "buyer",
+              type: "address",
+              indexed: true,
+            },
+            {
+              internalType: "string",
+              name: "ipfsHash",
+              type: "string",
+              indexed: false,
+            },
+          ],
+          type: "event",
+          name: "ReceiptIssued",
+          anonymous: false,
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "recycler",
+              type: "address",
+              indexed: true,
+            },
+          ],
+          type: "event",
+          name: "RecyclerAdded",
+          anonymous: false,
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "merchant",
+              type: "address",
+              indexed: true,
+            },
+          ],
+          type: "event",
+          name: "SubscriptionExpired",
+          anonymous: false,
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "merchant",
+              type: "address",
+              indexed: true,
+            },
+            {
+              internalType: "enum ProofMint.SubscriptionTier",
+              name: "tier",
+              type: "uint8",
+              indexed: false,
+            },
+            {
+              internalType: "uint256",
+              name: "duration",
+              type: "uint256",
+              indexed: false,
+            },
+            {
+              internalType: "uint256",
+              name: "expiresAt",
+              type: "uint256",
+              indexed: false,
+            },
+          ],
+          type: "event",
+          name: "SubscriptionPurchased",
+          anonymous: false,
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "from",
+              type: "address",
+              indexed: true,
+            },
+            {
+              internalType: "address",
+              name: "to",
+              type: "address",
+              indexed: true,
+            },
+            {
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+              indexed: true,
+            },
+          ],
+          type: "event",
+          name: "Transfer",
+          anonymous: false,
+        },
+        {
+          inputs: [],
+          stateMutability: "view",
+          type: "function",
+          name: "BASIC_MONTHLY_PRICE",
+          outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        },
+        {
+          inputs: [],
+          stateMutability: "view",
+          type: "function",
+          name: "BASIC_MONTHLY_PRICE_ETH",
+          outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        },
+        {
+          inputs: [],
+          stateMutability: "view",
+          type: "function",
+          name: "BASIC_RECEIPT_LIMIT",
+          outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        },
+        {
+          inputs: [],
+          stateMutability: "view",
+          type: "function",
+          name: "ENTERPRISE_MONTHLY_PRICE",
+          outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        },
+        {
+          inputs: [],
+          stateMutability: "view",
+          type: "function",
+          name: "ENTERPRISE_MONTHLY_PRICE_ETH",
+          outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        },
+        {
+          inputs: [],
+          stateMutability: "view",
+          type: "function",
+          name: "GRACE_PERIOD",
+          outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        },
+        {
+          inputs: [],
+          stateMutability: "view",
+          type: "function",
+          name: "MONTHLY_DURATION",
+          outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        },
+        {
+          inputs: [],
+          stateMutability: "view",
+          type: "function",
+          name: "PREMIUM_MONTHLY_PRICE",
+          outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        },
+        {
+          inputs: [],
+          stateMutability: "view",
+          type: "function",
+          name: "PREMIUM_MONTHLY_PRICE_ETH",
+          outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        },
+        {
+          inputs: [],
+          stateMutability: "view",
+          type: "function",
+          name: "PREMIUM_RECEIPT_LIMIT",
+          outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        },
+        {
+          inputs: [],
+          stateMutability: "view",
+          type: "function",
+          name: "USDC",
+          outputs: [{ internalType: "contract IERC20", name: "", type: "address" }],
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "merchant",
+              type: "address",
+            },
+            {
+              internalType: "enum ProofMint.SubscriptionTier",
+              name: "tier",
+              type: "uint8",
+            },
+            {
+              internalType: "uint256",
+              name: "durationMonths",
+              type: "uint256",
+            },
+            { internalType: "string", name: "paymentId", type: "string" },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+          name: "activateSubscriptionFromBasePay",
+          outputs: [],
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "merchantAddr",
+              type: "address",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+          name: "addMerchant",
+          outputs: [],
+        },
+        {
+          inputs: [{ internalType: "address", name: "recycler", type: "address" }],
+          stateMutability: "nonpayable",
+          type: "function",
+          name: "addRecycler",
+          outputs: [],
+        },
+        {
+          inputs: [
+            { internalType: "address", name: "to", type: "address" },
+            { internalType: "uint256", name: "tokenId", type: "uint256" },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+          name: "approve",
+          outputs: [],
+        },
+        {
+          inputs: [{ internalType: "address", name: "owner", type: "address" }],
+          stateMutability: "view",
+          type: "function",
+          name: "balanceOf",
+          outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        },
+        {
+          inputs: [
+            { internalType: "address", name: "", type: "address" },
+            { internalType: "uint256", name: "", type: "uint256" },
+          ],
+          stateMutability: "view",
+          type: "function",
+          name: "buyerReceipts",
+          outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        },
+        {
+          inputs: [{ internalType: "address", name: "merchant", type: "address" }],
+          stateMutability: "view",
+          type: "function",
+          name: "canIssueReceipts",
+          outputs: [{ internalType: "bool", name: "", type: "bool" }],
+        },
+        {
+          inputs: [],
+          stateMutability: "view",
+          type: "function",
+          name: "chainId",
+          outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        },
+        {
+          inputs: [],
+          stateMutability: "view",
+          type: "function",
+          name: "coinType",
+          outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "receiptId",
+              type: "uint256",
+            },
+            {
+              internalType: "enum ProofMint.GadgetStatus",
+              name: "status",
+              type: "uint8",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+          name: "flagGadget",
+          outputs: [],
+        },
+        {
+          inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
+          stateMutability: "view",
+          type: "function",
+          name: "getApproved",
+          outputs: [{ internalType: "address", name: "", type: "address" }],
+        },
+        {
+          inputs: [{ internalType: "address", name: "merchant", type: "address" }],
+          stateMutability: "view",
+          type: "function",
+          name: "getMerchantReceipts",
+          outputs: [{ internalType: "uint256[]", name: "", type: "uint256[]" }],
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "receiptId",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+          name: "getReceipt",
+          outputs: [
+            {
+              internalType: "struct ProofMint.Receipt",
+              name: "",
+              type: "tuple",
+              components: [
+                { internalType: "uint256", name: "id", type: "uint256" },
+                {
+                  internalType: "address",
+                  name: "merchant",
+                  type: "address",
+                },
+                {
+                  internalType: "address",
+                  name: "buyer",
+                  type: "address",
+                },
+                {
+                  internalType: "string",
+                  name: "ipfsHash",
+                  type: "string",
+                },
+                {
+                  internalType: "uint256",
+                  name: "timestamp",
+                  type: "uint256",
+                },
+                {
+                  internalType: "enum ProofMint.GadgetStatus",
+                  name: "gadgetStatus",
+                  type: "uint8",
+                },
+                {
+                  internalType: "uint256",
+                  name: "lastStatusUpdate",
+                  type: "uint256",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "receiptId",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+          name: "getReceiptStatus",
+          outputs: [
+            {
+              internalType: "enum ProofMint.GadgetStatus",
+              name: "status",
+              type: "uint8",
+            },
+            { internalType: "address", name: "owner", type: "address" },
+            {
+              internalType: "address",
+              name: "merchant",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "lastUpdate",
+              type: "uint256",
+            },
+          ],
+        },
+        {
+          inputs: [{ internalType: "address", name: "merchant", type: "address" }],
+          stateMutability: "view",
+          type: "function",
+          name: "getSubscription",
+          outputs: [
+            {
+              internalType: "enum ProofMint.SubscriptionTier",
+              name: "tier",
+              type: "uint8",
+            },
+            {
+              internalType: "uint256",
+              name: "expiresAt",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "receiptsIssued",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "receiptsRemaining",
+              type: "uint256",
+            },
+            { internalType: "bool", name: "isActive", type: "bool" },
+            { internalType: "bool", name: "isExpired", type: "bool" },
+          ],
+        },
+        {
+          inputs: [],
+          stateMutability: "pure",
+          type: "function",
+          name: "getSubscriptionPricing",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "basicMonthly",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "premiumMonthly",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "enterpriseMonthly",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "yearlyDiscount",
+              type: "uint256",
+            },
+          ],
+        },
+        {
+          inputs: [],
+          stateMutability: "view",
+          type: "function",
+          name: "getTotalStats",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "totalReceipts",
+              type: "uint256",
+            },
+          ],
+        },
+        {
+          inputs: [{ internalType: "address", name: "user", type: "address" }],
+          stateMutability: "view",
+          type: "function",
+          name: "getUserReceipts",
+          outputs: [{ internalType: "uint256[]", name: "", type: "uint256[]" }],
+        },
+        {
+          inputs: [],
+          stateMutability: "view",
+          type: "function",
+          name: "getnextReceiptId",
+          outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        },
+        {
+          inputs: [
+            { internalType: "address", name: "owner", type: "address" },
+            { internalType: "address", name: "operator", type: "address" },
+          ],
+          stateMutability: "view",
+          type: "function",
+          name: "isApprovedForAll",
+          outputs: [{ internalType: "bool", name: "", type: "bool" }],
+        },
+        {
+          inputs: [{ internalType: "address", name: "recycler", type: "address" }],
+          stateMutability: "view",
+          type: "function",
+          name: "isRecycler",
+          outputs: [{ internalType: "bool", name: "", type: "bool" }],
+        },
+        {
+          inputs: [{ internalType: "address", name: "merchant", type: "address" }],
+          stateMutability: "view",
+          type: "function",
+          name: "isVerifiedMerchant",
+          outputs: [{ internalType: "bool", name: "", type: "bool" }],
+        },
+        {
+          inputs: [
+            { internalType: "address", name: "buyer", type: "address" },
+            { internalType: "string", name: "ipfsHash", type: "string" },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+          name: "issueReceipt",
+          outputs: [{ internalType: "uint256", name: "id", type: "uint256" }],
+        },
+        {
+          inputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
+          stateMutability: "view",
+          type: "function",
+          name: "itemOwner",
+          outputs: [{ internalType: "address", name: "", type: "address" }],
+        },
+        {
+          inputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
+          stateMutability: "view",
+          type: "function",
+          name: "merchant",
+          outputs: [{ internalType: "address", name: "", type: "address" }],
+        },
+        {
+          inputs: [{ internalType: "address", name: "", type: "address" }],
+          stateMutability: "view",
+          type: "function",
+          name: "merchantName",
+          outputs: [{ internalType: "string", name: "", type: "string" }],
+        },
+        {
+          inputs: [
+            { internalType: "address", name: "", type: "address" },
+            { internalType: "uint256", name: "", type: "uint256" },
+          ],
+          stateMutability: "view",
+          type: "function",
+          name: "merchantReceipts",
+          outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        },
+        {
+          inputs: [],
+          stateMutability: "view",
+          type: "function",
+          name: "name",
+          outputs: [{ internalType: "string", name: "", type: "string" }],
+        },
+        {
+          inputs: [],
+          stateMutability: "view",
+          type: "function",
+          name: "nextReceiptId",
+          outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        },
+        {
+          inputs: [],
+          stateMutability: "view",
+          type: "function",
+          name: "owner",
+          outputs: [{ internalType: "address", name: "", type: "address" }],
+        },
+        {
+          inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
+          stateMutability: "view",
+          type: "function",
+          name: "ownerOf",
+          outputs: [{ internalType: "address", name: "", type: "address" }],
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "merchant",
+              type: "address",
+            },
+            { internalType: "bool", name: "pause", type: "bool" },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+          name: "pauseMerchantSubscription",
+          outputs: [],
+        },
+        {
+          inputs: [
+            {
+              internalType: "enum ProofMint.SubscriptionTier",
+              name: "tier",
+              type: "uint8",
+            },
+            {
+              internalType: "uint256",
+              name: "durationMonths",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "payable",
+          type: "function",
+          name: "purchaseSubscription",
+          outputs: [],
+        },
+        {
+          inputs: [
+            {
+              internalType: "enum ProofMint.SubscriptionTier",
+              name: "tier",
+              type: "uint8",
+            },
+            {
+              internalType: "uint256",
+              name: "durationMonths",
+              type: "uint256",
+            },
+            {
+              internalType: "string",
+              name: "basePayPaymentId",
+              type: "string",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+          name: "purchaseSubscriptionUSDC",
+          outputs: [],
+        },
+        {
+          inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+          stateMutability: "view",
+          type: "function",
+          name: "receipts",
+          outputs: [
+            { internalType: "uint256", name: "id", type: "uint256" },
+            {
+              internalType: "address",
+              name: "merchant",
+              type: "address",
+            },
+            { internalType: "address", name: "buyer", type: "address" },
+            { internalType: "string", name: "ipfsHash", type: "string" },
+            {
+              internalType: "uint256",
+              name: "timestamp",
+              type: "uint256",
+            },
+            {
+              internalType: "enum ProofMint.GadgetStatus",
+              name: "gadgetStatus",
+              type: "uint8",
+            },
+            {
+              internalType: "uint256",
+              name: "lastStatusUpdate",
+              type: "uint256",
+            },
+          ],
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "receiptId",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+          name: "recycleGadget",
+          outputs: [],
+        },
+        {
+          inputs: [{ internalType: "address", name: "", type: "address" }],
+          stateMutability: "view",
+          type: "function",
+          name: "recyclers",
+          outputs: [{ internalType: "bool", name: "", type: "bool" }],
+        },
+        {
+          inputs: [
+            { internalType: "string", name: "label", type: "string" },
+            {
+              internalType: "address",
+              name: "merchantAddr",
+              type: "address",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+          name: "registerMerchant",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "merchantNode",
+              type: "bytes32",
+            },
+          ],
+        },
+        {
+          inputs: [],
+          stateMutability: "view",
+          type: "function",
+          name: "registry",
+          outputs: [
+            {
+              internalType: "contract IL2Registry",
+              name: "",
+              type: "address",
+            },
+          ],
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "durationMonths",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "payable",
+          type: "function",
+          name: "renewSubscription",
+          outputs: [],
+        },
+        {
+          inputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+          name: "renounceOwnership",
+          outputs: [],
+        },
+        {
+          inputs: [
+            { internalType: "address", name: "from", type: "address" },
+            { internalType: "address", name: "to", type: "address" },
+            { internalType: "uint256", name: "tokenId", type: "uint256" },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+          name: "safeTransferFrom",
+          outputs: [],
+        },
+        {
+          inputs: [
+            { internalType: "address", name: "from", type: "address" },
+            { internalType: "address", name: "to", type: "address" },
+            { internalType: "uint256", name: "tokenId", type: "uint256" },
+            { internalType: "bytes", name: "data", type: "bytes" },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+          name: "safeTransferFrom",
+          outputs: [],
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "operator",
+              type: "address",
+            },
+            { internalType: "bool", name: "approved", type: "bool" },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+          name: "setApprovalForAll",
+          outputs: [],
+        },
+        {
+          inputs: [{ internalType: "address", name: "", type: "address" }],
+          stateMutability: "view",
+          type: "function",
+          name: "subscriptions",
+          outputs: [
+            {
+              internalType: "enum ProofMint.SubscriptionTier",
+              name: "tier",
+              type: "uint8",
+            },
+            {
+              internalType: "uint256",
+              name: "expiresAt",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "receiptsIssued",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "lastResetTime",
+              type: "uint256",
+            },
+            { internalType: "bool", name: "isActive", type: "bool" },
+          ],
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes4",
+              name: "interfaceId",
+              type: "bytes4",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+          name: "supportsInterface",
+          outputs: [{ internalType: "bool", name: "", type: "bool" }],
+        },
+        {
+          inputs: [],
+          stateMutability: "view",
+          type: "function",
+          name: "symbol",
+          outputs: [{ internalType: "string", name: "", type: "string" }],
+        },
+        {
+          inputs: [{ internalType: "uint256", name: "index", type: "uint256" }],
+          stateMutability: "view",
+          type: "function",
+          name: "tokenByIndex",
+          outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        },
+        {
+          inputs: [
+            { internalType: "address", name: "owner", type: "address" },
+            { internalType: "uint256", name: "index", type: "uint256" },
+          ],
+          stateMutability: "view",
+          type: "function",
+          name: "tokenOfOwnerByIndex",
+          outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        },
+        {
+          inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
+          stateMutability: "view",
+          type: "function",
+          name: "tokenURI",
+          outputs: [{ internalType: "string", name: "", type: "string" }],
+        },
+        {
+          inputs: [],
+          stateMutability: "view",
+          type: "function",
+          name: "totalSupply",
+          outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        },
+        {
+          inputs: [
+            { internalType: "address", name: "from", type: "address" },
+            { internalType: "address", name: "to", type: "address" },
+            { internalType: "uint256", name: "tokenId", type: "uint256" },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+          name: "transferFrom",
+          outputs: [],
+        },
+        {
+          inputs: [{ internalType: "address", name: "newOwner", type: "address" }],
+          stateMutability: "nonpayable",
+          type: "function",
+          name: "transferOwnership",
+          outputs: [],
+        },
+        {
+          inputs: [{ internalType: "address", name: "", type: "address" }],
+          stateMutability: "view",
+          type: "function",
+          name: "verifiedMerchants",
+          outputs: [{ internalType: "bool", name: "", type: "bool" }],
+        },
+        {
+          inputs: [],
+          stateMutability: "view",
+          type: "function",
+          name: "viewAllReceipts",
+          outputs: [
+            {
+              internalType: "struct ProofMint.Receipt[]",
+              name: "",
+              type: "tuple[]",
+              components: [
+                { internalType: "uint256", name: "id", type: "uint256" },
+                {
+                  internalType: "address",
+                  name: "merchant",
+                  type: "address",
+                },
+                {
+                  internalType: "address",
+                  name: "buyer",
+                  type: "address",
+                },
+                {
+                  internalType: "string",
+                  name: "ipfsHash",
+                  type: "string",
+                },
+                {
+                  internalType: "uint256",
+                  name: "timestamp",
+                  type: "uint256",
+                },
+                {
+                  internalType: "enum ProofMint.GadgetStatus",
+                  name: "gadgetStatus",
+                  type: "uint8",
+                },
+                {
+                  internalType: "uint256",
+                  name: "lastStatusUpdate",
+                  type: "uint256",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          inputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+          name: "withdrawFunds",
+          outputs: [],
+        },
+        {
+          inputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+          name: "withdrawUSDC",
+          outputs: [],
+        },
+      ] as const,
+      inheritedFunctions: {},
+      contractName: "ProofMint",
     },
+  },
 } as const;
 
 export default deployedContracts satisfies GenericContractsDeclaration;

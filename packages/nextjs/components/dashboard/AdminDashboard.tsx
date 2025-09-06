@@ -1,12 +1,12 @@
 import React from "react";
-import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
 
 // Dummy data for demonstration
 const dummyMerchants = [
   "0x742d35Cc6634C0532925a3b8D0Ac6bc4Cb4C0C",
   "0x8ba1f109551bD432803012645Hac136c",
-  "0x1234567890123456789012345678901234567890"
+  "0x1234567890123456789012345678901234567890",
 ];
 
 const dummyReceipts = [
@@ -16,7 +16,7 @@ const dummyReceipts = [
     merchant: "0x742d35Cc6634C0532925a3b8D0Ac6bc4Cb4C0C",
     amount: "999.99",
     status: "Verified",
-    timestamp: "2024-01-15T10:30:00Z"
+    timestamp: "2024-01-15T10:30:00Z",
   },
   {
     id: 2,
@@ -24,8 +24,8 @@ const dummyReceipts = [
     merchant: "0x8ba1f109551bD432803012645Hac136c",
     amount: "1199.99",
     status: "Pending",
-    timestamp: "2024-01-14T15:45:00Z"
-  }
+    timestamp: "2024-01-14T15:45:00Z",
+  },
 ];
 
 const AdminDashboard: React.FC = () => {
@@ -58,9 +58,7 @@ const AdminDashboard: React.FC = () => {
           </div>
         </div>
         <div className="text-right">
-          <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
-            Admin
-          </span>
+          <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">Admin</span>
           <p className="text-xs text-gray-500 mt-1">Address: {formatAddress(address || "0x0000...0000")}</p>
         </div>
       </div>
@@ -76,9 +74,7 @@ const AdminDashboard: React.FC = () => {
                 </div>
                 <span className="font-mono text-sm">{formatAddress(merchant)}</span>
               </div>
-              <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
-                Active
-              </span>
+              <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">Active</span>
             </div>
           ))}
         </div>
@@ -100,10 +96,11 @@ const AdminDashboard: React.FC = () => {
               </div>
               <div className="text-right">
                 <p className="font-semibold text-sm">${receipt.amount}</p>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${receipt.status === 'Verified'
-                    ? 'bg-green-100 text-green-800'
-                    : 'bg-yellow-100 text-yellow-800'
-                  }`}>
+                <span
+                  className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    receipt.status === "Verified" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
+                  }`}
+                >
                   {receipt.status}
                 </span>
               </div>

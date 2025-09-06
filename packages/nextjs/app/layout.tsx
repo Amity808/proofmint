@@ -1,10 +1,10 @@
 import "@rainbow-me/rainbowkit/styles.css";
+import { Toaster } from "react-hot-toast";
 import { ScaffoldEthAppWithProviders } from "~~/components/ScaffoldEthAppWithProviders";
 import { ThemeProvider } from "~~/components/ThemeProvider";
-import "~~/styles/globals.css";
 import "~~/styles/brand.css";
+import "~~/styles/globals.css";
 import { getMetadata } from "~~/utils/scaffold-eth/getMetadata";
-import { Toaster } from "react-hot-toast";
 
 export const metadata = getMetadata({
   title: "ProofMint - Blockchain Receipts for Electronics",
@@ -22,21 +22,21 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
             toastOptions={{
               duration: 4000,
               style: {
-                background: '#363636',
-                color: '#fff',
+                background: "#363636",
+                color: "#fff",
               },
               success: {
                 duration: 3000,
                 iconTheme: {
-                  primary: '#22c55e',
-                  secondary: '#fff',
+                  primary: "#22c55e",
+                  secondary: "#fff",
                 },
               },
               error: {
                 duration: 5000,
                 iconTheme: {
-                  primary: '#ef4444',
-                  secondary: '#fff',
+                  primary: "#ef4444",
+                  secondary: "#fff",
                 },
               },
             }}

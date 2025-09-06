@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useAccount, useChainId } from "wagmi";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ProofMintService, Receipt } from "../../services/ProofMintService";
-import { Receipt as ReceiptIcon, Plus, RefreshCw, AlertCircle, DollarSign, CheckCircle } from "lucide-react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { AlertCircle, CheckCircle, DollarSign, Plus, Receipt as ReceiptIcon, RefreshCw } from "lucide-react";
+import { useAccount, useChainId } from "wagmi";
 
 const MerchantDashboard: React.FC = () => {
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
-  
+
   const [receipts, setReceipts] = useState<Receipt[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Issue receipt form
   const [showIssueForm, setShowIssueForm] = useState(false);
   const [issuingReceipt, setIssuingReceipt] = useState(false);
@@ -62,9 +62,9 @@ const MerchantDashboard: React.FC = () => {
         receiptForm.buyer,
         receiptForm.ipfsCID,
         receiptForm.productType,
-        receiptForm.amount
+        receiptForm.amount,
       );
-      
+
       alert(`Receipt issued successfully! Receipt ID: ${receiptId}`);
       setReceiptForm({ buyer: "", ipfsCID: "", productType: "", amount: "" });
       setShowIssueForm(false);
@@ -163,54 +163,46 @@ const MerchantDashboard: React.FC = () => {
             <form onSubmit={handleIssueReceipt} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Buyer Address
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Buyer Address</label>
                   <input
                     type="text"
                     placeholder="0x..."
                     value={receiptForm.buyer}
-                    onChange={(e) => setReceiptForm({ ...receiptForm, buyer: e.target.value })}
+                    onChange={e => setReceiptForm({ ...receiptForm, buyer: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Amount (ETH)
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Amount (ETH)</label>
                   <input
                     type="number"
                     step="0.001"
                     placeholder="0.1"
                     value={receiptForm.amount}
-                    onChange={(e) => setReceiptForm({ ...receiptForm, amount: e.target.value })}
+                    onChange={e => setReceiptForm({ ...receiptForm, amount: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Product Type
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Product Type</label>
                   <input
                     type="text"
                     placeholder="ELECTRONICS"
                     value={receiptForm.productType}
-                    onChange={(e) => setReceiptForm({ ...receiptForm, productType: e.target.value })}
+                    onChange={e => setReceiptForm({ ...receiptForm, productType: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    IPFS CID
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">IPFS CID</label>
                   <input
                     type="text"
                     placeholder="Qm..."
                     value={receiptForm.ipfsCID}
-                    onChange={(e) => setReceiptForm({ ...receiptForm, ipfsCID: e.target.value })}
+                    onChange={e => setReceiptForm({ ...receiptForm, ipfsCID: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     required
                   />
@@ -317,16 +309,12 @@ const MerchantDashboard: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {receipts.map((receipt) => (
+                      {receipts.map(receipt => (
                         <tr key={receipt.id.toString()} className="border-t">
                           <td className="px-4 py-2 font-mono">#{receipt.id.toString()}</td>
-                          <td className="px-4 py-2 font-mono">
-                            {ProofMintService.formatAddress(receipt.buyer)}
-                          </td>
+                          <td className="px-4 py-2 font-mono">{ProofMintService.formatAddress(receipt.buyer)}</td>
                           <td className="px-4 py-2">{receipt.productType}</td>
-                          <td className="px-4 py-2">
-                            {ProofMintService.formatAmount(receipt.amount)} ETH
-                          </td>
+                          <td className="px-4 py-2">{ProofMintService.formatAmount(receipt.amount)} ETH</td>
                           <td className="px-4 py-2">
                             <div className="flex gap-1">
                               {receipt.isPaid ? (
@@ -335,13 +323,13 @@ const MerchantDashboard: React.FC = () => {
                                 <span className="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">Unpaid</span>
                               )}
                               {receipt.isRecycled && (
-                                <span className="px-2 py-1 bg-emerald-100 text-emerald-800 text-xs rounded">Recycled</span>
+                                <span className="px-2 py-1 bg-emerald-100 text-emerald-800 text-xs rounded">
+                                  Recycled
+                                </span>
                               )}
                             </div>
                           </td>
-                          <td className="px-4 py-2">
-                            {ProofMintService.formatDate(receipt.timestamp)}
-                          </td>
+                          <td className="px-4 py-2">{ProofMintService.formatDate(receipt.timestamp)}</td>
                           <td className="px-4 py-2">
                             {!receipt.isPaid && (
                               <button

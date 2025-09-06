@@ -1,27 +1,27 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   FaBars,
-  FaTimes,
-  FaSearch,
   FaBell,
-  FaUser,
+  FaChartLine,
   FaCog,
-  FaSignOutAlt,
+  FaCompass,
   FaReceipt,
   FaRecycle,
+  FaSearch,
+  FaSignOutAlt,
   FaStore,
+  FaTimes,
+  FaUser,
   FaUsers,
-  FaCompass,
-  FaChartLine
 } from "react-icons/fa";
-import { useAccount, useEnsName, useEnsAvatar } from "wagmi";
-import { RainbowKitCustomConnectButton, FaucetButton } from "~~/components/scaffold-eth";
-import { useTargetNetwork } from "~~/hooks/scaffold-eth";
 import { hardhat } from "viem/chains";
-import ProfileDropdown from "~~/components/common/ProfileDropdown";
+import { useAccount, useEnsAvatar, useEnsName } from "wagmi";
 import NotificationBell from "~~/components/common/NotificationBell";
+import ProfileDropdown from "~~/components/common/ProfileDropdown";
+import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
+import { useTargetNetwork } from "~~/hooks/scaffold-eth";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -54,8 +54,8 @@ export default function Header() {
       scale: 1,
       transition: {
         duration: 0.3,
-        ease: "easeOut"
-      }
+        ease: "easeOut",
+      },
     },
     exit: {
       opacity: 0,
@@ -63,8 +63,8 @@ export default function Header() {
       scale: 0.95,
       transition: {
         duration: 0.2,
-        ease: "easeIn"
-      }
+        ease: "easeIn",
+      },
     },
   };
 
@@ -74,14 +74,14 @@ export default function Header() {
       opacity: 1,
       scale: 1,
       y: 0,
-      transition: { duration: 0.2 }
+      transition: { duration: 0.2 },
     },
     exit: {
       opacity: 0,
       scale: 0.8,
       y: -10,
-      transition: { duration: 0.15 }
-    }
+      transition: { duration: 0.15 },
+    },
   };
 
   const navigationItems = [
@@ -89,32 +89,32 @@ export default function Header() {
       to: "/marketplace",
       label: "Marketplace",
       icon: FaStore,
-      description: "Browse & buy electronics"
+      description: "Browse & buy electronics",
     },
     {
       to: "/discover",
       label: "Discover",
       icon: FaCompass,
-      description: "Find new products"
+      description: "Find new products",
     },
     {
       to: "/social",
       label: "Social",
       icon: FaUsers,
-      description: "Connect with community"
+      description: "Connect with community",
     },
     {
       to: "/dashboard",
       label: "Dashboard",
       icon: FaChartLine,
-      description: "Your receipts & stats"
+      description: "Your receipts & stats",
     },
     {
       to: "/recycling",
       label: "Recycling",
       icon: FaRecycle,
-      description: "Sustainable disposal"
-    }
+      description: "Sustainable disposal",
+    },
   ];
 
   const userStats = {
@@ -122,7 +122,7 @@ export default function Header() {
     recycled: 5,
     followers: 23,
     following: 18,
-    reputation: 850
+    reputation: 850,
   };
 
   return (
@@ -153,7 +153,7 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-1">
-            {navigationItems.map((item) => (
+            {navigationItems.map(item => (
               <motion.div
                 key={item.to}
                 whileHover={{ scale: 1.02 }}
@@ -220,9 +220,7 @@ export default function Header() {
                       <p className="text-sm font-medium text-gray-900">
                         {ensName || `${address?.slice(0, 6)}...${address?.slice(-4)}`}
                       </p>
-                      <p className="text-xs text-gray-500">
-                        {userStats.reputation} reputation
-                      </p>
+                      <p className="text-xs text-gray-500">{userStats.reputation} reputation</p>
                     </div>
                   </motion.button>
 
@@ -237,9 +235,7 @@ export default function Header() {
                         transition={{ duration: 0.2 }}
                       >
                         <div className="px-4 py-3 border-b border-gray-100">
-                          <p className="text-sm font-medium text-gray-900">
-                            {ensName || "Anonymous User"}
-                          </p>
+                          <p className="text-sm font-medium text-gray-900">{ensName || "Anonymous User"}</p>
                           <p className="text-xs text-gray-500">{address}</p>
                         </div>
 
@@ -326,7 +322,7 @@ export default function Header() {
                     type="text"
                     placeholder="Search products, merchants, or receipts..."
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={e => setSearchQuery(e.target.value)}
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                     autoFocus
                   />
@@ -347,7 +343,7 @@ export default function Header() {
               exit="exit"
             >
               <div className="px-4 py-6 space-y-4">
-                {navigationItems.map((item) => (
+                {navigationItems.map(item => (
                   <Link
                     key={item.to}
                     href={item.to}
